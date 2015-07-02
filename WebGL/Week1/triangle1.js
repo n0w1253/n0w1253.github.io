@@ -11,7 +11,7 @@ window.onload = function init()
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
 
-    var verticesArray = [-1, -1, -0.5, 0, 0];
+    var verticesArray = [-1, -1, -0.5, 0, 0, -1];
 	
     var vertices = flatten(verticesArray);
 
