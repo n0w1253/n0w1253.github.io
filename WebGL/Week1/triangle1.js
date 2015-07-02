@@ -11,7 +11,7 @@ window.onload = function init()
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
 
-    var verticesArray = [-1, -1, -0.5, 0, 0, -1, 0,0, 0.5,1, 1,0];
+    var verticesArray = [-1, -1, -0.5, 0, 0];
 	
     var vertices = flatten(verticesArray);
 
@@ -44,5 +44,5 @@ window.onload = function init()
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
-    gl.drawArrays( gl.TRIANGLES, 0, 6 );
+    gl.drawArrays( gl.TRIANGLES, 0, 3 );
 }
