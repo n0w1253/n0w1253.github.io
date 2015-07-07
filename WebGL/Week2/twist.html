@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>2D Twist</title>
+
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+uniform float theta;
+void
+main()
+{
+    float d = sqrt (  vPosition.x * vPosition.x +  vPosition.y *  vPosition.y );
+    float s = sin( d * theta );
+    float c = cos( d * theta );
+
+    gl_Position.x = vPosition.x * c - vPosition.y * s;
+    gl_Position.y = vPosition.x * s + vPosition.y * c;
+    gl_Position.z = 0.0;
+    gl_Position.w = 1.0;
+}
+
+
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+void
+main()
+{
+    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+}
+
+
+    </script>
+
+    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../Common/initShaders.js"></script>
+    <script type="text/javascript" src="../Common/MV.js"></script>
+    <script type="text/javascript" src=../lib/jquery.js></script>
+    <script type="text/javascript" src=../lib/jquery.validate.min.js></script>
+    <script type="text/javascript" src=../lib/additional-methods.js></script>
+    <script type="text/javascript" src="twist.js"></script>
+    <link rel="stylesheet" href="site-demos.css">
+</head>
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+    Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<form id=userInput>
+    <fieldset>
+        <legend>User Input</legend>
+
+        <ul>
+
+            <label for=field>
+                <span class="required">Degree of Tessellation (please enter a number between 1 and 10)</span>
+            </label>
+            <input id="field" name="field" class="left" type="text">
+
+        </ul>
+
+        <ul>
+
+            <label for=field2>
+                <span class="required">Amount of Twist (please enter a float)</span>
+            </label>
+            <input id="field2" name="field2" class="left" type="text">
+
+        </ul>
+        
+        <ul>
+            <input type="submit" class="button" value=Submit>
+        </ul>
+
+    </fieldset>
+</form>
+<p id="feedback"></p>
+<script>
+    jQuery.validator.setDefaults({
+//  debug: true,
+        success: "valid"
+    });
+    var validator = $("#userInput").validate({
+        rules: {
+            field: {
+                required: true,
+                range: [1, 10],
+                digits: true
+            },
+            field2: {
+                required: true,
+                number: true
+            }
+        }
+
+    });
+
+    $("#userInput").submit(function (event) {
+        if (validator.form()) {
+            window.NumTimesToSubdivide = $("#field").val();
+            window.theta = $("#field2").val();
+            //$("#feedback").html(window.NumTimesToSubdivide);
+            drawGasket();
+            event.preventDefault();
+        }
+    });
+</script>
+</body>
+</html>
