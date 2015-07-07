@@ -22,6 +22,7 @@ main()
 }
 
 
+
     </script>
 
     <script id="fragment-shader" type="x-shader/x-fragment">
@@ -34,9 +35,10 @@ main()
 }
 
 
+
     </script>
 
-    <link rel="stylesheet" href="site-demos.css">
+    <link rel="stylesheet" type="text/css" href="site-demos.css">
 </head>
 
 <body>
@@ -49,19 +51,29 @@ main()
 
         <ul>
 
-            <label for=field>
+            <label for="field1">
                 <span class="required">Degree of Tessellation (please enter an integer between 1 and 10)</span>
             </label>
-            <input id="field" name="field" class="left" type="text">
+            <input id="field1" name="field1" class="left" type="text">
 
         </ul>
 
         <ul>
 
-            <label for=field2>
+            <label for="field2">
                 <span class="required">Amount of Twist (please enter a decimal number)</span>
             </label>
             <input id="field2" name="field2" class="left" type="text">
+
+        </ul>
+
+        <ul>
+
+            <label>
+                <span class="required">Display Edges</span>
+            </label>
+            <input id="radioYes" name="radio" class="left" type="radio" value="yes">Yes
+            <input id="radioNo" name="radio" class="left" type="radio" value="no" checked>No
 
         </ul>
 
@@ -88,7 +100,7 @@ main()
     });
     var validator = $("#userInput").validate({
         rules: {
-            field: {
+            field1: {
                 required: true,
                 range: [1, 10],
                 digits: true
@@ -103,9 +115,10 @@ main()
 
     $("#userInput").submit(function (event) {
         if (validator.form()) {
-            window.NumTimesToSubdivide = $("#field").val();
+            window.NumTimesToSubdivide = $("#field1").val();
             window.theta = $("#field2").val();
-            //$("#feedback").html(window.NumTimesToSubdivide);
+            window.displayEdges = $("#radioYes").is(":checked");
+          //  $("#feedback").html(window.displayEdges);
             drawGasket();
             event.preventDefault();
         }
