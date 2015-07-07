@@ -36,13 +36,6 @@ main()
 
     </script>
 
-    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
-    <script type="text/javascript" src="../Common/initShaders.js"></script>
-    <script type="text/javascript" src="../Common/MV.js"></script>
-    <script type="text/javascript" src=../lib/jquery.js></script>
-    <script type="text/javascript" src=../lib/jquery.validate.min.js></script>
-    <script type="text/javascript" src=../lib/additional-methods.js></script>
-    <script type="text/javascript" src="twist.js"></script>
     <link rel="stylesheet" href="site-demos.css">
 </head>
 
@@ -57,7 +50,7 @@ main()
         <ul>
 
             <label for=field>
-                <span class="required">Degree of Tessellation (please enter a number between 1 and 10)</span>
+                <span class="required">Degree of Tessellation (please enter an integer between 1 and 10)</span>
             </label>
             <input id="field" name="field" class="left" type="text">
 
@@ -66,12 +59,12 @@ main()
         <ul>
 
             <label for=field2>
-                <span class="required">Amount of Twist (please enter a float)</span>
+                <span class="required">Amount of Twist (please enter a decimal number)</span>
             </label>
             <input id="field2" name="field2" class="left" type="text">
 
         </ul>
-        
+
         <ul>
             <input type="submit" class="button" value=Submit>
         </ul>
@@ -109,5 +102,13 @@ main()
         }
     });
 </script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src=../lib/jquery.js></script>
+<script type="text/javascript" src=../lib/jquery.validate.min.js></script>
+<script type="text/javascript" src=../lib/additional-methods.js></script>
+<script type="text/javascript" src="twist.js"></script>
 </body>
 </html>
