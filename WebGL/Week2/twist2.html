@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="stylesheet" type="text/css" href="../lib/dhtmlxSlider/dhtmlxslider.css"/>
+    <script type="text/javascript" src="../lib/dhtmlxSlider/dhtmlxslider.js"></script>
+    <title>2D Twist</title>
+
+    <style>
+        .sliderObj {
+            position: relative;
+            margin-top: 10px;
+            width: 160px;
+            height: 20px;
+        }
+
+        .field {
+            position: relative;
+            margin-left: 10px;
+            margin-top: 10px;
+            width: 50px;
+            height: 20px;
+        }
+
+        .radio {
+            margin-top: 10px;
+        }
+    </style>
+
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+uniform float theta;
+void
+main()
+{
+    float d = sqrt (  vPosition.x * vPosition.x +  vPosition.y *  vPosition.y );
+    float s = sin( d * theta );
+    float c = cos( d * theta );
+
+    gl_Position.x = vPosition.x * c - vPosition.y * s;
+    gl_Position.y = vPosition.x * s + vPosition.y * c;
+    gl_Position.z = 0.0;
+    gl_Position.w = 1.0;
+}
+
+
+
+
+
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+void
+main()
+{
+    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+}
+
+
+
+    </script>
+
+
+</head>
+
+<body onload="doOnLoad();init();">
+<canvas id="gl-canvas" width="512" height="512">
+    Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+<fieldset>
+    <legend>Twist Control Panel</legend>
+    <table cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td>Degree of Tessellation</td>
+            <td style="padding-left:100px;">
+                <div id="sliderObj" class="sliderObj"></div>
+            </td>
+            <td><input type="text" class="field" id="inp"></td>
+        </tr>
+        <tr>
+            <td>Amount of Twist</td>
+            <td style="padding-left:100px;">
+                <div id="sliderObj2" class="sliderObj"></div>
+            </td>
+            <td><input type="text" class="field" id="inp2"></td>
+        </tr>
+        <tr>
+            <td>Shape</td>
+            <td style="padding-left:100px;">
+                <input id="radioTriangle" name="radio" type="radio" class="radio" value="yes" checked>Triangle
+            </td>
+            <td><input id="radioSquare" name="radio" type="radio" class="radio" value="no">Square
+            </td>
+        </tr>
+        <tr>
+    </table>
+</fieldset>
+
+<p id="feedback"></p>
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src=../lib/jquery.js></script>
+
+<script type="text/javascript" src="twist2.js"></script>
+<script>
+    var mySlider, mySlider2;
+
+    function doOnLoad() {
+        mySlider = new dhtmlXSlider({
+            parent: "sliderObj",
+            step: 1,
+            min: 0,
+            max: 7,
+            value: 5,
+            linkTo: "inp",
+
+        });
+
+        mySlider2 = new dhtmlXSlider({
+            parent: "sliderObj2",
+            step: 0.1,
+            min: -30,
+            max: 30,
+            value: -0.5,
+            linkTo: "inp2"
+        });
+
+        mySlider.attachEvent("onChange", function (pos, slider) {
+
+            window.NumTimesToSubdivide = mySlider.getValue();
+
+            //$("#feedback").html(window.NumTimesToSubdivide);
+            drawGasket();
+
+
+        });
+
+        mySlider2.attachEvent("onChange", function (pos, slider) {
+
+            window.theta = mySlider2.getValue();
+
+            drawGasket();
+
+        });
+    };
+
+    $(".radio").change(function () {
+        window.displayTriangle = $("#radioTriangle").is(":checked");
+        drawGasket();
+    });
+
+    $("#inp").change(function () {
+        window.NumTimesToSubdivide = $("#inp").val();
+        $("#feedback").html("changed");
+        drawGasket();
+    });
+
+    $(".text").change(function () {
+        window.theta = mySlider2.getValue();
+        $("#feedback").html("changed");
+        drawGasket();
+    });
+</script>
+</body>
+</html>
