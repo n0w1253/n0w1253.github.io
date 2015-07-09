@@ -27,7 +27,7 @@ function init(){
     }
     
     
-    t_vertices = [vec2(-0.5, -0.5), vec2(0, 0.5), vec2(0.5, -0.5)];
+    t_vertices = [vec2(-0.433, -0.25), vec2(0, 0.5), vec2(0.433, -0.25)];
     
     vertices = [vec2(-0.5, -0.5), vec2(-0.5, 0.5), vec2(0.5, 0.5), vec2(0.5, -0.5)];
     

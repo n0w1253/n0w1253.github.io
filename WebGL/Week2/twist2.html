@@ -11,7 +11,7 @@
         .sliderObj {
             position: relative;
             margin-top: 10px;
-            width: 160px;
+            width: 200px;
             height: 20px;
         }
 
@@ -45,10 +45,6 @@ main()
     gl_Position.w = 1.0;
 }
 
-
-
-
-
     </script>
 
     <script id="fragment-shader" type="x-shader/x-fragment">
@@ -60,10 +56,7 @@ main()
     gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
 }
 
-
-
     </script>
-
 
 </head>
 
@@ -73,7 +66,7 @@ main()
 </canvas>
 
 <fieldset>
-    <legend>Twist Control Panel</legend>
+    <legend>Control Panel</legend>
     <table cellspacing="0" cellpadding="0" border="0">
         <tr>
             <td>Degree of Tessellation</td>
@@ -97,7 +90,11 @@ main()
             <td><input id="radioSquare" name="radio" type="radio" class="radio" value="no">Square
             </td>
         </tr>
+		    <td style="padding-left:100px;">
+		        <input type="button"  value="RESET" onClick="window.location.reload()">
+			</td>
         <tr>
+        </tr>
     </table>
 </fieldset>
 
@@ -127,8 +124,8 @@ main()
         mySlider2 = new dhtmlXSlider({
             parent: "sliderObj2",
             step: 0.1,
-            min: -30,
-            max: 30,
+            min: -10,
+            max: 10,
             value: -0.5,
             linkTo: "inp2"
         });
@@ -136,19 +133,14 @@ main()
         mySlider.attachEvent("onChange", function (pos, slider) {
 
             window.NumTimesToSubdivide = mySlider.getValue();
-
             //$("#feedback").html(window.NumTimesToSubdivide);
             drawGasket();
-
-
         });
 
         mySlider2.attachEvent("onChange", function (pos, slider) {
 
             window.theta = mySlider2.getValue();
-
             drawGasket();
-
         });
     };
 
@@ -157,17 +149,13 @@ main()
         drawGasket();
     });
 
-    $("#inp").change(function () {
+
+    $(".field").on('input',function () {
         window.NumTimesToSubdivide = $("#inp").val();
-        $("#feedback").html("changed");
+		window.theta = $("#inp2").val();       
         drawGasket();
     });
 
-    $(".text").change(function () {
-        window.theta = mySlider2.getValue();
-        $("#feedback").html("changed");
-        drawGasket();
-    });
 </script>
 </body>
 </html>
