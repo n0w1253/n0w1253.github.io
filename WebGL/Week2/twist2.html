@@ -23,7 +23,7 @@
             height: 20px;
         }
 
-        .radio {
+        .option {
             margin-top: 10px;
         }
     </style>
@@ -85,10 +85,13 @@ main()
         <tr>
             <td>Shape</td>
             <td style="padding-left:100px;">
-                <input id="radioTriangle" name="radio" type="radio" class="radio" value="yes" checked>Triangle
+                <select id="Controls" class="option" size="3">
+                    <option value="0" selected>Triangle</option>
+                    <option value="1">Square</option>
+                    <option value="2">Hexagon</option>
+                </select>
             </td>
-            <td><input id="radioSquare" name="radio" type="radio" class="radio" value="no">Square
-            </td>
+
         </tr>
 		    <td style="padding-left:100px;">
 		        <input type="button"  value="RESET" onClick="window.location.reload()">
@@ -144,11 +147,12 @@ main()
         });
     };
 
-    $(".radio").change(function () {
-        window.displayTriangle = $("#radioTriangle").is(":checked");
+
+    $(".option").change(function() {
+        window.shapeType = $(this).children("option:selected").index();
+       
         drawGasket();
     });
-
 
     $(".field").on('input',function () {
         window.NumTimesToSubdivide = $("#inp").val();

@@ -3,8 +3,15 @@
 var canvas;
 var gl;
 
+var t_vertices = [vec2(-0.433, -0.25), vec2(0, 0.5), vec2(0.433, -0.25)];
+
+var s_vertices = [vec2(-0.5, -0.5), vec2(-0.5, 0.5), vec2(0.5, 0.5), vec2(0.5, -0.5)];
+
+var h_vertices = [vec2(-0.5, 0), vec2(-0.25, 0.433), vec2(0.25, 0.433),
+    vec2(0.5, 0), vec2(0.25, -0.433), vec2(-0.25, -0.433)];
+
 var vertices;
-var t_vertices;
+
 var points = [];
 
 var NumTimesToSubdivide = 5;
@@ -12,29 +19,38 @@ var NumTimesToSubdivide = 5;
 var theta = -0.5;
 var thetaLoc;
 
-var displayTriangle = true;
+var shapeType = 0;
 
 function init(){
 
     document.getElementById("sliderObj").value = NumTimesToSubdivide;
     document.getElementById("sliderObj2").value = theta;
-    document.getElementById("radioTriangle").checked = true;
+    document.getElementById("Controls").selectedIndex = shapeType;
     canvas = document.getElementById("gl-canvas");
     
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) {
         alert("WebGL isn't available");
     }
-    
-    
-    t_vertices = [vec2(-0.433, -0.25), vec2(0, 0.5), vec2(0.433, -0.25)];
-    
-    vertices = [vec2(-0.5, -0.5), vec2(-0.5, 0.5), vec2(0.5, 0.5), vec2(0.5, -0.5)];
-    
+
     drawGasket();
 };
 
 function drawGasket(){
+
+    switch(shapeType) {
+        case 0:
+            vertices = t_vertices;
+            break;
+
+        case 1:
+            vertices = s_vertices;
+            break;
+
+        case 2:
+            vertices = h_vertices;
+            break;
+    }
 
     //
     //  Configure WebGL
@@ -98,21 +114,17 @@ function divideTriangle(a, b, c, count){
 
 function render(){
     points = [];
-    
-    
-    
-    
-    if (displayTriangle) {
-		divideTriangle(t_vertices[0], t_vertices[1], t_vertices[2], NumTimesToSubdivide);
-	} else {
-		divideTriangle(vertices[0], vertices[1], vertices[2], NumTimesToSubdivide);
-        divideTriangle(vertices[0], vertices[2], vertices[3], NumTimesToSubdivide);
+
+    var i;
+    for ( i = 1; i < vertices.length - 1; i++) {
+        divideTriangle(vertices[0], vertices[i], vertices[i+1], NumTimesToSubdivide);
+
     }
+
     //  gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
     gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STREAM_DRAW);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    
-    
+
     var index = 0;
     
     while (index < points.length) {
