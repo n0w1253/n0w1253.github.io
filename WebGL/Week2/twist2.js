@@ -16,7 +16,7 @@ var points = [];
 
 var NumTimesToSubdivide = 5;
 
-var theta = -0.5;
+var theta = -1.5;
 var thetaLoc;
 
 var shapeType = 0;
@@ -71,13 +71,11 @@ function drawGasket(){
     //   gl.bufferData(gl.ARRAY_BUFFER, 8 * Math.pow(4, 7) * 3 * 2 , gl.STREAM_DRAW);
     //    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     
-    // Associate out shader variables with our data buffer
-    
+    // Associate out shader variables with our data buffer   
     var vPosition = gl.getAttribLocation(program, "vPosition");
     gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
-    
-    
+       
     thetaLoc = gl.getUniformLocation(program, "theta");
     render();
 }
@@ -93,8 +91,7 @@ function divideTriangle(a, b, c, count){
     if (count === 0) {
         triangle(a, b, c);
     }
-    else {
-    
+    else {   
         //bisect the sides
         
         var ab = mix(a, b, 0.5);
@@ -120,7 +117,7 @@ function render(){
         divideTriangle(vertices[0], vertices[i], vertices[i+1], NumTimesToSubdivide);
 
     }
-
+	
     //  gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
     gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STREAM_DRAW);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -128,12 +125,8 @@ function render(){
     var index = 0;
     
     while (index < points.length) {
-        gl.uniform1f(thetaLoc, theta);
-   
+        gl.uniform1f(thetaLoc, theta);		
         gl.drawArrays(gl.TRIANGLES, index, 3);
-  
         index = index + 3;
-    }
-    
-    
+    }       
 }

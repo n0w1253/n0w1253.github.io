@@ -26,6 +26,10 @@
         .option {
             margin-top: 10px;
         }
+		
+		.button {
+            margin-top: 10px;
+        }
     </style>
 
 
@@ -91,10 +95,10 @@ main()
                     <option value="2">Hexagon</option>
                 </select>
             </td>
-
         </tr>
+		    <td></td>
 		    <td style="padding-left:100px;">
-		        <input type="button"  value="RESET" onClick="window.location.reload()">
+		        <input class="button" type="button"  value="RESET" onClick="window.location.reload()">
 			</td>
         <tr>
         </tr>
@@ -103,12 +107,10 @@ main()
 
 <p id="feedback"></p>
 
-
 <script type="text/javascript" src="../Common/webgl-utils.js"></script>
 <script type="text/javascript" src="../Common/initShaders.js"></script>
 <script type="text/javascript" src="../Common/MV.js"></script>
 <script type="text/javascript" src=../lib/jquery.js></script>
-
 <script type="text/javascript" src="twist2.js"></script>
 <script>
     var mySlider, mySlider2;
@@ -129,7 +131,7 @@ main()
             step: 0.1,
             min: -10,
             max: 10,
-            value: -0.5,
+            value: -1.5,
             linkTo: "inp2"
         });
 
