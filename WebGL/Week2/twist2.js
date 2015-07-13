@@ -7,8 +7,8 @@ var t_vertices = [vec2(-0.433, -0.25), vec2(0, 0.5), vec2(0.433, -0.25)];
 
 var s_vertices = [vec2(-0.5, -0.5), vec2(-0.5, 0.5), vec2(0.5, 0.5), vec2(0.5, -0.5)];
 
-var h_vertices = [vec2(-0.5, 0), vec2(-0.25, 0.433), vec2(0.25, 0.433),
-    vec2(0.5, 0), vec2(0.25, -0.433), vec2(-0.25, -0.433)];
+var st_vertices = [vec2(-0.23775,-0.0725),vec2(-0.4755,0.1545),vec2(-0.147,0.20225),vec2(0,0.5), vec2(0.147,0.20225),
+    vec2(0.4755,0.1545),vec2(0.23775,-0.0725),vec2(0.2939,-0.4045),vec2(0, -0.25), vec2(-0.2939,-0.4045) ];
 
 var vertices;
 
@@ -16,7 +16,7 @@ var points = [];
 
 var NumTimesToSubdivide = 5;
 
-var theta = -1.5;
+var theta = -10;
 var thetaLoc;
 
 var shapeType = 0;
@@ -38,7 +38,7 @@ function init(){
 
 function drawGasket(){
 
-    switch(shapeType) {
+    switch(Number(shapeType)) {
         case 0:
             vertices = t_vertices;
             break;
@@ -48,7 +48,7 @@ function drawGasket(){
             break;
 
         case 2:
-            vertices = h_vertices;
+            vertices = st_vertices;
             break;
     }
 
@@ -113,11 +113,13 @@ function render(){
     points = [];
 
     var i;
-    for ( i = 1; i < vertices.length - 1; i++) {
-        divideTriangle(vertices[0], vertices[i], vertices[i+1], NumTimesToSubdivide);
 
+    for (i = 0; i < vertices.length - 1; i++) {
+               divideTriangle(vec2(0, 0), vertices[i],vertices[i+1], Number(NumTimesToSubdivide));
     }
-	
+    divideTriangle(vec2(0, 0), vertices[vertices.length - 1],vertices[0], Number(NumTimesToSubdivide));
+
+
     //  gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
     gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STREAM_DRAW);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -127,6 +129,7 @@ function render(){
     while (index < points.length) {
         gl.uniform1f(thetaLoc, theta);		
         gl.drawArrays(gl.TRIANGLES, index, 3);
+     //   gl.drawArrays(gl.LINE_LOOP, index, 3);
         index = index + 3;
     }       
 }
