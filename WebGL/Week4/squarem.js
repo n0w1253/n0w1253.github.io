@@ -23,6 +23,7 @@ var colors = [
 ];
 
 
+
 window.onload = function init() {
     break_points_idx.push(index);
 
@@ -79,6 +80,17 @@ window.onload = function init() {
 
     } );
 
+
+    var htmlElt = document.getElementsByTagName("HTML")[0];
+
+    htmlElt.addEventListener("mouseup", function(event){
+        redraw = false;
+        break_points_idx.push(index);
+    });
+
+    htmlElt.addEventListener("mousedown", function(event){
+        redraw = true;
+    });
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.8, 0.8, 0.8, 1.0 );
