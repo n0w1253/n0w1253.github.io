@@ -62,7 +62,7 @@ window.onload = function init() {
             colors.push(t);
             gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
             if (newBuffer) {
-                console.log("new buffer size "+maxNumVertices);
+               // console.log("new buffer size "+maxNumVertices);
                 gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STREAM_DRAW );
                 gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(colors));
             } else {
