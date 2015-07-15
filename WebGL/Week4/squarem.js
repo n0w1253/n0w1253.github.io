@@ -40,6 +40,10 @@ window.onload = function init() {
         break_points_idx.push(index);
     });
 
+    canvas.addEventListener("mouseout", function(event){
+        break_points_idx.push(index);
+    });
+
     canvas.addEventListener("mousemove", function(event){
 
         if(redraw) {
