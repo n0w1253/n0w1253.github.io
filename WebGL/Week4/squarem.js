@@ -3,9 +3,8 @@
 var canvas;
 var gl;
 
-
-var maxNumTriangles = 200;
-var maxNumVertices  = 3 * maxNumTriangles;
+var maxNumVertices  = 600;
+var increment = 600;
 var index = 0;
 var break_points_idx = [];
 var points = [];
@@ -44,18 +43,33 @@ window.onload = function init() {
     canvas.addEventListener("mousemove", function(event){
 
         if(redraw) {
-          gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
-          var t = vec2(2*event.clientX/canvas.width-1,
-           2*(canvas.height-event.clientY)/canvas.height-1);
+            var newBuffer = false;
+            var t = vec2(2*event.clientX/canvas.width-1,
+                2*(canvas.height-event.clientY)/canvas.height-1);
             points.push(t);
-       // gl.bufferSubData(gl.ARRAY_BUFFER, 8*index, flatten(t));
-            gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STREAM_DRAW);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
-        t = vec4(colors[(index)%7]);
+            gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
+            if (index >= maxNumVertices) {
+                maxNumVertices += increment;
+                gl.bufferData( gl.ARRAY_BUFFER, 8*maxNumVertices, gl.STREAM_DRAW );
+                newBuffer = true;
+                gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
+            } else {
+                gl.bufferSubData(gl.ARRAY_BUFFER, 8*index, flatten(t));
+            }
+
+            t = vec4(colors[(index)%7]);
             colors.push(t);
-        //gl.bufferSubData(gl.ARRAY_BUFFER, 16*index, flatten(t));
-            gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STREAM_DRAW);
+            gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
+            if (newBuffer) {
+                console.log("new buffer size "+maxNumVertices);
+                gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STREAM_DRAW );
+                gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(colors));
+            } else {
+                gl.bufferSubData(gl.ARRAY_BUFFER, 16*index, flatten(t));
+            }
+
+
         index++;
       }
 
@@ -75,7 +89,7 @@ window.onload = function init() {
 
     var vBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer);
-   // gl.bufferData( gl.ARRAY_BUFFER, 8*maxNumVertices, gl.STREAM_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, 8*maxNumVertices, gl.STREAM_DRAW );
 
     var vPosition = gl.getAttribLocation(program, "vPosition");
     gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
@@ -83,7 +97,7 @@ window.onload = function init() {
 
     var cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
-   // gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STREAM_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STREAM_DRAW );
 
     var vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
