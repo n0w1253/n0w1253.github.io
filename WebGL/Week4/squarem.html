@@ -22,13 +22,13 @@
 	}
 
 	</style>
-	<script>
+	<!--script>
 		var myCP;
 		function doOnLoad() {
 			myCP = new dhtmlXColorPicker({parent: "cpObj"});
-			myCP.attachEvent("onSelect", function(color) {
-				window.alert(hexToRgb(color));
-				window.colors.push(vec4(h[0],h[1],h[2],1));
+			myCP.attachEvent("onClick", function(color) {
+				//window.alert(hexToRgb(color));
+				window.color = vec4(hexToRgb(color),1);
 			});
 		}
 		
@@ -44,7 +44,7 @@
        
         return h;
 }
-	</script>
+	</script-->
 <script id="vertex-shader" type="x-shader/x-vertex">
 
 attribute vec4 vPosition;
@@ -78,23 +78,29 @@ main()
 <script type="text/javascript" src="../Common/initShaders.js"></script>
 <script type="text/javascript" src="../Common/MV.js"></script>
 <script type="text/javascript" src="squarem.js"></script>
+<script type="text/javascript" src="../lib/jscolor/jscolor.js"></script>
+<script type="text/javascript">
+function updateInfo(color) {
+	window.color = vec4(color.rgb,1);
+}
+</script>
 </head>
 
-<body onload="doOnLoad(); init();">
+<body>
 	<div>
             <canvas id="gl-canvas" width="512" height="512" style="border:1px solid #000000;">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
             </div>
           
-                <div id="cpObj"></div>
+                <!--div id="cpObj"></div-->
+				<div id="cpObj">
+					Color: <input class="color {onImmediateChange:'updateInfo(this);'}" value="66ff00">
+				</div>
             
             
         </tr>
 	</table>
-<!--canvas id="gl-canvas" width="512" height="512" style="border:1px solid #000000;">
-Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
-<div id="cpObj"></div-->
+
 </body>
 </html>

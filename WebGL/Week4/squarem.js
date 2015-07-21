@@ -12,10 +12,11 @@ var colors = [];
 
 var redraw = false;
 
-var color = vec4( 0.0, 0.0, 0.0, 1.0 );  // black
+
+var color = vec4( 1.0, 0.0, 0.0, 1.0 );  // red
     
 
-function init() {
+window.onload = function init() {
     break_points_idx.push(index);
 
     canvas = document.getElementById( "gl-canvas" );
@@ -24,6 +25,7 @@ function init() {
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     canvas.addEventListener("mousedown", function(event){
+		console.log("new color "+color);
       redraw = true;
     });
 
@@ -118,6 +120,7 @@ function init() {
 function render() {
 
     gl.clear( gl.COLOR_BUFFER_BIT );
+	gl.lineWidth(5.0f);
   //  gl.drawArrays(gl.POINTS, 0, index);
     var i;
     for (i = 0; i < break_points_idx.length - 1; i++) {
