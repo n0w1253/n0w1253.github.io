@@ -2,6 +2,49 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<link rel="stylesheet" type="text/css" href="../lib/dhtmlxColorPicker/dhtmlxcolorpicker.css"/>
+	<script src="../lib/dhtmlxColorPicker/dhtmlxcolorpicker.js"></script>
+	<style>
+		
+	#gl-canvas {
+    height:520px;
+    width:520px;
+    float:left;
+    padding:5px; 
+    }
+    #cpObj {
+			position: relative;
+			width: 270px;
+			height: 300px;
+			float:left;
+            padding:10px; 
+	}
+
+	</style>
+	<script>
+		var myCP;
+		function doOnLoad() {
+			myCP = new dhtmlXColorPicker({parent: "cpObj"});
+			myCP.attachEvent("onSelect", function(color) {
+				window.alert(hexToRgb(color));
+				window.colors.push(vec4(h[0],h[1],h[2],1));
+			});
+		}
+		
+		function hexToRgb(hex) {
+        var h=hex.replace('#', '');
+        h =  h.match(new RegExp('(.{'+h.length/3+'})', 'g'));
+
+        for (var i = 0; i < h.length; i++) {
+			h[i] = parseInt(h[i].length == 1 ? h[i] + h[i] : h[i], 16);
+			h[i] /= 255.0;
+		}
+
+       
+        return h;
+}
+	</script>
 <script id="vertex-shader" type="x-shader/x-vertex">
 
 attribute vec4 vPosition;
@@ -37,9 +80,21 @@ main()
 <script type="text/javascript" src="squarem.js"></script>
 </head>
 
-<body>
-<canvas id="gl-canvas" width="512" height="512">>
+<body onload="doOnLoad(); init();">
+	<div>
+            <canvas id="gl-canvas" width="512" height="512" style="border:1px solid #000000;">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
+            </div>
+          
+                <div id="cpObj"></div>
+            
+            
+        </tr>
+	</table>
+<!--canvas id="gl-canvas" width="512" height="512" style="border:1px solid #000000;">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<div id="cpObj"></div-->
 </body>
 </html>

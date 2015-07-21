@@ -12,19 +12,10 @@ var colors = [];
 
 var redraw = false;
 
-var colors = [
-    vec4( 0.0, 0.0, 0.0, 1.0 ),  // black
-    vec4( 1.0, 0.0, 0.0, 1.0 ),  // red
-    vec4( 1.0, 1.0, 0.0, 1.0 ),  // yellow
-    vec4( 0.0, 1.0, 0.0, 1.0 ),  // green
-    vec4( 0.0, 0.0, 1.0, 1.0 ),  // blue
-    vec4( 1.0, 0.0, 1.0, 1.0 ),  // magenta
-    vec4( 0.0, 1.0, 1.0, 1.0 )   // cyan
-];
+var color = vec4( 0.0, 0.0, 0.0, 1.0 );  // black
+    
 
-
-
-window.onload = function init() {
+function init() {
     break_points_idx.push(index);
 
     canvas = document.getElementById( "gl-canvas" );
@@ -63,7 +54,7 @@ window.onload = function init() {
                 gl.bufferSubData(gl.ARRAY_BUFFER, 8*index, flatten(t));
             }
 
-            t = vec4(colors[(index)%7]);
+            t = color;
             colors.push(t);
             gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
             if (newBuffer) {
@@ -93,7 +84,7 @@ window.onload = function init() {
     });
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    gl.clearColor( 0.8, 0.8, 0.8, 1.0 );
+    gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
 
 
     //
