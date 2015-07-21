@@ -120,7 +120,7 @@ window.onload = function init() {
 function render() {
 
     gl.clear( gl.COLOR_BUFFER_BIT );
-	gl.lineWidth(5.0f);
+	gl.lineWidth(5.0);
   //  gl.drawArrays(gl.POINTS, 0, index);
     var i;
     for (i = 0; i < break_points_idx.length - 1; i++) {
