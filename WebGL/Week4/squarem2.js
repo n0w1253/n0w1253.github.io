@@ -56,7 +56,7 @@ function init(){
     canvas.addEventListener("touchstart", function(event){
         event.preventDefault();
         redraw = true;
-		window.alert("started" +" "+ event.clientX +" "+ canvas.width +" "+ canvas.height+" "+ event.clientY);
+		//window.alert("started" +" "+ event.clientX +" "+ canvas.width +" "+ canvas.height+" "+ event.clientY);
         newmousedown = true;
     }, false);
     
@@ -75,7 +75,8 @@ function init(){
     
     canvas.addEventListener("touchmove", function(event){
         event.preventDefault();
-        draw(event)
+		var evt = event.changedTouches[0];
+        draw(evt)
     }, false);
     // var htmlElt = document.getElementsByTagName("HTML")[0];
     
