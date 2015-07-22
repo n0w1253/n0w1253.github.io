@@ -40,25 +40,7 @@
                 height: 20px;
             }
         </style>
-        <!--script>
-        var myCP;
-        function doOnLoad() {
-        myCP = new dhtmlXColorPicker({parent: "cpObj"});
-        myCP.attachEvent("onClick", function(color) {
-        //window.alert(hexToRgb(color));
-        window.color = vec4(hexToRgb(color),1);
-        });
-        }
-        function hexToRgb(hex) {
-        var h=hex.replace('#', '');
-        h =  h.match(new RegExp('(.{'+h.length/3+'})', 'g'));
-        for (var i = 0; i < h.length; i++) {
-        h[i] = parseInt(h[i].length == 1 ? h[i] + h[i] : h[i], 16);
-        h[i] /= 255.0;
-        }
-        return h;
-        }
-        </script-->
+
         <script id="vertex-shader" type="x-shader/x-vertex">
             attribute vec4 vPosition;
             attribute vec4 vColor;
@@ -117,18 +99,7 @@
                     <input type="text" class="field" id="inp">
                 </td>
             </tr>
-            <tr>
-                <td>
-                    Alpha
-                </td>
-                <td style="padding-left:100px;">
-                    <div id="sliderObj2" class="sliderObj">
-                    </div>
-                </td>
-                <td>
-                    <input type="text" class="field" id="inp2">
-                </td>
-            </tr>
+
 			 <tr>
                 <td valign="top" style="padding-top:10px;">
                     Color
@@ -144,7 +115,7 @@
         </table><!--div id="cpObj"></div-->
        
     <script>
-        var mySlider, mySlider2;
+        var mySlider
         
         function doOnLoad(){
             mySlider = new dhtmlXSlider({
@@ -157,15 +128,7 @@
             
             });
             
-            mySlider2 = new dhtmlXSlider({
-                parent: "sliderObj2",
-                step: 0.1,
-                min: 0,
-                max: 1,
-                value: 1,
-                linkTo: "inp2"
-            });
-            
+           
             mySlider.attachEvent("onChange", function(pos, slider){
             
                 window.pixWidth = mySlider.getValue();
@@ -173,19 +136,14 @@
             
             });
             
-            mySlider2.attachEvent("onChange", function(pos, slider){
-            
-                window.alpha = mySlider2.getValue();
-                
-            });
+          
         };
         
         
         
         $(".field").on('input', function(){
             window.pixWidth = $("#inp").val();
-            window.alpha = $("#inp2").val();
-             window.color = vec4(window.color.rgb, window.alpha);
+           
         });
     </script>
     </body>
