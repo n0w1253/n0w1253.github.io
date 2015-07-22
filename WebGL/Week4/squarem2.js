@@ -49,26 +49,34 @@ function init(){
         //  console.log("idx " + index);
     });
     
-    canvas.addEventListener("mousemove", function(event){draw(event)});
+    canvas.addEventListener("mousemove", function(event){
+        draw(event)
+    });
     
-	canvas.addEventListener("touchstart", function(event){
+    canvas.addEventListener("touchstart", function(event){
         event.preventDefault();
         redraw = true;
+		window.alert("started");
         newmousedown = true;
-    },false);
-	
+    }, false);
+    
     canvas.addEventListener("touchend", function(event){
+        event.preventDefault();
         redraw = false;
         break_points_idx.push(index);
         //  console.log("idx " + index);
-    },false);
+    }, false);
     
-	canvas.addEventListener("touchcancel", function(event){
+    canvas.addEventListener("touchcancel", function(event){
+        event.preventDefault();
         break_points_idx.push(index);
         //  console.log("idx " + index);
-    },false);
+    }, false);
     
-    canvas.addEventListener("touchmove", function(event){draw(event)},true);
+    canvas.addEventListener("touchmove", function(event){
+        event.preventDefault();
+        draw(event)
+    }, false);
     // var htmlElt = document.getElementsByTagName("HTML")[0];
     
     window.addEventListener("mouseup", function(event){
