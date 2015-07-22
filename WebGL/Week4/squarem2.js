@@ -68,7 +68,7 @@ function init(){
         //  console.log("idx " + index);
     },false);
     
-    canvas.addEventListener("touchmove", function(event){draw(event)},false);
+    canvas.addEventListener("touchmove", function(event){draw(event)},true);
     // var htmlElt = document.getElementsByTagName("HTML")[0];
     
     window.addEventListener("mouseup", function(event){
