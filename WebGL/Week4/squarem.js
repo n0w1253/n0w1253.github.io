@@ -25,7 +25,7 @@ window.onload = function init() {
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     canvas.addEventListener("mousedown", function(event){
-		console.log("new color "+color);
+		//console.log("new color "+color);
       redraw = true;
     });
 
