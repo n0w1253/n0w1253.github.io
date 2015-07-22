@@ -123,7 +123,7 @@ function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
 	gl.lineWidth(20.0);
     gl.enable(gl.BLEND);
-    gl.enable(gl.LINE_SMOOTH);
+  
   //  gl.drawArrays(gl.POINTS, 0, index);
     var i;
     for (i = 0; i < break_points_idx.length - 1; i++) {
@@ -140,14 +140,14 @@ function render() {
         var c4 = p2 + perpendicular;
 
         var triangle_points = [c1.xy,c2.xy,c3.xy,c3.xy,c2.xy,c4.xy];
-        gl.bufferData(gl.ARRAY_BUFFER, flatten(triangle_points), gl.STREAM_DRAW);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
+     //   gl.bufferData(gl.ARRAY_BUFFER, flatten(triangle_points), gl.STREAM_DRAW);
+     //   gl.drawArrays(gl.TRIANGLES, 0, 6);
      //   gl.drawArrays(gl.POINTS, break_points_idx[i], break_points_idx[i+1] - break_points_idx[i] );
-     //   gl.drawArrays(gl.LINE_STRIP, break_points_idx[i], break_points_idx[i+1] - break_points_idx[i] );
+        gl.drawArrays(gl.LINE_STRIP, break_points_idx[i], break_points_idx[i+1] - break_points_idx[i] );
     }
 
   //  gl.drawArrays(gl.POINTS, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1] );
-  //  gl.drawArrays(gl.LINE_STRIP, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1] );
+    gl.drawArrays(gl.LINE_STRIP, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1] );
     window.requestAnimFrame(render);
 
 }
