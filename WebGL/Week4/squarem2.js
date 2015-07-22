@@ -55,16 +55,20 @@ function init(){
         event.preventDefault();
         redraw = true;
         newmousedown = true;
-    });
+    },false);
 	
     canvas.addEventListener("touchend", function(event){
         redraw = false;
         break_points_idx.push(index);
         //  console.log("idx " + index);
-    });
+    },false);
     
+	canvas.addEventListener("touchcancel", function(event){
+        break_points_idx.push(index);
+        //  console.log("idx " + index);
+    },false);
     
-    canvas.addEventListener("touchmove", function(event){draw(event)});
+    canvas.addEventListener("touchmove", function(event){draw(event)},false);
     // var htmlElt = document.getElementsByTagName("HTML")[0];
     
     window.addEventListener("mouseup", function(event){
