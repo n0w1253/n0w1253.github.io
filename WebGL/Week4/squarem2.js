@@ -56,7 +56,7 @@ function init(){
     canvas.addEventListener("touchstart", function(event){
         event.preventDefault();
         redraw = true;
-		window.alert("started");
+		window.alert("started" +" "+ event.clientX +" "+ canvas.width +" "+ canvas.height+" "+ event.clientY);
         newmousedown = true;
     }, false);
     
