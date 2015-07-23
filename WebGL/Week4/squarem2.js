@@ -11,7 +11,7 @@ var points = [];
 var vertices = [];
 var colors = [];
 var pixWidth = 2;
-var alpha = 1.0;
+var alpha = 1;
 var vertex_colors = [];
 
 var redraw = false;
@@ -21,11 +21,13 @@ var vBuffer;
 var cBuffer;
 
 
-var color = vec4(1.0, 0.0, 0.0, 1.0); // red
+var color = vec4(1.0, 0.0, 0.0, 1); // red
 function init(){
     break_points_idx.push(index);
     
     canvas = document.getElementById("gl-canvas");
+	
+	document.getElementById("cpInput").color.fromString("ff0000");
     
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) {
@@ -188,9 +190,11 @@ function draw(event){
 
 function render(){
 
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     // gl.lineWidth(10.0);
     gl.enable(gl.BLEND);
+	gl.disable(gl.DEPTH_TEST);
+	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     
     var i;
     for (i = 0; i < break_points_idx.length - 1; i++) {
@@ -206,3 +210,5 @@ function render(){
     window.requestAnimFrame(render);
     
 }
+
+
