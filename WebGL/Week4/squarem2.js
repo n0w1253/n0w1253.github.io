@@ -16,6 +16,7 @@ var vertex_colors = [];
 
 var redraw = false;
 var newmousedown = false;
+var newSecPoint = false;
 
 var vBuffer;
 var cBuffer;
@@ -130,25 +131,39 @@ function draw(event){
         var newBuffer = false;
         var t = vec2(2 * event.clientX / canvas.width - 1, 2 * (canvas.height - event.clientY) / canvas.height - 1);
         points.push(t);
-        
-        
+		        
         if (newmousedown) {
             newmousedown = false;
+			newSecPoint = true;
             return;
         }
+					
         var p1 = points[points.length - 2];
         var p2 = points[points.length - 1];
         var v = normalize(subtract(p2, p1));
         var perpendicular = vec2(-v[1], v[0]);
         perpendicular = scale(pixWidth / 512.0, perpendicular);
         
-        var c1 = subtract(p1, perpendicular);
-        var c2 = add(p1, perpendicular);
+		var c1;
+        var c2;
+		
+	//	if (!newSecPoint) {
+		//	c1 = vertices[vertices.length -3];
+		//	c2 = vertices[vertices.length -2];
+	//		c1 = vertices[vertices.length -1];
+	//		c2 = vertices[vertices.length -3];
+	//	} else {
+			c1 = subtract(p1, perpendicular);
+			c2 = add(p1, perpendicular);
+	//		newSecPoint = false;
+	//	}
+        
         var c3 = subtract(p2, perpendicular);
         var c4 = add(p2, perpendicular);
         
-        vertices.push(c3, c1, c2, c3, c2, c4);
-        
+    //    vertices.push(c3, c1, c2, c3, c2, c4);
+	//  vertices.push(c1, c3, c2, c3, c4, c2);
+         vertices.push(c1, c2,c3,c4);
         //      console.log("vertices "+c1+c2+c3+c3+c2+c4);      
         gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
         if (index >= maxNumVertices) {
@@ -160,13 +175,16 @@ function draw(event){
             //	gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
         }
         else {
-            gl.bufferSubData(gl.ARRAY_BUFFER, 8 * index, flatten([c3, c1, c2, c3, c2, c4]));
+      //      gl.bufferSubData(gl.ARRAY_BUFFER, 8 * index, flatten([c3, c1, c2, c3, c2, c4]));
+	//	 gl.bufferSubData(gl.ARRAY_BUFFER, 8 * index, flatten([c1, c3, c2, c3, c4, c2]));
+	gl.bufferSubData(gl.ARRAY_BUFFER, 8 * index, flatten([c1, c2,c3,c4]));
             //	gl.bufferSubData(gl.ARRAY_BUFFER, 8 * index, flatten(t));
         }
         
         t = color;
         colors.push(color);
-        vertex_colors.push(t, t, t, t, t, t);
+      //  vertex_colors.push(t, t, t, t, t, t);
+	  vertex_colors.push(t, t, t, t);
         gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
         if (newBuffer) {
             //	var cBuffer = gl.createBuffer();
@@ -178,11 +196,13 @@ function draw(event){
         }
         else {
             gl.bufferSubData(gl.ARRAY_BUFFER, 16 * index, flatten([color, color, color, color, color, color]));
+			gl.bufferSubData(gl.ARRAY_BUFFER, 16 * index, flatten([color, color, color, color]));
             //	 gl.bufferSubData(gl.ARRAY_BUFFER, 16 * index, flatten(color));
         }
         
         
-        index += 6;
+       // index += 6;
+		 index += 4;
         //	index++;
     }
     
@@ -198,15 +218,18 @@ function render(){
     
     var i;
     for (i = 0; i < break_points_idx.length - 1; i++) {
-        gl.drawArrays(gl.TRIANGLES, break_points_idx[i], break_points_idx[i + 1] - break_points_idx[i]);
+       // gl.drawArrays(gl.TRIANGLES, break_points_idx[i], break_points_idx[i + 1] - break_points_idx[i]);
         
         //   gl.drawArrays(gl.POINTS, break_points_idx[i], break_points_idx[i + 1] - break_points_idx[i]);
-        gl.drawArrays(gl.LINE_STRIP, break_points_idx[i], break_points_idx[i + 1] - break_points_idx[i]);
+      //  gl.drawArrays(gl.LINE_STRIP, break_points_idx[i], break_points_idx[i + 1] - break_points_idx[i]);
+	  gl.drawArrays(gl.TRIANGLE_STRIP, break_points_idx[i], break_points_idx[i + 1] - break_points_idx[i]);
     }
     
     //    gl.drawArrays(gl.POINTS, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1]);
-    gl.drawArrays(gl.LINE_STRIP, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1]);
-    gl.drawArrays(gl.TRIANGLES, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1]);
+   // gl.drawArrays(gl.LINE_STRIP, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1]);
+   // gl.drawArrays(gl.TRIANGLES, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1]);
+   
+   gl.drawArrays(gl.TRIANGLE_STRIP, break_points_idx[break_points_idx.length - 1], index - break_points_idx[break_points_idx.length - 1]);
     window.requestAnimFrame(render);
     
 }
