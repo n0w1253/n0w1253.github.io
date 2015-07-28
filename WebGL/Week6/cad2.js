@@ -29,6 +29,16 @@ var wf_sphere;
 
 var objArray=[];
 
+var inpScale = 1;
+var inpColor = red;
+var inpShape = 0;
+var inpRx = 0;
+var inpRy = 0;
+var inpRz = 0;
+var inpPx = 0;
+var inpPy = 0;
+var inpPz = 0;
+
 function scaleM( x, y, z )
 {
     if ( Array.isArray(x) && x.length == 3 ) {
@@ -44,6 +54,11 @@ function scaleM( x, y, z )
 
     return result;
 }
+
+var program;
+var vPosition;
+var vColor;
+var uMV;
 
 function init(){
 
@@ -63,12 +78,15 @@ function init(){
     
     
     //  Load shaders and initialize attribute buffers    
-    var program = initShaders(gl, "vertex-shader", "fragment-shader");
+    program = initShaders(gl, "vertex-shader", "fragment-shader");
     
+	// set the shader to use
+    gl.useProgram(program);
+	
     // Associate out shader variables with our data buffer
-    var vPosition = gl.getAttribLocation(program, "vPosition");
-    var vColor = gl.getAttribLocation(program, "vColor");
-    var uMV = gl.getUniformLocation(program, "modelViewMatrix");
+    vPosition = gl.getAttribLocation(program, "vPosition");
+    vColor = gl.getAttribLocation(program, "vColor");
+    uMV = gl.getUniformLocation(program, "modelViewMatrix");
         
     var modelView = mat4();
 	modelView = mult(modelView,translate( -0.5, 0.5, -0.8 ));
@@ -77,22 +95,22 @@ function init(){
     modelView = mult(modelView, rotate(-20, [0, 0, 1]));
     modelView = mult(modelView,scaleM(0.5, 0.5, 0.5));
 	
-    cone = createCone(rCone, hCone, gl, program, red, modelView,vPosition,vColor,uMV);
+    cone = createCone(rCone, hCone, red, modelView);
 	cone.primtype = gl.TRIANGLES;
 	
-	wf_cone = createCone(rCone, hCone,gl, program,black, modelView,vPosition,vColor,uMV);
+	wf_cone = createCone(rCone, hCone,black, modelView);
 	objArray.push(cone);
 	objArray.push(wf_cone);
 	
 	modelView = mat4();
 	modelView = mult(modelView,translate( 0.5, 0.5, 0.8 ));
-	//var s = scale(modelView,vec4(0.5, 0.5, 0.5,1) );
+	
 	modelView = mult(modelView,scaleM(0.5, 0.5, 0.5));
 		
-	sphere = createSphere(gl, program,blue, modelView,vPosition,vColor,uMV);
+	sphere = createSphere(blue, modelView);
 	sphere.primtype = gl.TRIANGLES;
 	
-	wf_sphere = createSphere(gl, program, black,modelView,vPosition,vColor,uMV);
+	wf_sphere = createSphere(black,modelView);
 	objArray.push(sphere);
 	objArray.push(wf_sphere);
 	
@@ -104,10 +122,10 @@ function init(){
     modelView = mult(modelView, rotate(10, [0, 0, 1]));
 	modelView = mult(modelView,scaleM(0.8, 0.8, 0.8));
     
-    cylinder = createCylinder(rCylinder, hCylinder, gl, program, green, modelView,vPosition,vColor,uMV);
+    cylinder = createCylinder(rCylinder, hCylinder, green, modelView);
 	cylinder.primtype = gl.TRIANGLES;
 	
-	wf_cylinder = createCylinder(rCylinder, hCylinder,gl, program,black, modelView,vPosition,vColor,uMV);
+	wf_cylinder = createCylinder(rCylinder, hCylinder,black, modelView);
 	objArray.push(cylinder);
 	objArray.push(wf_cylinder);
 	
@@ -115,18 +133,18 @@ function init(){
     render();
 };
 
-function createCone(r, h, gl, program, color, modelView, vPosition, vColor, uMV){
-	var myCone = createGeneralCone(r,0.0001,h,gl, program, color, modelView,vPosition,vColor,uMV);
+function createCone(r, h, color, modelView){
+	var myCone = createGeneralCone(r,0.0001,h, color, modelView);
 	return myCone;
 	
 }
 
-function createCylinder(r, h, gl, program, color, modelView, vPosition, vColor, uMV){
-	var myCylinder = createGeneralCone(r,r,h,gl, program, color, modelView,vPosition,vColor,uMV);
+function createCylinder(r, h, color, modelView){
+	var myCylinder = createGeneralCone(r,r,h,color, modelView);
 	return myCylinder;
 	
 }
-function createGeneralCone(r1,r2,h,gl, program, color, modelView,vPosition,vColor,uMV){
+function createGeneralCone(r1,r2,h, color, modelView){
 
     var colors = [];
     
@@ -218,12 +236,8 @@ function createGeneralCone(r1,r2,h,gl, program, color, modelView,vPosition,vColo
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
     
-    var cone = {
-        program: program,
+    var cone = {    
         modelView: modelView,
-		vPosition: vPosition,
-		vColor: vColor,
-		uMV: uMV,
         buffer: vertexBuffer,
         colorBuffer: colorBuffer,
         indices: indexBuffer,
@@ -237,7 +251,7 @@ function createGeneralCone(r1,r2,h,gl, program, color, modelView,vPosition,vColo
     return cone;
 }
 
-function createSphere(gl, program, color,modelView,vPosition,vColor,uMV){
+function createSphere(color,modelView){
      var colors = [];
     
     var vertices = [];
@@ -305,11 +319,7 @@ function createSphere(gl, program, color,modelView,vPosition,vColor,uMV){
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
 	
     var sphere = {
-        program: program,
         modelView: modelView,
-		vPosition: vPosition,
-		vColor: vColor,
-		uMV: uMV,
         buffer: vertexBuffer,
         colorBuffer: colorBuffer,
         indices: indexBuffer,
@@ -329,22 +339,18 @@ function draw(gl, obj){
    
     // set the vertex buffer to be drawn
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.buffer);
-    
-    // set the shader to use
-    gl.useProgram(obj.program);
-    
+        
     // connect up the shader parameters: vertex position and projection/model matrices
-    gl.enableVertexAttribArray(obj.vPosition);
+    gl.enableVertexAttribArray(vPosition);
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.buffer);
-    gl.vertexAttribPointer(obj.vPosition, obj.vertSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(vPosition, obj.vertSize, gl.FLOAT, false, 0, 0);
     
-    gl.enableVertexAttribArray(obj.vColor);
+    gl.enableVertexAttribArray(vColor);
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.colorBuffer);
-    gl.vertexAttribPointer(obj.vColor, obj.colorSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(vColor, obj.colorSize, gl.FLOAT, false, 0, 0);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.indices);
     
-    //  gl.uniformMatrix4fv(shaderProjectionMatrixUniform, false, projectionMatrix);
-    gl.uniformMatrix4fv(obj.uMV, false, flatten(obj.modelView));
+    gl.uniformMatrix4fv(uMV, false, flatten(obj.modelView));
     
     // draw the object
     // gl.drawElements(obj.primtype, obj.nIndices, gl.UNSIGNED_SHORT, 0);
