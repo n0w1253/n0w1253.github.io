@@ -35,14 +35,16 @@
 
     <script id="vertex-shader" type="x-shader/x-vertex">
 attribute vec4 vPosition;
+uniform mat4 modelViewMatrix;
 attribute vec4 vColor;
 
 varying vec4 fColor;
 void
 main()
 {
-fColor = vColor;
-    gl_Position = vPosition;
+    
+    fColor = vColor;
+    gl_Position = modelViewMatrix * vPosition;
 
 }
 
