@@ -7,6 +7,7 @@ var red = vec4(1.0, 0.0, 0.0, 1); // red
 var green = vec4(0.0, 1.0, 0.0, 1); // green
 var blue = vec4(0.0, 0.0, 1.0, 1); // blue
 var black = vec4(0.0, 0.0, 0.0, 1); // black
+var white = vec4(1.0, 1.0, 1.0, 1); // white
 
 var nPhi = 50;
 
@@ -41,31 +42,28 @@ function init(){
     //  Configure WebGL
     //
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    
     
     //  Load shaders and initialize attribute buffers    
     var program = initShaders(gl, "vertex-shader", "fragment-shader");
-    var program1 = initShaders(gl, "vertex-shader", "fragment-shader1");
     
     // Associate out shader variables with our data buffer
     var vPosition = gl.getAttribLocation(program, "vPosition");
     var vColor = gl.getAttribLocation(program, "vColor");
     var uMV = gl.getUniformLocation(program, "modelViewMatrix");
-    
-    var vPosition1 = gl.getAttribLocation(program1, "vPosition");
-    var vColor1 = gl.getAttribLocation(program1, "vColor");
-    var uMV1 = gl.getUniformLocation(program1, "modelViewMatrix");
-    
+        
     var modelView = mat4();
-    modelView = mult(modelView, rotate(10, [1, 0, 0]));
-    modelView = mult(modelView, rotate(-45, [0, 1, 0]));
+	modelView = mult(modelView,translate( -0.5, 0.5, 0.5 ));
+    modelView = mult(modelView, rotate(-80, [1, 0, 0]));
+    modelView = mult(modelView, rotate(-30, [0, 1, 0]));
     modelView = mult(modelView, rotate(-10, [0, 0, 1]));
     
     cone = createCone(rCone, hCone, gl, program, red, modelView,vPosition,vColor,uMV);
 	cone.primtype = gl.TRIANGLES;
 	
-	wf_cone = createCone(rCone, hCone,gl, program1,black, modelView,vPosition1,vColor1,uMV1);
+	wf_cone = createCone(rCone, hCone,gl, program,black, modelView,vPosition,vColor,uMV);
 	
+	modelView = mat4();
 	modelView = mult(modelView,translate( 0.5, 0.5, 0.5 ));
 	//var s = scale(modelView,vec4(0.5, 0.5, 0.5,1) );
 	//modelView = mult(modelView,s);
@@ -73,18 +71,19 @@ function init(){
 	sphere = createSphere(gl, program,blue, modelView,vPosition,vColor,uMV);
 	sphere.primtype = gl.TRIANGLES;
 	
-	wf_sphere = createSphere(gl, program1, black,modelView,vPosition1,vColor1,uMV1);
+	wf_sphere = createSphere(gl, program, black,modelView,vPosition,vColor,uMV);
 	
 	modelView = mat4();
+	modelView = mult(modelView,translate( -0.5, -0.5, -0.5 ));
 	modelView = mult(modelView, rotate(10, [1, 0, 0]));
     modelView = mult(modelView, rotate(30, [0, 1, 0]));
     modelView = mult(modelView, rotate(10, [0, 0, 1]));
-	modelView = mult(modelView,translate( -0.5, -0.5, -0.5 ));
+	
     
     cylinder = createCylinder(rCylinder, hCylinder, gl, program, green, modelView,vPosition,vColor,uMV);
 	cylinder.primtype = gl.TRIANGLES;
 	
-	wf_cylinder = createCylinder(rCylinder, hCylinder,gl, program1,black, modelView,vPosition1,vColor1,uMV1);
+	wf_cylinder = createCylinder(rCylinder, hCylinder,gl, program,black, modelView,vPosition,vColor,uMV);
 	
     render();
 };
