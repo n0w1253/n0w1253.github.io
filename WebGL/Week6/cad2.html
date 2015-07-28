@@ -33,8 +33,7 @@
             .option {
                 position: relative;
                 margin-top: 10px;
-				width: 170px;
-                
+                width: 170px;
             }
             
             .field {
@@ -80,7 +79,7 @@
         </script>
         <script type="text/javascript">
             function updateInfo(color){
-                window.color = vec4(color.rgb, window.alpha);
+                window.inpColor = vec4(color.rgb, window.alpha);
             }
         </script>
     </head>
@@ -115,7 +114,6 @@
                     <input type="text" class="field" id="inp">
                 </td>
             </tr>
-			
             <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;">
                     Color
@@ -128,13 +126,12 @@
                 <td>
                 </td>
             </tr>
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;">
                     Rotation
-                </td>               
+                </td>
             </tr>
-			
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;text-align:center;">
                     X
                 </td>
@@ -146,7 +143,7 @@
                     <input type="text" class="field" id="inpRx">
                 </td>
             </tr>
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;text-align:center;">
                     Y
                 </td>
@@ -158,7 +155,7 @@
                     <input type="text" class="field" id="inpRy">
                 </td>
             </tr>
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;text-align:center;">
                     Z
                 </td>
@@ -170,13 +167,12 @@
                     <input type="text" class="field" id="inpRz">
                 </td>
             </tr>
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;">
                     Position
-                </td>               
+                </td>
             </tr>
-			
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;text-align:center;">
                     X
                 </td>
@@ -188,7 +184,7 @@
                     <input type="text" class="field" id="inpPx">
                 </td>
             </tr>
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;text-align:center;">
                     Y
                 </td>
@@ -200,7 +196,7 @@
                     <input type="text" class="field" id="inpPy">
                 </td>
             </tr>
-			<tr>
+            <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;text-align:center;">
                     Z
                 </td>
@@ -213,27 +209,25 @@
                 </td>
             </tr>
             <tr>
-            	<td valign="top" style="padding-top:50px;padding-left:10px;">
+                <td valign="top" style="padding-top:50px;padding-left:10px;">
                     <div>
-                        <input class="button" type="button" value="ADD" onClick="window.location.reload()">
+                        <input class="button" type="button" value="ADD" onClick="addObj()">
                     </div>
                 </td>
                 <td valign="top" style="padding-top:50px;padding-left:10px;">
                     <div>
-                        <input class="button" type="button" value="UNDO" onClick="window.location.reload()">
+                        <input class="button" type="button" value="UNDO" onClick="removeLastObj()">
                     </div>
                 </td>
                 <td valign="top" style="padding-top:50px;">
                     <div>
-                        <input class="button" type="button" value="CLEAR" onClick="window.location.reload()">
+                        <input class="button" type="button" value="CLEAR" onClick="removeAllObj()">
                     </div>
                 </td>
-            
             </tr>
-        </table>
-        <!--div id="cpObj"></div-->
+        </table><!--div id="cpObj"></div-->
         <script>
-            var mySlider,mySliderRx,mySliderRy,mySliderRz,mySliderPx,mySliderPy,mySliderPz;
+            var mySlider, mySliderRx, mySliderRy, mySliderRz, mySliderPx, mySliderPy, mySliderPz;
             
             function doOnLoad(){
                 mySlider = new dhtmlXSlider({
@@ -246,7 +240,7 @@
                 
                 });
                 
-				mySliderRx = new dhtmlXSlider({
+                mySliderRx = new dhtmlXSlider({
                     parent: "sliderObjRx",
                     step: 1,
                     min: -180,
@@ -255,7 +249,7 @@
                     linkTo: "inpRx",
                 
                 });
-				mySliderRy = new dhtmlXSlider({
+                mySliderRy = new dhtmlXSlider({
                     parent: "sliderObjRy",
                     step: 1,
                     min: -180,
@@ -264,7 +258,7 @@
                     linkTo: "inpRy",
                 
                 });
-				mySliderRz = new dhtmlXSlider({
+                mySliderRz = new dhtmlXSlider({
                     parent: "sliderObjRz",
                     step: 1,
                     min: -180,
@@ -273,8 +267,8 @@
                     linkTo: "inpRz",
                 
                 });
-				
-				mySliderPx = new dhtmlXSlider({
+                
+                mySliderPx = new dhtmlXSlider({
                     parent: "sliderObjPx",
                     step: 0.1,
                     min: -1,
@@ -283,7 +277,7 @@
                     linkTo: "inpPx",
                 
                 });
-				mySliderPy = new dhtmlXSlider({
+                mySliderPy = new dhtmlXSlider({
                     parent: "sliderObjPy",
                     step: 0.1,
                     min: -1,
@@ -292,7 +286,7 @@
                     linkTo: "inpPy",
                 
                 });
-				mySliderPz = new dhtmlXSlider({
+                mySliderPz = new dhtmlXSlider({
                     parent: "sliderObjPz",
                     step: 0.1,
                     min: -1,
@@ -303,10 +297,27 @@
                 });
                 
                 mySlider.attachEvent("onChange", function(pos, slider){
+                    window.inpScale = mySlider.getValue();
+                });
+				
+                mySliderRx.attachEvent("onChange", function(pos, slider){
+                    window.inpRx = mySliderRx.getValue();
+                });
+                mySliderRy.attachEvent("onChange", function(pos, slider){
+                    window.inpRy = mySliderRy.getValue();
+                });
+                 mySliderRz.attachEvent("onChange", function(pos, slider){
+                    window.inpRz = mySliderRz.getValue();
+                });
                 
-                    window.pixWidth = mySlider.getValue();
-                    //$("#feedback").html(window.NumTimesToSubdivide);
-                
+                mySliderPx.attachEvent("onChange", function(pos, slider){
+                    window.inpPx = mySliderPx.getValue();
+                });
+                mySliderPy.attachEvent("onChange", function(pos, slider){
+                    window.inpPy = mySliderPy.getValue();
+                });
+                 mySliderPz.attachEvent("onChange", function(pos, slider){
+                    window.inpPz = mySliderPz.getValue();
                 });
                 
                 
@@ -315,7 +326,18 @@
             
             
             $(".field").on('input', function(){
-                window.pixWidth = $("#inp").val();
+                window.inpScale = $("#inp").val();
+                window.inpRx = $("#inpRx").val();
+                window.inpRy = $("#inpRy").val();
+                window.inpRz = $("#inpRz").val();
+                window.inpPx = $("#inpPx").val();
+                window.inpPy = $("#inpPy").val();
+                window.inpPz = $("#inpPz").val();
+                
+            });
+            
+            $(".option").change(function(){
+                window.inpShape = $(this).children("option:selected").index();
                 
             });
         </script>
