@@ -74,7 +74,7 @@ function init(){
 	modelView = mult(modelView,translate( -0.5, 0.5, -0.8 ));
     modelView = mult(modelView, rotate(-80, [1, 0, 0]));
     modelView = mult(modelView, rotate(-30, [0, 1, 0]));
-    modelView = mult(modelView, rotate(-10, [0, 0, 1]));
+    modelView = mult(modelView, rotate(-20, [0, 0, 1]));
     modelView = mult(modelView,scaleM(0.5, 0.5, 0.5));
 	
     cone = createCone(rCone, hCone, gl, program, red, modelView,vPosition,vColor,uMV);
