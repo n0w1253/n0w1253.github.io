@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <link rel="stylesheet" type="text/css" href="../lib/dhtmlxSlider/dhtmlxslider.css"/>
+        <script type="text/javascript" src="../lib/dhtmlxSlider/dhtmlxslider.js">
+        </script>
+        
+        <script id="vertex-shader" type="x-shader/x-vertex">
+            attribute vec4 vPosition;
+            uniform mat4 modelViewMatrix;
+            attribute vec4 vColor;
+            varying vec4 fColor;
+            void
+            main()
+            {
+            fColor = vColor;
+            gl_Position = modelViewMatrix * vPosition;
+            }
+        </script>
+        <script id="fragment-shader" type="x-shader/x-fragment">
+            precision mediump float;
+            varying vec4 fColor;
+            void
+            main()
+            {
+            gl_FragColor = fColor;
+            }
+        </script>
+      
+        <script type="text/javascript" src="../Common/webgl-utils.js">
+        </script>
+        <script type="text/javascript" src="../Common/initShaders.js">
+        </script>
+        <script type="text/javascript" src="../Common/MV.js">
+        </script>
+        <script type="text/javascript" src="cad2.js">
+        </script>
+        <script type="text/javascript" src=../lib/jquery.js>
+        </script>
+        <script type="text/javascript" src="../lib/jscolor/jscolor.js">
+        </script>
+        <script type="text/javascript">
+            function updateInfo(color){
+                window.color = vec4(color.rgb, window.alpha);
+            }
+        </script>
+    </head>
+    <body onload="doOnLoad();init();">
+        <div>
+            <canvas id="gl-canvas" width="512" height="512" style="border:1px solid #000000;">
+                Oops ... your browser doesn't support the HTML5 canvas element
+            </canvas>
+        </div>
+		<div style="display:none">
+        <table  cellspacing="0" cellpadding="0" border="0">
+            <tr>
+                <td valign="top" style="padding-top:10px;padding-left:10px;">
+                    Thickness
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObj" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inp">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:10px;padding-left:10px;">
+                    Color
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="cpObj">
+                        <input id="cpInput" class="color {pickerFaceColor:'transparent',pickerFace:3,pickerBorder:0,pickerInsetColor:'black',onImmediateChange:'updateInfo(this);'}" value="ff0000">
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:50px;padding-left:10px;">
+                    <div>
+                        <input class="button" type="button" value="RESET" onClick="window.location.reload()">
+                    </div>
+                </td>
+                <td style="padding-left:10px;">
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+		</div>
+        <!--div id="cpObj"></div-->
+        <script>
+            var mySlider
+            
+            function doOnLoad(){
+                mySlider = new dhtmlXSlider({
+                    parent: "sliderObj",
+                    step: 1,
+                    min: 1,
+                    max: 20,
+                    value: 2,
+                    linkTo: "inp",
+                
+                });
+                
+                
+                mySlider.attachEvent("onChange", function(pos, slider){
+                
+                    window.pixWidth = mySlider.getValue();
+                    //$("#feedback").html(window.NumTimesToSubdivide);
+                
+                });
+                
+                
+            };
+            
+            
+            
+            $(".field").on('input', function(){
+                window.pixWidth = $("#inp").val();
+                
+            });
+        </script>
+    </body>
+</html>
