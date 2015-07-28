@@ -10,8 +10,9 @@ var indexData = [];
 
 var colors = [];
 
-var latitudeBands = 60;
-var longitudeBands = 60;
+var latitudeBands = 30;
+var longitudeBands = 30;
+var radius = 1;
 
 var vertexColors = [
     //    vec4( 0.1, 0.1, 0.1, 1.0 ),  
@@ -24,6 +25,8 @@ var vertexColors = [
         vec4( 0.0, 0.8, 0.8, 1.0 )   // cyan
     ];
 
+var program;
+var program1;
 
 function init(){
 
@@ -69,8 +72,8 @@ function createSphere(){
              vertexPositionData.push(radius * z);
              */
         //    points.push(vec4(x, y, z, 1));
-            vertices.push(vec4(x, y, z, 1));
-			colors.push(vertexColors[Math.floor(Math.random() * 6 )] );
+            vertices.push(vec4(radius *x, radius *y, radius *z, 1));
+			colors.push(vec4( 0.0, 0.0, 0.8, 1.0 ));
         }
     }
     
@@ -101,47 +104,73 @@ function drawShape(){
     
     //  Load shaders and initialize attribute buffers
     
-    var program = initShaders(gl, "vertex-shader", "fragment-shader");
-    gl.useProgram(program);
+    program = initShaders(gl, "vertex-shader", "fragment-shader");
+	program1 = initShaders(gl, "vertex-shader", "fragment-shader1");
+ //   gl.useProgram(program);
     
     
     // Load the data into the GPU
     
-    var bufferId = gl.createBuffer();
+    bufferId = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
     
     // Associate out shader variables with our data buffer
-    var vPosition = gl.getAttribLocation(program, "vPosition");
-    gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vPosition);
+    vPosition = gl.getAttribLocation(program, "vPosition");
+  //  gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
+  //  gl.enableVertexAttribArray(vPosition);
+	
+	bufferId1 = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId1);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
+	vPosition1 = gl.getAttribLocation(program1, "vPosition");
     
-    var ibufferId = gl.createBuffer();
+    ibufferId = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibufferId);
     //  gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData), gl.STATIC_DRAW);
     
-	var cBuffer = gl.createBuffer();
+	cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
 	
-    var vColor = gl.getAttribLocation(program, "vColor");
-    gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vColor);
+    vColor = gl.getAttribLocation(program, "vColor");
+  //  gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
+  //  gl.enableVertexAttribArray(vColor);
     
     render();
 }
 
+var bufferId,bufferId1;
+var ibufferId;
+var cBuffer;
+var vPosition;
+var vColor;
+var vPosition1;
 
 function render(){
 
 
     gl.clear(gl.COLOR_BUFFER_BIT);
-    
+	gl.enable(gl.DEPTH_TEST);
+    gl.useProgram(program);
+ gl.enableVertexAttribArray(vPosition );
+        gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
+        gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+		 gl.enableVertexAttribArray(vColor );
+        gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
+        gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     //  for( var i=0; i<indexData.length; i+=3)
     //      gl.drawElements( gl.LINE_LOOP, 3, gl.UNSIGNED_SHORT,2*i );
    // gl.drawElements(gl.LINE_LOOP, indexData.length, gl.UNSIGNED_SHORT, 0);
        gl.drawElements(gl.TRIANGLES,indexData.length, gl.UNSIGNED_SHORT,0);
+	   
+	   gl.useProgram(program1);
+ gl.enableVertexAttribArray(vPosition1 );
+        gl.bindBuffer( gl.ARRAY_BUFFER, bufferId1 );
+		gl.vertexAttribPointer( vPosition1, 4, gl.FLOAT, false, 0, 0 );
+		for( var i=0; i<indexData.length-3; i = i+3)
+           gl.drawElements( gl.LINE_LOOP, 3, gl.UNSIGNED_SHORT,2*i );
     
     window.requestAnimFrame(render);
     

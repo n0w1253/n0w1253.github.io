@@ -9,10 +9,12 @@ var vertices = [];
 var indexData = [];
 
 var points = [];
-var nPhi = 100;
-var r1 = 1;
-var r2 = 0;
-var h = 1;
+var nPhi = 30;
+var r1 = 0.2;
+var r2 = 0.0;
+var h = 0.5;
+var program;
+var program1;
 
 var vertexColors = [
     //    vec4( 0.1, 0.1, 0.1, 1.0 ),  
@@ -26,6 +28,7 @@ var vertexColors = [
     ];
 
 var colors = [];
+
 
 function init(){
 
@@ -52,23 +55,24 @@ function createCone () {
       var sinPhi2 = Math.sin( Phi + dPhi/2 );
       pt.push ( -h/2, cosPhi * r1, sinPhi * r1 );   // points
        vertices.push(vec4(-h/2,cosPhi * r1,sinPhi * r1,1));
-	   colors.push(vertexColors[Math.floor(Math.random() * 6 )] );
+	   colors.push(vec4( 0.0, 0.0, 0.8, 1.0 ) );
+	 
    //   nt.push ( Nx, Ny*cosPhi, Ny*sinPhi );         // normals
       pt.push ( h/2, cosPhi2 * r2, sinPhi2 * r2 );  // points
       vertices.push(vec4(h/2,cosPhi * r2,sinPhi * r2,1));
-	  colors.push(vertexColors[Math.floor(Math.random() * 6 )] );
+	  colors.push(vec4( 0.0, 0.0, 0.8, 1.0 ) );
    //   nt.push ( Nx, Ny*cosPhi2, Ny*sinPhi2 );       // normals
       Phi   += dPhi;
    }
    
    if (r1 != 0) {
    	  vertices.push(vec4(-h/2,0,0,1));
-	  colors.push(vertexColors[Math.floor(Math.random() * 6 )] );
+	  colors.push(vec4( 0.0, 0.0, 0.8, 1.0 ) );
    }
    
    if (r2 != 0) {
    	  vertices.push(vec4(h/2,0,0,1));
-	  colors.push(vertexColors[Math.floor(Math.random() * 6 )] );
+	  colors.push(vec4( 0.0, 0.0, 0.8, 1.0 ) );
    }
   /* var posLoc = gl.getAttribLocation(prog, "aPos");
    gl.enableVertexAttribArray( posLoc );
@@ -122,6 +126,9 @@ function createCone () {
         }
    }
 
+   return {vertices: vertices,
+           colors: colors,
+		   indexData:indexData};
 }
 
 function drawShape(){
@@ -134,49 +141,81 @@ function drawShape(){
     
     //  Load shaders and initialize attribute buffers
     
-    var program = initShaders(gl, "vertex-shader", "fragment-shader");
-    gl.useProgram(program);
+   program = initShaders(gl, "vertex-shader", "fragment-shader");
+	program1 = initShaders(gl, "vertex-shader", "fragment-shader1");
+  //  gl.useProgram(program);
     
     
     // Load the data into the GPU
 
-    var bufferId = gl.createBuffer();
+    bufferId = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
 
     // Associate out shader variables with our data buffer
-    var vPosition = gl.getAttribLocation(program, "vPosition");
-    gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vPosition);
+    vPosition = gl.getAttribLocation(program, "vPosition");
+  //  gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
+	
+	
+	bufferId1 = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId1);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
+	vPosition1 = gl.getAttribLocation(program1, "vPosition");
+   // gl.vertexAttribPointer(vPosition1, 4, gl.FLOAT, false, 0, 0);
+  //  gl.enableVertexAttribArray(vPosition);
 
-    var ibufferId = gl.createBuffer();
+    ibufferId = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibufferId);
     //  gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData), gl.STATIC_DRAW);
 
-var cBuffer = gl.createBuffer();
+    cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
 	
-    var vColor = gl.getAttribLocation(program, "vColor");
-    gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vColor);
+    vColor = gl.getAttribLocation(program, "vColor");
+  //  gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
+  //  gl.enableVertexAttribArray(vColor);
+	
+
     
 
 console.log(vertices.length+ " "+indexData.length);
     render();
 }
 
+var bufferId,bufferId1;
+var ibufferId;
+var cBuffer;
+var vPosition;
+var vColor;
+var vPosition1;
+
+
 
 function render(){
 
 
     gl.clear(gl.COLOR_BUFFER_BIT);
-
+	gl.enable(gl.DEPTH_TEST);
+gl.useProgram(program);
+ gl.enableVertexAttribArray(vPosition );
+        gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
+        gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+		 gl.enableVertexAttribArray(vColor );
+        gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
+        gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
 //    for( var i=0; i<indexData.length-3; i = i+3)
 //        gl.drawElements( gl.LINE_LOOP, 3, gl.UNSIGNED_SHORT,2*i );
 //  gl.drawElements(gl.LINE_LOOP,indexData.length, gl.UNSIGNED_SHORT,0);
     gl.drawElements(gl.TRIANGLES,indexData.length, gl.UNSIGNED_SHORT,0);
+	
+	gl.useProgram(program1);
+ gl.enableVertexAttribArray(vPosition1 );
+        gl.bindBuffer( gl.ARRAY_BUFFER, bufferId1 );
+		gl.vertexAttribPointer( vPosition1, 4, gl.FLOAT, false, 0, 0 );
+		for( var i=0; i<indexData.length-3; i = i+3)
+           gl.drawElements( gl.LINE_LOOP, 3, gl.UNSIGNED_SHORT,2*i );
 
 window.requestAnimFrame(render);
 
