@@ -27,6 +27,22 @@ var radius = 0.25;
 var sphere;
 var wf_sphere;
 
+function scaleM( x, y, z )
+{
+    if ( Array.isArray(x) && x.length == 3 ) {
+        z = x[2];
+        y = x[1];
+        x = x[0];
+    }
+
+    var result = mat4();
+    result[0][0] = x;
+    result[1][1] = y;
+    result[2][2] = z;
+
+    return result;
+}
+
 function init(){
 
     canvas = document.getElementById("gl-canvas");
@@ -57,7 +73,8 @@ function init(){
     modelView = mult(modelView, rotate(-80, [1, 0, 0]));
     modelView = mult(modelView, rotate(-30, [0, 1, 0]));
     modelView = mult(modelView, rotate(-10, [0, 0, 1]));
-    
+    modelView = mult(modelView,scaleM(0.5, 0.5, 0.5));
+	
     cone = createCone(rCone, hCone, gl, program, red, modelView,vPosition,vColor,uMV);
 	cone.primtype = gl.TRIANGLES;
 	
@@ -66,7 +83,7 @@ function init(){
 	modelView = mat4();
 	modelView = mult(modelView,translate( 0.5, 0.5, 0.5 ));
 	//var s = scale(modelView,vec4(0.5, 0.5, 0.5,1) );
-	//modelView = mult(modelView,s);
+	modelView = mult(modelView,scaleM(0.5, 0.5, 0.5));
 		
 	sphere = createSphere(gl, program,blue, modelView,vPosition,vColor,uMV);
 	sphere.primtype = gl.TRIANGLES;
@@ -78,7 +95,7 @@ function init(){
 	modelView = mult(modelView, rotate(10, [1, 0, 0]));
     modelView = mult(modelView, rotate(30, [0, 1, 0]));
     modelView = mult(modelView, rotate(10, [0, 0, 1]));
-	
+	modelView = mult(modelView,scaleM(0.5, 0.5, 0.5));
     
     cylinder = createCylinder(rCylinder, hCylinder, gl, program, green, modelView,vPosition,vColor,uMV);
 	cylinder.primtype = gl.TRIANGLES;
