@@ -29,7 +29,9 @@ var wf_sphere;
 
 var objArray = [];
 
-var inpScale = 1;
+var inpSx = 1;
+var inpSy = 1;
+var inpSz = 1;
 var inpColor = red;
 var inpShape = 0;
 var inpRx = 0;
@@ -380,7 +382,7 @@ function addObj(){
     modelView = mult(modelView, rotate(inpRx, [1, 0, 0]));
     modelView = mult(modelView, rotate(inpRy, [0, 1, 0]));
     modelView = mult(modelView, rotate(inpRz, [0, 0, 1]));
-    modelView = mult(modelView, scaleM(inpScale, inpScale, inpScale));
+    modelView = mult(modelView, scaleM(inpSx, inpSy, inpSz));
     
     switch (Number(inpShape)) {
         case 0:
@@ -420,3 +422,4 @@ function removeLastObj(){
 function removeAllObj(){
 	objArray = [];
 }
+
