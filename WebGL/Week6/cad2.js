@@ -364,8 +364,9 @@ function render(){
     // clear the background
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
-    gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.DEPTH_TEST);
+	 gl.depthFunc(gl.LEQUAL); 
+    //gl.disable(gl.DEPTH_TEST);
 	gl.enable(gl.BLEND);
     
     for (var i = 0; i < objArray.length; i++) {
