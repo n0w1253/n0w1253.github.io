@@ -67,6 +67,7 @@ function init(){
     canvas = document.getElementById("gl-canvas");
     
     document.getElementById("cpInput").color.fromString("ff0000");
+	document.getElementById("Controls").value = 0;
     
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) {
