@@ -203,7 +203,7 @@ function createGeneralCone(r1, r2, h, color, modelView){
     
     if (r1 != 0) {
     
-        for (var i = 0; i < nPhi - 1; i++) {
+        for (var i = 0; i < nPhi; i++) {
             var first = 2 * i;
             var second = (2 * i + 2) % 200;
             indexData.push(vertices.length - 2);
@@ -216,7 +216,7 @@ function createGeneralCone(r1, r2, h, color, modelView){
     }
     if (r2 != 0) {
     
-        for (var i = 0; i < nPhi - 1; i++) {
+        for (var i = 0; i < nPhi; i++) {
             var first = 2 * i + 1;
             var second = (2 * i + 3) % 200;
             indexData.push(vertices.length - 1);
