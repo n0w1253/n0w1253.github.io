@@ -42,20 +42,7 @@ var inpPy = 0;
 var inpPz = 0;
 var usrObj, wf_usrObj;
 
-function scaleM(x, y, z){
-    if (Array.isArray(x) && x.length == 3) {
-        z = x[2];
-        y = x[1];
-        x = x[0];
-    }
-    
-    var result = mat4();
-    result[0][0] = x;
-    result[1][1] = y;
-    result[2][2] = z;
-    
-    return result;
-}
+
 
 var program;
 var vPosition;
@@ -93,10 +80,10 @@ function init(){
     
     var modelView = mat4();
     modelView = mult(modelView, translate(-0.5, 0.5, -0.8));
-    modelView = mult(modelView, rotate(-80, [1, 0, 0]));
-    modelView = mult(modelView, rotate(-30, [0, 1, 0]));
-    modelView = mult(modelView, rotate(-20, [0, 0, 1]));
-    modelView = mult(modelView, scaleM(0.5, 0.5, 0.5));
+    modelView = mult(modelView, rotateX(-80));
+    modelView = mult(modelView, rotateY(30));
+    modelView = mult(modelView, rotateZ(20));
+    modelView = mult(modelView, scalem(0.5, 0.5, 0.5));
     
     cone = createCone(rCone, hCone, red, modelView);
     cone.primtype = gl.TRIANGLES;
@@ -108,7 +95,7 @@ function init(){
     modelView = mat4();
     modelView = mult(modelView, translate(0.5, 0.5, 0.8));
     
-    modelView = mult(modelView, scaleM(0.5, 0.5, 0.5));
+    modelView = mult(modelView, scalem(0.5, 0.5, 0.5));
     
     sphere = createSphere(blue, modelView);
     sphere.primtype = gl.TRIANGLES;
@@ -120,10 +107,10 @@ function init(){
     
     modelView = mat4();
     modelView = mult(modelView, translate(-0.5, -0.5, -0.5));
-    modelView = mult(modelView, rotate(10, [1, 0, 0]));
-    modelView = mult(modelView, rotate(30, [0, 1, 0]));
-    modelView = mult(modelView, rotate(10, [0, 0, 1]));
-    modelView = mult(modelView, scaleM(0.8, 0.8, 0.8));
+    modelView = mult(modelView, rotateX(10));
+    modelView = mult(modelView, rotateY(-30));
+    modelView = mult(modelView, rotateZ(10));
+    modelView = mult(modelView, scalem(0.8, 0.8, 0.8));
     
     cylinder = createCylinder(rCylinder, hCylinder, green, modelView);
     cylinder.primtype = gl.TRIANGLES;
@@ -383,12 +370,13 @@ function render(){
 
 function addObj(){
     var modelView = mat4();
+	//modelView = mult(modelView, scalem(1, 1, -1));
     modelView = mult(modelView, translate(inpPx, inpPy, inpPz));
-    modelView = mult(modelView, rotate(inpRx, [1, 0, 0]));
-    modelView = mult(modelView, rotate(inpRy, [0, 1, 0]));
-    modelView = mult(modelView, rotate(inpRz, [0, 0, 1]));
-    modelView = mult(modelView, scaleM(inpSx, inpSy, inpSz));
-    
+    modelView = mult(modelView, rotateX(inpRx));
+    modelView = mult(modelView, rotateY(inpRy));
+    modelView = mult(modelView, rotateZ(inpRz));
+    modelView = mult(modelView, scalem(inpSx, inpSy, inpSz));
+	
     switch (Number(inpShape)) {
         case 0:
             usrObj = createSphere(inpColor, modelView);
