@@ -129,7 +129,15 @@ function draw(event){
 
     if (redraw) {
         var newBuffer = false;
-        var t = vec2(2 * event.clientX / canvas.width - 1, 2 * (canvas.height - event.clientY) / canvas.height - 1);
+    //    var t = vec2(2 * event.clientX / canvas.width - 1, 2 * (canvas.height - event.clientY) / canvas.height - 1);
+		
+		var rect = canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+		
+		var t = vec2(2 * x / canvas.width - 1, 2 * (canvas.height - y) / canvas.height - 1);
+		
+		
         points.push(t);
 		        
         if (newmousedown) {
