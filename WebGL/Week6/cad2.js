@@ -82,9 +82,9 @@ function init(){
     // enable depth testing and polygon offset
     // so lines will be in front of filled triangles   
     gl.enable(gl.DEPTH_TEST);
-    gl.depthFunc(gl.LEQUAL);
-   // gl.enable(gl.POLYGON_OFFSET_FILL);
-   // gl.polygonOffset(1.0, 2.0);
+   // gl.depthFunc(gl.LEQUAL);
+    gl.enable(gl.POLYGON_OFFSET_FILL);
+    gl.polygonOffset(1.0, 2.0);
     
     //  Load shaders and initialize attribute buffers    
     program = initShaders(gl, "vertex-shader", "fragment-shader");
