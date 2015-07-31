@@ -42,22 +42,12 @@ var inpPy = 0;
 var inpPz = 0;
 var usrObj, wf_usrObj;
 
+
+
 var program;
 var vPosition;
 var vColor;
 var uMV;
-var uP;
-
-var left = -1.0;
-var right = 1.0;
-var ytop = 1.0;
-var bottom = -1.0;
-const at = vec3(0.0, 0.0, 0.0);
-const up = vec3(0.0, 1.0, 0.0);
-var near = -10;
-var far = 10;
-var MVInit;
-var PInit;
 
 function init(){
 
@@ -76,15 +66,6 @@ function init(){
     //
     gl.viewport(0, 0, canvas.width, canvas.height);
     
-    // clear the background
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
-    
-    // enable depth testing and polygon offset
-    // so lines will be in front of filled triangles   
-    gl.enable(gl.DEPTH_TEST);
-    gl.depthFunc(gl.LEQUAL);
-   // gl.enable(gl.POLYGON_OFFSET_FILL);
-    gl.polygonOffset(1.0, 2.0);
     
     //  Load shaders and initialize attribute buffers    
     program = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -96,18 +77,12 @@ function init(){
     vPosition = gl.getAttribLocation(program, "vPosition");
     vColor = gl.getAttribLocation(program, "vColor");
     uMV = gl.getUniformLocation(program, "modelViewMatrix");
-    uP = gl.getUniformLocation(program, "projectionMatrix");
     
-    var eye = vec3(0, 0, 1);
-    
-    MVInit = lookAt(eye, at, up);
-    PInit = ortho(left, right, bottom, ytop, near, far);
-    
-    var modelView = MVInit;
+    var modelView = mat4();
     modelView = mult(modelView, translate(-0.5, 0.5, -0.8));
-    modelView = mult(modelView, rotate(-80,[1,0,0]));
-    modelView = mult(modelView, rotate(30,[0,1,0]));
-    modelView = mult(modelView, rotate(20,[0,0,1]));
+    modelView = mult(modelView, rotateX(-80));
+    modelView = mult(modelView, rotateY(30));
+    modelView = mult(modelView, rotateZ(20));
     modelView = mult(modelView, scalem(0.5, 0.5, 0.5));
     
     cone = createCone(rCone, hCone, red, modelView);
@@ -117,8 +92,9 @@ function init(){
     objArray.push(cone);
     objArray.push(wf_cone);
     
-    modelView = MVInit;
-    modelView = mult(modelView, translate(0.5, 0.5, -0.8));    
+    modelView = mat4();
+    modelView = mult(modelView, translate(0.5, 0.5, 0.8));
+    
     modelView = mult(modelView, scalem(0.5, 0.5, 0.5));
     
     sphere = createSphere(blue, modelView);
@@ -129,12 +105,12 @@ function init(){
     objArray.push(wf_sphere);
     
     
-    modelView = MVInit;
+    modelView = mat4();
     modelView = mult(modelView, translate(-0.5, -0.5, -0.5));
-    modelView = mult(modelView, rotate(10,[1,0,0]));
-    modelView = mult(modelView, rotate(-30,[0,1,0]));
-    modelView = mult(modelView, rotate(10,[0,0,1]));
-    modelView = mult(modelView, scalem(0.8, 0.5, 0.5));
+    modelView = mult(modelView, rotateX(10));
+    modelView = mult(modelView, rotateY(-30));
+    modelView = mult(modelView, rotateZ(10));
+    modelView = mult(modelView, scalem(0.8, 0.8, 0.8));
     
     cylinder = createCylinder(rCylinder, hCylinder, green, modelView);
     cylinder.primtype = gl.TRIANGLES;
@@ -149,14 +125,14 @@ function init(){
 
 function createCone(r, h, color, modelView){
     var myCone = createGeneralCone(r, 0.0001, h, color, modelView);
-    myCone.shape = "cone";
+	myCone.shape = "cone";
     return myCone;
     
 }
 
 function createCylinder(r, h, color, modelView){
     var myCylinder = createGeneralCone(r, r, h, color, modelView);
-    myCylinder.shape = "cylinder";
+	myCylinder.shape = "cylinder";
     return myCylinder;
     
 }
@@ -335,7 +311,7 @@ function createSphere(color, modelView){
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
     
     var sphere = {
-        shape: "sphere",
+		shape:"sphere",
         modelView: modelView,
         buffer: vertexBuffer,
         colorBuffer: colorBuffer,
@@ -368,16 +344,21 @@ function draw(gl, obj){
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.indices);
     
     gl.uniformMatrix4fv(uMV, false, flatten(obj.modelView));
-	gl.uniformMatrix4fv(uP, false, flatten(PInit));
     
     // draw the object
+    // gl.drawElements(obj.primtype, obj.nIndices, gl.UNSIGNED_SHORT, 0);
     for (var i = 0; i < obj.nIndices - 3; i = i + 3) 
         gl.drawElements(obj.primtype, 3, gl.UNSIGNED_SHORT, 2 * i);
 }
 
 function render(){
-
+    // clear the background
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LEQUAL);
+    //gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
     
     for (var i = 0; i < objArray.length; i++) {
         draw(gl, objArray[i]);
@@ -388,14 +369,14 @@ function render(){
 }
 
 function addObj(){
-    var modelView = MVInit;
-
+    var modelView = mat4();
+	//modelView = mult(modelView, scalem(1, 1, -1));
     modelView = mult(modelView, translate(inpPx, inpPy, inpPz));
-    modelView = mult(modelView, rotate(inpRx,[1,0,0]));
-    modelView = mult(modelView, rotate(inpRy,[0,1,0]));
-    modelView = mult(modelView, rotate(inpRz,[0,0,1]));
+    modelView = mult(modelView, rotateX(inpRx));
+    modelView = mult(modelView, rotateY(inpRy));
+    modelView = mult(modelView, rotateZ(inpRz));
     modelView = mult(modelView, scalem(inpSx, inpSy, inpSz));
-    
+	
     switch (Number(inpShape)) {
         case 0:
             usrObj = createSphere(inpColor, modelView);
@@ -437,22 +418,26 @@ function removeAllObj(){
 
 function saveToFile(){
     var aFileParts = ['<a id="a"><b id="b">hey!</b></a>'];
-    var res = "";
-    for (var k = 0; k < objArray.length; k += 2) {
-        var u = objArray[k].modelView;
-        var m_str = objArray[k].shape + "\r\n[ \r\n";
-    
-        for (var i = 0; i < u.length; i++) {
-            m_str = m_str.concat(u[i].join(" "), "\r\n");
+	var res="";
+	for (var k = 0; k < objArray.length; k+=2) {
+		var u = objArray[k].modelView;
+		var m_str = objArray[k].shape+"\r\n[ \r\n";
+		//m_str.push("[");
+        for ( var i = 0; i < u.length; i++ ) {
+            m_str = m_str.concat( u[i].join(" "),"\r\n" );
+           // for ( var j = 0; j < u[i].length; ++j ) {
+            //    if ( u[i][j] !== v[i][j] ) { return false; }
+           // }
         }
-        m_str = m_str.concat("]\r\n");
-        res += m_str + "\r\n";
+		m_str = m_str.concat("]\r\n");
+		res += m_str+"\r\n";
     }
-    
-    
-    
+	
+
+	
     var blob = new Blob([res], {
-        type: "text/plain;charset=utf-8"
+        type:  "text/plain;charset=utf-8"
     }); // the blob
-    saveAs(blob, "debug.txt");
+
+  saveAs(blob, "debug.txt");
 }

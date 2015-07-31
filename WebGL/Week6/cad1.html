@@ -47,14 +47,13 @@
         <script id="vertex-shader" type="x-shader/x-vertex">
             attribute vec4 vPosition;
             uniform mat4 modelViewMatrix;
-            uniform mat4 projectionMatrix;
             attribute vec4 vColor;
             varying vec4 fColor;
             void
             main()
             {
             fColor = vColor;
-            gl_Position = projectionMatrix*modelViewMatrix * vPosition;
+            gl_Position = modelViewMatrix * vPosition;
             }
         </script>
         <script id="fragment-shader" type="x-shader/x-fragment">
@@ -72,7 +71,7 @@
         </script>
         <script type="text/javascript" src="../Common/MV.js">
         </script>
-        <script type="text/javascript" src="cad2.js">
+        <script type="text/javascript" src="cad1.js">
         </script>
         <script type="text/javascript" src=../lib/jquery.js>
         </script>
@@ -274,29 +273,30 @@
                 </td>
             </tr>
         </table>
-        <table cellspacing="0" cellpadding="0" border="0">
-            <tr>
-                <td valign="top" style="padding-top:25px;padding-left:10px;">
-                    <div>
-                        <input class="button" type="button" value="ADD" onClick="addObj()">
-                    </div>
-                </td>
-                <td valign="top" style="padding-top:25px;padding-left:10px;">
-                    <div>
-                        <input class="button" type="button" value="UNDO" onClick="removeLastObj()">
-                    </div>
-                </td>
-                <td valign="top" style="padding-top:25px;padding-left:10px;">
-                    <div>
-                        <input class="button" type="button" value="CLEAR" onClick="removeAllObj()">
-                    </div>
-                </td>
-                <td valign="top" style="padding-top:25px;padding-left:50px;">
-                    <div>
-                        <input class="button" type="button" value="SAVE" onClick="saveToFile()">
-                    </div>
-                </td>
-            </tr>
+		<table cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td valign="top" style="padding-top:25px;padding-left:10px;">
+                <div>
+                    <input class="button" type="button" value="ADD" onClick="addObj()">
+                </div>
+            </td>
+            <td valign="top" style="padding-top:25px;padding-left:10px;">
+                <div>
+                    <input class="button" type="button" value="UNDO" onClick="removeLastObj()">
+                </div>
+            </td>
+            <td valign="top" style="padding-top:25px;padding-left:10px;">
+                <div>
+                    <input class="button" type="button" value="CLEAR" onClick="removeAllObj()">
+                </div>
+            </td>
+     
+            <td valign="top" style="padding-top:25px;padding-left:50px;">
+                <div>
+                    <input class="button" type="button" value="SAVE" onClick="saveToFile()">
+                </div>
+            </td>
+        </tr>
         </table>
         <script>
             var mySliderSx, mySliderSy, mySliderSz, mySliderRx, mySliderRy, mySliderRz, mySliderPx, mySliderPy, mySliderPz;
