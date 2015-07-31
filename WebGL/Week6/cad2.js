@@ -67,7 +67,7 @@ function init(){
     canvas = document.getElementById("gl-canvas");
     
     document.getElementById("cpInput").color.fromString("ff0000");
-	document.getElementById("Controls").value = 0;
+    document.getElementById("Controls").value = 0;
     
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) {
@@ -138,12 +138,14 @@ function init(){
 
 function createCone(r, h, color, modelView){
     var myCone = createGeneralCone(r, 0.0001, h, color, modelView);
+	myCone.shape = "cone";
     return myCone;
     
 }
 
 function createCylinder(r, h, color, modelView){
     var myCylinder = createGeneralCone(r, r, h, color, modelView);
+	myCylinder.shape = "cylinder";
     return myCylinder;
     
 }
@@ -322,6 +324,7 @@ function createSphere(color, modelView){
     gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
     
     var sphere = {
+		shape:"sphere",
         modelView: modelView,
         buffer: vertexBuffer,
         colorBuffer: colorBuffer,
@@ -366,9 +369,9 @@ function render(){
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
-	 gl.depthFunc(gl.LEQUAL); 
+    gl.depthFunc(gl.LEQUAL);
     //gl.disable(gl.DEPTH_TEST);
-	gl.enable(gl.BLEND);
+    gl.enable(gl.BLEND);
     
     for (var i = 0; i < objArray.length; i++) {
         draw(gl, objArray[i]);
@@ -417,11 +420,36 @@ function addObj(){
 }
 
 function removeLastObj(){
-	objArray.pop();
-	objArray.pop();
+    objArray.pop();
+    objArray.pop();
 }
 
 function removeAllObj(){
-	objArray = [];
+    objArray = [];
 }
 
+function saveToFile(){
+    var aFileParts = ['<a id="a"><b id="b">hey!</b></a>'];
+	var res="";
+	for (var k = 0; k < objArray.length; k+=2) {
+		var u = objArray[k].modelView;
+		var m_str = objArray[k].shape+"\r\n[ \r\n";
+		//m_str.push("[");
+        for ( var i = 0; i < u.length; i++ ) {
+            m_str = m_str.concat( u[i].join(" "),"\r\n" );
+           // for ( var j = 0; j < u[i].length; ++j ) {
+            //    if ( u[i][j] !== v[i][j] ) { return false; }
+           // }
+        }
+		m_str = m_str.concat("]\r\n");
+		res += m_str+"\r\n";
+    }
+	
+
+	
+    var blob = new Blob([res], {
+        type:  "text/plain;charset=utf-8"
+    }); // the blob
+
+  saveAs(blob, "debug.txt");
+}

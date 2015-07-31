@@ -75,6 +75,8 @@
         </script>
         <script type="text/javascript" src=../lib/jquery.js>
         </script>
+        <script type="text/javascript" src=../lib/FileSaver.js>
+        </script>
         <script type="text/javascript" src="../lib/jscolor/jscolor.js">
         </script>
         <script type="text/javascript">
@@ -114,8 +116,6 @@
                 <td>
                 </td>
             </tr>
-
-
             <tr>
                 <td valign="top" style="padding-top:10px;padding-left:10px;">
                     Scale
@@ -162,14 +162,12 @@
                 </td>
                 <td>
                 </td>
-
                 <td valign="top" style="padding-top:5px;text-align:left;">
                     <div>
                         <input class="button" type="button" value="Reset" onClick="resetScale()">
                     </div>
                 </td>
             </tr>
-
             <tr>
                 <td valign="top" style="padding-top:5px;padding-left:10px;">
                     Rotation
@@ -216,14 +214,12 @@
                 </td>
                 <td>
                 </td>
-
                 <td valign="top" style="padding-top:5px;text-align:left;">
                     <div>
                         <input class="button" type="button" value="Reset" onClick="resetRotation()">
                     </div>
                 </td>
             </tr>
-
             <tr>
                 <td valign="top" style="padding-top:5px;padding-left:10px;">
                     Position
@@ -270,36 +266,43 @@
                 </td>
                 <td>
                 </td>
-
                 <td valign="top" style="padding-top:5px;text-align:left;">
                     <div>
                         <input class="button" type="button" value="Reset" onClick="resetPosition()">
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td valign="top" style="padding-top:50px;padding-left:10px;">
-                    <div>
-                        <input class="button" type="button" value="ADD" onClick="addObj()">
-                    </div>
-                </td>
-                <td valign="top" style="padding-top:50px;padding-left:10px;">
-                    <div>
-                        <input class="button" type="button" value="UNDO" onClick="removeLastObj()">
-                    </div>
-                </td>
-                <td valign="top" style="padding-top:50px;">
-                    <div>
-                        <input class="button" type="button" value="CLEAR" onClick="removeAllObj()">
-                    </div>
-                </td>
-            </tr>
-        </table><!--div id="cpObj"></div-->
+        </table>
+		<table cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td valign="top" style="padding-top:25px;padding-left:10px;">
+                <div>
+                    <input class="button" type="button" value="ADD" onClick="addObj()">
+                </div>
+            </td>
+            <td valign="top" style="padding-top:25px;padding-left:10px;">
+                <div>
+                    <input class="button" type="button" value="UNDO" onClick="removeLastObj()">
+                </div>
+            </td>
+            <td valign="top" style="padding-top:25px;padding-left:10px;">
+                <div>
+                    <input class="button" type="button" value="CLEAR" onClick="removeAllObj()">
+                </div>
+            </td>
+     
+            <td valign="top" style="padding-top:25px;padding-left:50px;">
+                <div>
+                    <input class="button" type="button" value="SAVE" onClick="saveToFile()">
+                </div>
+            </td>
+        </tr>
+        </table>
         <script>
-            var mySliderSx,mySliderSy,mySliderSz, mySliderRx, mySliderRy, mySliderRz, mySliderPx, mySliderPy, mySliderPz;
+            var mySliderSx, mySliderSy, mySliderSz, mySliderRx, mySliderRy, mySliderRz, mySliderPx, mySliderPy, mySliderPz;
             
             function doOnLoad(){
-
+            
                 mySliderSx = new dhtmlXSlider({
                     parent: "sliderObjSx",
                     step: 0.1,
@@ -307,7 +310,7 @@
                     max: 2,
                     value: 1,
                     linkTo: "inpSx",
-
+                
                 });
                 mySliderSy = new dhtmlXSlider({
                     parent: "sliderObjSy",
@@ -316,7 +319,7 @@
                     max: 2,
                     value: 1,
                     linkTo: "inpSy",
-
+                
                 });
                 mySliderSz = new dhtmlXSlider({
                     parent: "sliderObjSz",
@@ -325,7 +328,7 @@
                     max: 2,
                     value: 1,
                     linkTo: "inpSz",
-
+                
                 });
                 
                 mySliderRx = new dhtmlXSlider({
@@ -393,14 +396,14 @@
                 mySliderSz.attachEvent("onChange", function(pos, slider){
                     window.inpSz = mySliderSz.getValue();
                 });
-				
+                
                 mySliderRx.attachEvent("onChange", function(pos, slider){
                     window.inpRx = mySliderRx.getValue();
                 });
                 mySliderRy.attachEvent("onChange", function(pos, slider){
                     window.inpRy = mySliderRy.getValue();
                 });
-                 mySliderRz.attachEvent("onChange", function(pos, slider){
+                mySliderRz.attachEvent("onChange", function(pos, slider){
                     window.inpRz = mySliderRz.getValue();
                 });
                 
@@ -410,7 +413,7 @@
                 mySliderPy.attachEvent("onChange", function(pos, slider){
                     window.inpPy = mySliderPy.getValue();
                 });
-                 mySliderPz.attachEvent("onChange", function(pos, slider){
+                mySliderPz.attachEvent("onChange", function(pos, slider){
                     window.inpPz = mySliderPz.getValue();
                 });
                 
@@ -427,28 +430,28 @@
                 window.inpShape = $(this).children("option:selected").index();
                 
             });
-
+            
             function resetScale(){
                 mySliderSx.setValue(1);
                 mySliderSy.setValue(1);
                 mySliderSz.setValue(1);
                 setCadValues();
             }
-
+            
             function resetRotation(){
                 mySliderRx.setValue(0);
                 mySliderRy.setValue(0);
                 mySliderRz.setValue(0);
                 setCadValues();
             }
-
+            
             function resetPosition(){
                 mySliderPx.setValue(0);
                 mySliderPy.setValue(0);
                 mySliderPz.setValue(0);
                 setCadValues();
             }
-
+            
             function setCadValues(){
                 window.inpSx = $("#inpSx").val();
                 window.inpSy = $("#inpSy").val();
