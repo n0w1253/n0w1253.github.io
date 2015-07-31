@@ -134,7 +134,7 @@ function init(){
     modelView = mult(modelView, rotate(10,[1,0,0]));
     modelView = mult(modelView, rotate(-30,[0,1,0]));
     modelView = mult(modelView, rotate(10,[0,0,1]));
-    modelView = mult(modelView, scalem(0.8, 0.3, 0.5));
+    modelView = mult(modelView, scalem(0.8, 0.5, 0.5));
     
     cylinder = createCylinder(rCylinder, hCylinder, green, modelView);
     cylinder.primtype = gl.TRIANGLES;
