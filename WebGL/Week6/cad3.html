@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <link rel="stylesheet" type="text/css" href="../lib/dhtmlxSlider/dhtmlxslider.css"/>
+        <script type="text/javascript" src="../lib/dhtmlxSlider/dhtmlxslider.js">
+        </script>
+        <style>
+            
+            #gl-canvas {
+                height: 520px;
+                width: 520px;
+                float: left;
+                padding: 5px;
+            }
+            
+            #cpObj {
+                position: relative;
+                margin-top: 5px;
+                width: 200px;
+                height: 20px;
+                float: left;
+            }
+            
+            .sliderObj {
+                position: relative;
+                margin-top: 5px;
+                width: 170px;
+                height: 10px;
+            }
+            
+            .option {
+                position: relative;
+                margin-top: 5px;
+                width: 170px;
+            }
+            
+            .field {
+                position: relative;
+                margin-left: 0px;
+                margin-top: 5px;
+                width: 30px;
+                height: 10px;
+            }
+        </style>
+        <script id="vertex-shader" type="x-shader/x-vertex">
+            attribute vec4 vPosition;
+            uniform mat4 modelViewMatrix;
+            uniform mat4 projectionMatrix;
+            attribute vec4 vColor;
+            varying vec4 fColor;
+            void
+            main()
+            {
+            fColor = vColor;
+            gl_Position = projectionMatrix*modelViewMatrix * vPosition;
+            }
+        </script>
+        <script id="fragment-shader" type="x-shader/x-fragment">
+            precision mediump float;
+            varying vec4 fColor;
+            void
+            main()
+            {
+            gl_FragColor = fColor;
+            }
+        </script>
+        <script type="text/javascript" src="../Common/webgl-utils.js">
+        </script>
+        <script type="text/javascript" src="../Common/initShaders.js">
+        </script>
+        <script type="text/javascript" src="../Common/MV.js">
+        </script>
+        <script type="text/javascript" src="cad3.js">
+        </script>
+        <script type="text/javascript" src=../lib/jquery.js>
+        </script>
+        <script type="text/javascript" src=../lib/FileSaver.js>
+        </script>
+        <script type="text/javascript" src="../lib/jscolor/jscolor.js">
+        </script>
+        <script type="text/javascript">
+            function updateInfo(color){
+                window.inpColor = vec4(color.rgb, window.alpha);
+            }
+        </script>
+    </head>
+    <body onload="doOnLoad();init();">
+        <div>
+            <canvas id="gl-canvas" width="512" height="512" style="border:1px solid #000000;">
+                Oops ... your browser doesn't support the HTML5 canvas element
+            </canvas>
+        </div>
+        <table cellspacing="0" cellpadding="0" border="0">
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;">
+                    Shape
+                </td>
+                <td style="padding-left:10px;">
+                    <select id="Controls" class="option" size="3">
+                        <option value="0" selected>Sphere</option>
+                        <option value="1">Cone</option>
+                        <option value="2">Cylindar</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;">
+                    Color
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="cpObj">
+                        <input id="cpInput" class="color {pickerFaceColor:'transparent',pickerFace:3,pickerBorder:0,pickerInsetColor:'black',onImmediateChange:'updateInfo(this);'}" value="ff0000">
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:10px;padding-left:10px;">
+                    Scale
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    X
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjSx" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpSx">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    Y
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjSy" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpSy">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    Z
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjSz" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpSz">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td valign="top" style="padding-top:5px;text-align:left;">
+                    <div>
+                        <input class="button" type="button" value="Reset" onClick="resetScale()">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;">
+                    Rotation
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    X
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjRx" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpRx">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    Y
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjRy" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpRy">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    Z
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjRz" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpRz">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td valign="top" style="padding-top:5px;text-align:left;">
+                    <div>
+                        <input class="button" type="button" value="Reset" onClick="resetRotation()">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;">
+                    Position
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    X
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjPx" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpPx">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    Y
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjPy" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpPy">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="padding-top:5px;padding-left:10px;text-align:center;">
+                    Z
+                </td>
+                <td style="padding-left:10px;">
+                    <div id="sliderObjPz" class="sliderObj">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="field" id="inpPz">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td valign="top" style="padding-top:5px;text-align:left;">
+                    <div>
+                        <input class="button" type="button" value="Reset" onClick="resetPosition()">
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table cellspacing="0" cellpadding="0" border="0">
+            <tr>
+                <td valign="top" style="padding-top:25px;padding-left:10px;">
+                    <div>
+                        <input class="button" type="button" value="ADD" onClick="addObj()">
+                    </div>
+                </td>
+                <td valign="top" style="padding-top:25px;padding-left:10px;">
+                    <div>
+                        <input class="button" type="button" value="UNDO" onClick="removeLastObj()">
+                    </div>
+                </td>
+                <td valign="top" style="padding-top:25px;padding-left:10px;">
+                    <div>
+                        <input class="button" type="button" value="CLEAR" onClick="removeAllObj()">
+                    </div>
+                </td>
+                <td valign="top" style="padding-top:25px;padding-left:50px;">
+                    <div>
+                        <input class="button" type="button" value="SAVE" onClick="saveToFile()">
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <script>
+            var mySliderSx, mySliderSy, mySliderSz, mySliderRx, mySliderRy, mySliderRz, mySliderPx, mySliderPy, mySliderPz;
+            
+            function doOnLoad(){
+            
+                mySliderSx = new dhtmlXSlider({
+                    parent: "sliderObjSx",
+                    step: 0.1,
+                    min: 0.1,
+                    max: 2,
+                    value: 1,
+                    linkTo: "inpSx",
+                
+                });
+                mySliderSy = new dhtmlXSlider({
+                    parent: "sliderObjSy",
+                    step: 0.1,
+                    min: 0.1,
+                    max: 2,
+                    value: 1,
+                    linkTo: "inpSy",
+                
+                });
+                mySliderSz = new dhtmlXSlider({
+                    parent: "sliderObjSz",
+                    step: 0.1,
+                    min: 0.1,
+                    max: 2,
+                    value: 1,
+                    linkTo: "inpSz",
+                
+                });
+                
+                mySliderRx = new dhtmlXSlider({
+                    parent: "sliderObjRx",
+                    step: 1,
+                    min: -180,
+                    max: 180,
+                    value: 0,
+                    linkTo: "inpRx",
+                
+                });
+                mySliderRy = new dhtmlXSlider({
+                    parent: "sliderObjRy",
+                    step: 1,
+                    min: -180,
+                    max: 180,
+                    value: 0,
+                    linkTo: "inpRy",
+                
+                });
+                mySliderRz = new dhtmlXSlider({
+                    parent: "sliderObjRz",
+                    step: 1,
+                    min: -180,
+                    max: 180,
+                    value: 0,
+                    linkTo: "inpRz",
+                
+                });
+                
+                mySliderPx = new dhtmlXSlider({
+                    parent: "sliderObjPx",
+                    step: 0.1,
+                    min: -1,
+                    max: 1,
+                    value: 0,
+                    linkTo: "inpPx",
+                
+                });
+                mySliderPy = new dhtmlXSlider({
+                    parent: "sliderObjPy",
+                    step: 0.1,
+                    min: -1,
+                    max: 1,
+                    value: 0,
+                    linkTo: "inpPy",
+                
+                });
+                mySliderPz = new dhtmlXSlider({
+                    parent: "sliderObjPz",
+                    step: 0.1,
+                    min: -1,
+                    max: 1,
+                    value: 0,
+                    linkTo: "inpPz",
+                
+                });
+                
+                mySliderSx.attachEvent("onChange", function(pos, slider){
+                    window.inpSx = mySliderSx.getValue();
+                });
+                mySliderSy.attachEvent("onChange", function(pos, slider){
+                    window.inpSy = mySliderSy.getValue();
+                });
+                mySliderSz.attachEvent("onChange", function(pos, slider){
+                    window.inpSz = mySliderSz.getValue();
+                });
+                
+                mySliderRx.attachEvent("onChange", function(pos, slider){
+                    window.inpRx = mySliderRx.getValue();
+                });
+                mySliderRy.attachEvent("onChange", function(pos, slider){
+                    window.inpRy = mySliderRy.getValue();
+                });
+                mySliderRz.attachEvent("onChange", function(pos, slider){
+                    window.inpRz = mySliderRz.getValue();
+                });
+                
+                mySliderPx.attachEvent("onChange", function(pos, slider){
+                    window.inpPx = mySliderPx.getValue();
+                });
+                mySliderPy.attachEvent("onChange", function(pos, slider){
+                    window.inpPy = mySliderPy.getValue();
+                });
+                mySliderPz.attachEvent("onChange", function(pos, slider){
+                    window.inpPz = mySliderPz.getValue();
+                });
+                
+                
+            };
+            
+            
+            
+            $(".field").on('input', function(){
+                setCadValues();
+            });
+            
+            $(".option").change(function(){
+                window.inpShape = $(this).children("option:selected").index();
+                
+            });
+            
+            function resetScale(){
+                mySliderSx.setValue(1);
+                mySliderSy.setValue(1);
+                mySliderSz.setValue(1);
+                setCadValues();
+            }
+            
+            function resetRotation(){
+                mySliderRx.setValue(0);
+                mySliderRy.setValue(0);
+                mySliderRz.setValue(0);
+                setCadValues();
+            }
+            
+            function resetPosition(){
+                mySliderPx.setValue(0);
+                mySliderPy.setValue(0);
+                mySliderPz.setValue(0);
+                setCadValues();
+            }
+            
+            function setCadValues(){
+                window.inpSx = $("#inpSx").val();
+                window.inpSy = $("#inpSy").val();
+                window.inpSz = $("#inpSz").val();
+                window.inpRx = $("#inpRx").val();
+                window.inpRy = $("#inpRy").val();
+                window.inpRz = $("#inpRz").val();
+                window.inpPx = $("#inpPx").val();
+                window.inpPy = $("#inpPy").val();
+                window.inpPz = $("#inpPz").val();
+            }
+        </script>
+    </body>
+</html>
