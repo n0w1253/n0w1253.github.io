@@ -363,8 +363,11 @@ function createSphere(color, modelView){
 function createAxes(color, modelView){
     var colors = [];
     
-    var vertices = [vec4(-1, 0, 0, 1), vec4(1, 0, 0, 1), vec4(0, -1, 0, 1), vec4(0, 1, 0, 1), vec4(0, 0, -2, 1), vec4(0, 0, 2, 1)];
-    var indexData = [0, 1, 2, 3, 4, 5];
+    var vertices = [vec4(-1, 0, 0, 1), vec4(1, 0, 0, 1), vec4(0, -1, 0, 1), vec4(0, 1, 0, 1), vec4(0, 0, -2, 1), vec4(0, 0, 2, 1),
+	vec4(0.97, -0.02, 0, 1),vec4(0.97, 0.02, 0, 1),
+	vec4( -0.02,0.97, 0, 1),vec4(0.02, 0.97, 0, 1),
+	vec4( -0.02,0,1.8,1),vec4(0.02, 0, 1.8, 1)];
+    var indexData = [0, 1, 2, 3, 4, 5,6,1,7,1,8,3,9,3,10,5,11,5];
     
     
     for (var i = 0; i <= vertices.length; i++) {
