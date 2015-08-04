@@ -58,8 +58,8 @@ var ytop = 1.0;
 var bottom = -1.0;
 var  fovy = 12.0;  // Field-of-view in Y direction angle (in degrees)
 var  aspect = 1.0;       // Viewport aspect ratio
-const at = vec3(0.0, 0.0, 0.0);
-const up = vec3(0.0, 1.0, 0.0);
+var at = vec3(0.0, 0.0, 0.0);
+var up = vec3(0.0, 1.0, 0.0);
 var near = 3;
 var far = -10;
 var MVInit;
