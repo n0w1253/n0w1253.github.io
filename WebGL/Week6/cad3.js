@@ -85,7 +85,7 @@ function init(){
 	aspect =  canvas.width/canvas.height;
     
     // clear the background
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+   // gl.clearColor(1.0, 1.0, 1.0, 1.0);
       
     //  Load shaders and initialize attribute buffers    
     program = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -425,7 +425,8 @@ function draw(obj){
 }
 
 function render(){
-
+// clear the background
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       // enable depth testing and polygon offset
     // so lines will be in front of filled triangles   
