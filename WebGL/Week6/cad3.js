@@ -434,6 +434,7 @@ function render(){
     gl.depthFunc(gl.LEQUAL);
  //   gl.enable(gl.POLYGON_OFFSET_FILL);
  //   gl.polygonOffset(1.0, 2.0);
+ gl.enable(gl.BLEND);
  
     draw(axes);
     
