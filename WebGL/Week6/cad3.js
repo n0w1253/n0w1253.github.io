@@ -5,10 +5,12 @@ var gl;
 var alpha = 1;
 
 var red = vec4(1.0, 0.0, 0.0, alpha); // red
-var green = vec4(0.0, 1.0, 0.0, alpha); // green
-var blue = vec4(0.0, 0.0, 1.0, alpha); // blue
+var light_red = vec4(0.8, 0.0, 0.0, 0.5); // light red
+var light_green = vec4(0.0, 0.8, 0.0, 0.5); //light green
+var light_blue = vec4(0.0, 0.0, 0.8, 0.5); //light blue
 var black = vec4(0.0, 0.0, 0.0, alpha); // black
 var white = vec4(1.0, 1.0, 1.0, alpha); // white
+var gray = vec4(0.3, 0.3, 0.3, 0.5); // gray
 var nPhi = 50;
 
 var rCone = 0.25;
@@ -28,6 +30,8 @@ var sphere;
 var wf_sphere;
 
 var objArray = [];
+
+var axes;
 
 var inpSx = 1;
 var inpSy = 1;
@@ -52,10 +56,12 @@ var left = -1.0;
 var right = 1.0;
 var ytop = 1.0;
 var bottom = -1.0;
+var  fovy = 12.0;  // Field-of-view in Y direction angle (in degrees)
+var  aspect = 1.0;       // Viewport aspect ratio
 const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 1.0, 0.0);
-var near = -10;
-var far = 10;
+var near = 3;
+var far = -10;
 var MVInit;
 var PInit;
 
@@ -75,6 +81,8 @@ function init(){
     //  Configure WebGL
     //
     gl.viewport(0, 0, canvas.width, canvas.height);
+	
+	aspect =  canvas.width/canvas.height;
     
     // clear the background
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
@@ -83,8 +91,8 @@ function init(){
     // so lines will be in front of filled triangles   
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
-    gl.enable(gl.POLYGON_OFFSET_FILL);
-    gl.polygonOffset(1.0, 2.0);
+ //   gl.enable(gl.POLYGON_OFFSET_FILL);
+ //   gl.polygonOffset(1.0, 2.0);
     
     //  Load shaders and initialize attribute buffers    
     program = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -98,19 +106,20 @@ function init(){
     uMV = gl.getUniformLocation(program, "modelViewMatrix");
     uP = gl.getUniformLocation(program, "projectionMatrix");
     
-    var eye = vec3(0, 0, 1);
+    var eye = vec3(0.25, 0.5, 10);
     
     MVInit = lookAt(eye, at, up);
-    PInit = ortho(left, right, bottom, ytop, near, far);
+ //   PInit = ortho(left, right, bottom, ytop, near, far);
+	PInit = perspective(fovy, aspect, near, far);
     
     var modelView = MVInit;
-    modelView = mult(modelView, translate(-0.5, 0.5, -0.8));
-    modelView = mult(modelView, rotate(-80,[1,0,0]));
-    modelView = mult(modelView, rotate(30,[0,1,0]));
-    modelView = mult(modelView, rotate(20,[0,0,1]));
+    modelView = mult(modelView, translate(-0.5, 0.5, -0.25));
+    modelView = mult(modelView, rotate(-80, [1, 0, 0]));
+    modelView = mult(modelView, rotate(30, [0, 1, 0]));
+    modelView = mult(modelView, rotate(20, [0, 0, 1]));
     modelView = mult(modelView, scalem(0.5, 0.5, 0.5));
     
-    cone = createCone(rCone, hCone, red, modelView);
+    cone = createCone(rCone, hCone, light_red, modelView);
     cone.primtype = gl.TRIANGLES;
     
     wf_cone = createCone(rCone, hCone, black, modelView);
@@ -118,10 +127,10 @@ function init(){
     objArray.push(wf_cone);
     
     modelView = MVInit;
-    modelView = mult(modelView, translate(0.5, 0.5, -0.8));    
+    modelView = mult(modelView, translate(0.5, 0.5, -0.25));
     modelView = mult(modelView, scalem(0.5, 0.5, 0.5));
     
-    sphere = createSphere(blue, modelView);
+    sphere = createSphere(light_blue, modelView);
     sphere.primtype = gl.TRIANGLES;
     
     wf_sphere = createSphere(black, modelView);
@@ -130,20 +139,21 @@ function init(){
     
     
     modelView = MVInit;
-    modelView = mult(modelView, translate(-0.5, -0.5, -0.5));
-    modelView = mult(modelView, rotate(10,[1,0,0]));
-    modelView = mult(modelView, rotate(-30,[0,1,0]));
-    modelView = mult(modelView, rotate(10,[0,0,1]));
+    modelView = mult(modelView, translate(-0.5, -0.5, -0.25));
+    modelView = mult(modelView, rotate(10, [1, 0, 0]));
+    modelView = mult(modelView, rotate(-30, [0, 1, 0]));
+    modelView = mult(modelView, rotate(10, [0, 0, 1]));
     modelView = mult(modelView, scalem(0.8, 0.5, 0.5));
     
-    cylinder = createCylinder(rCylinder, hCylinder, green, modelView);
+    cylinder = createCylinder(rCylinder, hCylinder, light_green, modelView);
     cylinder.primtype = gl.TRIANGLES;
     
     wf_cylinder = createCylinder(rCylinder, hCylinder, black, modelView);
     objArray.push(cylinder);
     objArray.push(wf_cylinder);
     
-    
+    modelView = MVInit;
+    axes = createAxes(gray, MVInit);
     render();
 };
 
@@ -350,9 +360,50 @@ function createSphere(color, modelView){
     return sphere;
 }
 
+function createAxes(color, modelView){
+    var colors = [];
+    
+    var vertices = [vec4(-1, 0, 0, 1), vec4(1, 0, 0, 1), vec4(0, -1, 0, 1), vec4(0, 1, 0, 1), vec4(0, 0, -2, 1), vec4(0, 0, 2, 1),
+	vec4(0.97, -0.02, 0, 1),vec4(0.97, 0.02, 0, 1),
+	vec4( -0.02,0.97, 0, 1),vec4(0.02, 0.97, 0, 1),
+	vec4( -0.02,0,1.8,1),vec4(0.02, 0, 1.8, 1)];
+    var indexData = [0, 1, 2, 3, 4, 5,6,1,7,1,8,3,9,3,10,5,11,5];
+    
+    
+    for (var i = 0; i <= vertices.length; i++) {
+        colors.push(color);
+    }
+    
+    var vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
+    
+    var indexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData), gl.STATIC_DRAW);
+    
+    var colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
+    
+    var axes = {
+        shape: "axes",
+        modelView: modelView,
+        buffer: vertexBuffer,
+        colorBuffer: colorBuffer,
+        indices: indexBuffer,
+        vertSize: 4,
+        nVerts: vertices.length,
+        colorSize: 4,
+        nColors: colors.length,
+        nIndices: indexData.length,
+        primtype: gl.LINES
+    };
+    return axes;
+}
 
 
-function draw(gl, obj){
+function draw(obj){
 
     // set the vertex buffer to be drawn
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.buffer);
@@ -368,19 +419,26 @@ function draw(gl, obj){
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.indices);
     
     gl.uniformMatrix4fv(uMV, false, flatten(obj.modelView));
-	gl.uniformMatrix4fv(uP, false, flatten(PInit));
+    gl.uniformMatrix4fv(uP, false, flatten(PInit));
     
     // draw the object
-    for (var i = 0; i < obj.nIndices - 3; i = i + 3) 
-        gl.drawElements(obj.primtype, 3, gl.UNSIGNED_SHORT, 2 * i);
+    if (obj.primtype == gl.LINES) {
+        gl.drawElements(obj.primtype, obj.nIndices, gl.UNSIGNED_SHORT, 0);
+    }
+    else {
+        for (var i = 0; i < obj.nIndices - 3; i = i + 3) 
+            gl.drawElements(obj.primtype, 3, gl.UNSIGNED_SHORT, 2 * i);
+    }
 }
 
 function render(){
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
+    draw(axes);
+    
     for (var i = 0; i < objArray.length; i++) {
-        draw(gl, objArray[i]);
+        draw(objArray[i]);
     }
     
     window.requestAnimFrame(render);
@@ -389,11 +447,11 @@ function render(){
 
 function addObj(){
     var modelView = MVInit;
-
+    
     modelView = mult(modelView, translate(inpPx, inpPy, inpPz));
-    modelView = mult(modelView, rotate(inpRx,[1,0,0]));
-    modelView = mult(modelView, rotate(inpRy,[0,1,0]));
-    modelView = mult(modelView, rotate(inpRz,[0,0,1]));
+    modelView = mult(modelView, rotate(inpRx, [1, 0, 0]));
+    modelView = mult(modelView, rotate(inpRy, [0, 1, 0]));
+    modelView = mult(modelView, rotate(inpRz, [0, 0, 1]));
     modelView = mult(modelView, scalem(inpSx, inpSy, inpSz));
     
     switch (Number(inpShape)) {
@@ -441,7 +499,7 @@ function saveToFile(){
     for (var k = 0; k < objArray.length; k += 2) {
         var u = objArray[k].modelView;
         var m_str = objArray[k].shape + "\r\n[ \r\n";
-    
+        
         for (var i = 0; i < u.length; i++) {
             m_str = m_str.concat(u[i].join(" "), "\r\n");
         }
