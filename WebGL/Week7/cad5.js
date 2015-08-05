@@ -69,7 +69,8 @@ var PInit;
 var normalMatrix;
 
 
-var lightPosition = vec4(-10.0, -10.0, 10, 0.0 );
+var lightPosition = vec4(10, 10, 10, 0.0 );
+var lightPosition2 = vec4(0, 0, 10, 0.0 );
 var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
 var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -107,8 +108,8 @@ function init(){
     // so lines will be in front of filled triangles   
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
-    gl.enable(gl.POLYGON_OFFSET_FILL);
-    gl.polygonOffset(1.0, 2.0);
+  //  gl.enable(gl.POLYGON_OFFSET_FILL);
+   // gl.polygonOffset(1.0, 2.0);
     
     //  Load shaders and initialize attribute buffers    
     program = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -191,6 +192,8 @@ function init(){
        "specularProduct"),flatten(specularProduct) );
     gl.uniform4fv( gl.getUniformLocation(program,
        "lightPosition"),flatten(lightPosition) );
+	gl.uniform4fv( gl.getUniformLocation(program,
+       "lightPosition2"),flatten(lightPosition2) );
     gl.uniform1f( gl.getUniformLocation(program,
        "shininess"),materialShininess );
 	gl.uniform1f( gl.getUniformLocation(program,
@@ -506,6 +509,8 @@ function draw(obj){
        "specularProduct"),flatten(specularProduct) );
     gl.uniform4fv( gl.getUniformLocation(program,
        "lightPosition"),flatten(lightPosition) );
+	gl.uniform4fv( gl.getUniformLocation(program,
+       "lightPosition2"),flatten(lightPosition2) );
     gl.uniform1f( gl.getUniformLocation(program,
        "shininess"),materialShininess );
 	   
