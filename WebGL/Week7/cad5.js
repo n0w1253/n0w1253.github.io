@@ -69,15 +69,17 @@ var PInit;
 var normalMatrix;
 
 
-var lightPosition = vec4(10.0, 0, 0, 0.0 );
+var lightPosition = vec4(-10.0, -10.0, 10, 0.0 );
 var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
 var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 
 var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
-var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0 );
-var materialSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
-var materialShininess = 20.0;
+var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
+var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+var materialShininess = 100.0;
+
+var ambientProduct,diffuseProduct,specularProduct;
 
 function init(){
 
@@ -114,9 +116,9 @@ function init(){
     // set the shader to use
     gl.useProgram(program);
     
-    var ambientProduct = mult(lightAmbient, materialAmbient);
-    var diffuseProduct = mult(lightDiffuse, materialDiffuse);
-    var specularProduct = mult(lightSpecular, materialSpecular);
+    ambientProduct = mult(lightAmbient, materialAmbient);
+    diffuseProduct = mult(lightDiffuse, materialDiffuse);
+    specularProduct = mult(lightSpecular, materialSpecular);
     
     // Associate out shader variables with our data buffer
     vPosition = gl.getAttribLocation(program, "vPosition");
@@ -191,7 +193,10 @@ function init(){
        "lightPosition"),flatten(lightPosition) );
     gl.uniform1f( gl.getUniformLocation(program,
        "shininess"),materialShininess );
+	gl.uniform1f( gl.getUniformLocation(program,
+       "eyePosition"),flatten(vec4(eye,1)) );
     render();
+	
 };
 
 function createCone(r, h, color, modelView){
@@ -230,12 +235,12 @@ function createGeneralCone(r1, r2, h, color, modelView){
         colors.push(color);
         
         //   nt.push ( Nx, Ny*cosPhi, Ny*sinPhi );         // normals
-        normals.push(vec4(Nx, Ny*cosPhi, Ny*sinPhi,1));
+        normals.push(normalize(vec4(Nx, Ny*cosPhi, Ny*sinPhi,0)));
       //  pt.push(h / 2, cosPhi2 * r2, sinPhi2 * r2); // points
         vertices.push(vec4(h / 2, cosPhi * r2, sinPhi * r2, 1));
         colors.push(color);
         //   nt.push ( Nx, Ny*cosPhi2, Ny*sinPhi2 );       // normals
-        normals.push(vec4(Nx, Ny*cosPhi2, Ny*sinPhi2,1));
+        normals.push(normalize(vec4(Nx, Ny*cosPhi2, Ny*sinPhi2,0)));
         Phi += dPhi;
     }
     
@@ -362,7 +367,7 @@ function createSphere(color, modelView){
              vertexPositionData.push(radius * z);
              */
             vertices.push(vec4(radius * x, radius * y, radius * z, 1));
-            normals.push(vec4(x,y,z,1));
+            normals.push(normalize(vec4(x,y,z,0)));
             colors.push(color);
         }
     }
@@ -463,13 +468,12 @@ function createAxes(color, modelView){
 
 function draw(obj){
 
-    // set the vertex buffer to be drawn
-    gl.bindBuffer(gl.ARRAY_BUFFER, obj.buffer);
-    
+   
     // connect up the shader parameters: vertex position and projection/model matrices
     gl.enableVertexAttribArray(vPosition);
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.buffer);
     gl.vertexAttribPointer(vPosition, obj.vertSize, gl.FLOAT, false, 0, 0);
+	
     gl.enableVertexAttribArray(vNormal);
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.normalBuffer);
     gl.vertexAttribPointer(vNormal, obj.normalSize, gl.FLOAT, false, 0, 0);
@@ -480,13 +484,32 @@ function draw(obj){
     gl.uniformMatrix4fv(uP, false, flatten(PInit));
     
     var modelViewMatrix = obj.modelView;
-    normalMatrix = [
+   normalMatrix = [
         vec3(modelViewMatrix[0][0], modelViewMatrix[0][1], modelViewMatrix[0][2]),
         vec3(modelViewMatrix[1][0], modelViewMatrix[1][1], modelViewMatrix[1][2]),
         vec3(modelViewMatrix[2][0], modelViewMatrix[2][1], modelViewMatrix[2][2])
     ];
-    gl.uniformMatrix3fv(uNormal, false, flatten(normalMatrix) );
+	/*
+	normalMatrix = [
+        vec3(MVInit[0][0], MVInit[0][1], MVInit[0][2]),
+        vec3(MVInit[1][0], MVInit[1][1], MVInit[1][2]),
+        vec3(MVInit[2][0], MVInit[2][1], MVInit[2][2])
+    ];*/
+  //  gl.uniformMatrix3fv(uNormal, false, flatten(normalMatrix) );
         
+		
+   gl.uniform4fv( gl.getUniformLocation(program,
+       "ambientProduct"),flatten(ambientProduct) );
+    gl.uniform4fv( gl.getUniformLocation(program,
+       "diffuseProduct"),flatten(diffuseProduct) );
+    gl.uniform4fv( gl.getUniformLocation(program,
+       "specularProduct"),flatten(specularProduct) );
+    gl.uniform4fv( gl.getUniformLocation(program,
+       "lightPosition"),flatten(lightPosition) );
+    gl.uniform1f( gl.getUniformLocation(program,
+       "shininess"),materialShininess );
+	   
+	   
     // draw the object
     if (obj.primtype == gl.LINES) {
         gl.drawElements(obj.primtype, obj.nIndices, gl.UNSIGNED_SHORT, 0);
