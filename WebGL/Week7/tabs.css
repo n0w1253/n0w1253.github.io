@@ -64,17 +64,6 @@ button.btn {
     padding-bottom: 12px !important;
 }
 
-.option {
-    position: relative;
-    font-family: "Gudea";
-    font-size: 14px;
-    color: #525252;
-    margin-top: 5px;
-    width: 170px;
-    border: 1px;
-    border-style: solid;
-    border-color: #3C8FC7;
-}
 
 /*----- Tabs -----*/
 .tabs {
