@@ -69,7 +69,8 @@ var PInit;
 var normalMatrix;
 
 var dr = 5.0 * Math.PI/180.0;
-
+var useLight1 = true;
+var useLight2 = true;
 var lightPosition = vec4(10, 10, 10, 0.0 );
 var lightDistance = length(lightPosition);
 var theta    = Math.atan2(lightPosition[1], lightPosition[0]);
@@ -208,6 +209,10 @@ function init(){
        "shininess"),materialShininess );
 	gl.uniform4fv( gl.getUniformLocation(program,
        "eyePosition"),flatten(vec4(eye,1)) );
+	gl.uniform1i(gl.getUniformLocation(program,
+       "uUseLight1"), useLight1);
+	gl.uniform1i(gl.getUniformLocation(program,
+       "uUseLight2"), useLight2);
     render();
 	
 };
@@ -545,6 +550,11 @@ function render(){
     theta2 += dr;
 	lightPosition2 =  vec4(lightPosition2[0],
         light2DistanceYZ*Math.sin(theta2),light2DistanceYZ*Math.cos(theta2),1);
+		
+    gl.uniform1i(gl.getUniformLocation(program,
+       "uUseLight1"), useLight1);
+	gl.uniform1i(gl.getUniformLocation(program,
+       "uUseLight2"), useLight2);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
    // draw(axes);
