@@ -68,9 +68,17 @@ var MVInit;
 var PInit;
 var normalMatrix;
 
+var dr = 5.0 * Math.PI/180.0;
 
 var lightPosition = vec4(10, 10, 10, 0.0 );
+var lightDistance = length(lightPosition);
+var theta    = Math.atan2(lightPosition[1], lightPosition[0]);
+var lightDistanceXY = length([lightPosition[0],lightPosition[1]]);
 var lightPosition2 = vec4(0, 0, 10, 0.0 );
+var light2Distance = length(lightPosition2);
+var theta2    = Math.atan2(lightPosition2[1], lightPosition2[2]);
+var light2DistanceYZ = length([lightPosition2[1],lightPosition2[2]]);
+
 var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
 var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -509,6 +517,7 @@ function draw(obj){
        "diffuseProduct"),flatten(diffuseProduct) );
     gl.uniform4fv( gl.getUniformLocation(program,
        "specularProduct"),flatten(specularProduct) );
+
     gl.uniform4fv( gl.getUniformLocation(program,
        "lightPosition"),flatten(lightPosition) );
 	gl.uniform4fv( gl.getUniformLocation(program,
@@ -529,6 +538,13 @@ function draw(obj){
 
 function render(){
 
+    theta += dr;
+	lightPosition =  vec4(lightDistanceXY*Math.cos(theta),
+        lightDistanceXY*Math.sin(theta),lightPosition[2],1);
+		
+    theta2 += dr;
+	lightPosition2 =  vec4(lightPosition2[0],
+        light2DistanceYZ*Math.sin(theta2),light2DistanceYZ*Math.cos(theta2),1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
    // draw(axes);
