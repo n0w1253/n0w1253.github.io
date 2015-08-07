@@ -546,7 +546,11 @@ function render(){
     theta += dr;
 	lightPosition =  vec4(lightDistanceXY*Math.cos(theta),
         lightDistanceXY*Math.sin(theta),lightPosition[2],1);
-		
+	
+	document.getElementById("sliderObjL1Px").value = lightDistanceXY*Math.cos(theta);
+	document.getElementById("sliderObjL1Py").value = lightDistanceXY*Math.sin(theta);
+	document.getElementById("sliderObjL1Pz").value = lightPosition[2];
+	
     theta2 += dr;
 	lightPosition2 =  vec4(lightPosition2[0],
         light2DistanceYZ*Math.sin(theta2),light2DistanceYZ*Math.cos(theta2),1);

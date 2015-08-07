@@ -174,6 +174,15 @@ function doOnLoad(){
         window.inpPz = mySliderPz.getValue();
     });
     
+	mySliderL1Px.attachEvent("onChange", function(pos, slider){
+       // window.inpPx = mySliderL1Px.getValue();
+    });
+    mySliderL1Py.attachEvent("onChange", function(pos, slider){
+       // window.inpPy = mySliderL1Py.getValue();
+    });
+    mySliderL1Pz.attachEvent("onChange", function(pos, slider){
+       // window.inpPz = mySliderL1Pz.getValue();
+    });
     
 };
 
