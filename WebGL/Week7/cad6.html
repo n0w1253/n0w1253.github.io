@@ -3,8 +3,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<link rel="stylesheet" type="text/css" href="tabs.css"/>
         <link rel="stylesheet" type="text/css" href="../lib/dhtmlxSlider/dhtmlxslider.css"/>
-        <link rel="stylesheet" type="text/css" href="tabs.css"/>
+        
         <script type="text/javascript" src="../lib/dhtmlxSlider/dhtmlxslider.js">
         </script>
         <style>
@@ -15,34 +16,24 @@
                 float: left;
                 padding: 5px;
             }
-            
-            #cpObj {
+                        
+           .sliderObj {
                 position: relative;
                 margin-top: 5px;
-                width: 200px;
-                height: 20px;
-                float: left;
+                width: 150px;
+                height: 15px;
             }
             
-            .sliderObj {
-                position: relative;
-                margin-top: 5px;
-                width: 170px;
-                height: 10px;
-            }
-            
-            .option {
-                position: relative;
-                margin-top: 5px;
-                width: 170px;
-            }
             
             .field {
                 position: relative;
                 margin-left: 0px;
                 margin-top: 5px;
+				border: 1px;
+				border-style:solid;
+				border-color:#3C8FC7;
                 width: 30px;
-                height: 10px;
+                height: 15px;
             }
         </style>
         <script id="vertex-shader" type="x-shader/x-vertex">
@@ -201,14 +192,9 @@
         </script>
         <script type="text/javascript" src="../lib/jscolor/jscolor.js">
         </script>
-        <script type="text/javascript">
-            function updateInfo(color){
-                window.inpColor = vec4(color.rgb, window.alpha);
-            }
-        </script>
+
     </head>
-    <body onload="doOnLoad();
- init();">
+    <body onload="doOnLoad();init();">
         <div>
             <canvas id="gl-canvas" width="512" height="512" style="border:1px solid #000000;">
                 Oops ... your browser doesn't support the HTML5 canvas element
@@ -217,7 +203,7 @@
         <div class="tabs">
             <ul class="tab-links">
                 <li class="active">
-                    <a href="#tab1">Tab #1</a>
+                    <a href="#tab1" id ="tab1">Lights</a>
                 </li>
                 <li>
                     <a href="#tab2">Objects</a>
@@ -230,8 +216,8 @@
                         Tab #1 content goes here!
                     </p>
                     <p>
-                        Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis.
-                    </p>
+                        Donec pulvinar neque sed semper lacinia.
+					</p>
                 </div>
                 <div id="tab2" class="tab">
                    
@@ -422,7 +408,7 @@
                         <input class="button" type="button" value="CLEAR" onClick="removeAllObj()">
                     </div>
                 </td>
-                <td valign="top" style="padding-top:25px;padding-left:50px;">
+                <td valign="top" style="padding-top:25px;padding-left:35px;">
                     <div>
                         <input class="button" type="button" value="SAVE" onClick="saveToFile()">
                     </div>
@@ -434,11 +420,7 @@
             </div>
         </div>
        
-        <div style="padding-top:25px;padding-left:10px;">
-            <p>
-                Tested in Chrome, Firefox and IE.
-            </p>
-        </div>
+
         <script>
             var mySliderSx, mySliderSy, mySliderSz, mySliderRx, mySliderRy, mySliderRz, mySliderPx, mySliderPy, mySliderPz;
             
@@ -575,6 +557,8 @@
                 e.preventDefault();
             });
             
+			
+			
             function resetScale(){
                 mySliderSx.setValue(1);
                 mySliderSy.setValue(1);

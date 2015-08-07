@@ -88,6 +88,8 @@ function init(){
     
   //  document.getElementById("cpInput").color.fromString("ff0000");
     document.getElementById("Controls").value = 0;
+	document.getElementById("tab1").click();
+	
     
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) {
