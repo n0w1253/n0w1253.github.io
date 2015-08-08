@@ -67,7 +67,7 @@ var MVInit;
 var PInit;
 var normalMatrix;
 
-var dr = 5.0 * Math.PI / 180.0;
+var dr = 2 * Math.PI / 180.0;
 var useLight1 = true;
 var useLight2 = true;
 var light1X = 10;
@@ -176,9 +176,7 @@ function init(){
     cone = createCone(rCone, hCone, light_red, modelView);
     cone.primtype = gl.TRIANGLES;
     
-    //  wf_cone = createCone(rCone, hCone, black, modelView);
     objArray.push(cone);
-    //  objArray.push(wf_cone);
     
     modelView = MVInit;
     modelView = mult(modelView, translate(0.5, 0.5, -0.25));
@@ -187,9 +185,8 @@ function init(){
     sphere = createSphere(light_blue, modelView);
     sphere.primtype = gl.TRIANGLES;
     
-    //  wf_sphere = createSphere(black, modelView);
+    
     objArray.push(sphere);
-    //  objArray.push(wf_sphere);
     
     
     modelView = MVInit;
@@ -202,9 +199,9 @@ function init(){
     cylinder = createCylinder(rCylinder, hCylinder, light_green, modelView);
     cylinder.primtype = gl.TRIANGLES;
     
-    //  wf_cylinder = createCylinder(rCylinder, hCylinder, black, modelView);
+    
     objArray.push(cylinder);
-    //  objArray.push(wf_cylinder);
+    
     
     modelView = MVInit;
     axes = createAxes(gray, MVInit);
@@ -267,16 +264,51 @@ function createGeneralCone(r1, r2, h, color, modelView){
         Phi += dPhi;
     }
     
-    if (r1 != 0) {
+    var r1CtrIdx = 0;
+	var r1EndIdx = 0;
+    var r2CtrIdx = 0;
+	var r2EndIdx = 0;
+    if (r1 > 0.0001) {
         vertices.push(vec4(-h / 2, 0, 0, 1));
         colors.push(color);
         normals.push(vec4(-1, 0, 0, 1));
+        r1CtrIdx = vertices.length - 1;
+        
+        for (var i = 0; i < nPhi; i++) {
+            var first = 2 * i;
+            var second = (2 * i + 2) % 200;
+            vertices.push(vertices[second]);
+            colors.push(color);
+            normals.push(vec4(-1, 0, 0, 1));
+            
+            vertices.push(vertices[first]);
+            colors.push(color);
+            normals.push(vec4(-1, 0, 0, 1));
+                        
+        }
+		r1EndIdx = vertices.length - 1;
     }
     
-    if (r2 != 0) {
+    if (r2 > 0.0001) {
         vertices.push(vec4(h / 2, 0, 0, 1));
         colors.push(color);
         normals.push(vec4(1, 0, 0, 1));
+        
+        r2CtrIdx = vertices.length - 1;
+		
+		for (var i = 0; i < nPhi; i++) {
+            var first = 2 * i + 1;
+            var second = (2 * i + 3) % 200;
+            vertices.push(vertices[first]);
+            colors.push(color);
+            normals.push(vec4(1, 0, 0, 1));
+            
+            vertices.push(vertices[second]);
+            colors.push(color);
+            normals.push(vec4(1, 0, 0, 1));
+            
+        }
+		r2EndIdx = vertices.length - 1;
     }
     
     for (var i = 0; i < nPhi - 1; i++) {
@@ -295,27 +327,27 @@ function createGeneralCone(r1, r2, h, color, modelView){
         
     }
     
-    if (r1 != 0) {
+    if (r1 > 0.0001) {
     
-        for (var i = 0; i < nPhi; i++) {
-            var first = 2 * i;
-            var second = (2 * i + 2) % 200;
-            indexData.push(vertices.length - 2);
+        for (var i = r1CtrIdx+1; i < r1EndIdx; i++) {
             
-            indexData.push(second);
-            indexData.push(first);
+            indexData.push(r1CtrIdx);
+            
+            indexData.push(i);
+            indexData.push(i+1);
             
             
         }
     }
-    if (r2 != 0) {
+    if (r2 > 0.0001) {
     
-        for (var i = 0; i < nPhi; i++) {
-            var first = 2 * i + 1;
-            var second = (2 * i + 3) % 200;
-            indexData.push(vertices.length - 1);
-            indexData.push(first);
-            indexData.push(second);
+        for (var i = r2CtrIdx+1; i < r2EndIdx; i++) {
+            
+            indexData.push(r2CtrIdx);
+            
+            indexData.push(i);
+            indexData.push(i+1);
+            
             
         }
     }
@@ -539,7 +571,7 @@ function render(){
     theta += dr;
     
     lightPosition = vec4(lightDistanceXY * Math.cos(theta), lightDistanceXY * Math.sin(theta), lightPosition[2], 0);
-        
+    
     theta2 += dr;
     lightPosition2 = vec4(lightPosition2[0], light2DistanceYZ * Math.sin(theta2), light2DistanceYZ * Math.cos(theta2), 0);
     
