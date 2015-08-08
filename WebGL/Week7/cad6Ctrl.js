@@ -81,7 +81,7 @@ function doOnLoad(){
     
     mySliderL1Px = new dhtmlXSlider({
         parent: "sliderObjL1Px",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 20,
         value: 10,
@@ -89,7 +89,7 @@ function doOnLoad(){
     });
     mySliderL1Py = new dhtmlXSlider({
         parent: "sliderObjL1Py",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 20,
         value: 10,
@@ -97,7 +97,7 @@ function doOnLoad(){
     });
     mySliderL1Pz = new dhtmlXSlider({
         parent: "sliderObjL1Pz",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 20,
         value: 10,
@@ -105,31 +105,31 @@ function doOnLoad(){
     });
     mySliderL1Dist = new dhtmlXSlider({
         parent: "sliderObjL1Dist",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 34,
-        value: 15,
+        value: 17.3,
         linkTo: "inpL1Dist",
     });
     mySliderL2Px = new dhtmlXSlider({
         parent: "sliderObjL2Px",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 20,
-        value: 10,
+        value: 0,
         linkTo: "inpL2Px",
     });
     mySliderL2Py = new dhtmlXSlider({
         parent: "sliderObjL2Py",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 20,
-        value: 10,
+        value: 0,
         linkTo: "inpL2Py",
     });
     mySliderL2Pz = new dhtmlXSlider({
         parent: "sliderObjL2Pz",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 20,
         value: 10,
@@ -137,10 +137,10 @@ function doOnLoad(){
     });
     mySliderL2Dist = new dhtmlXSlider({
         parent: "sliderObjL2Dist",
-        step: 1,
+        step: 0.1,
         min: 0,
         max: 34,
-        value: 15,
+        value: 10,
         linkTo: "inpL2Dist",
     });
     
@@ -174,16 +174,31 @@ function doOnLoad(){
         window.inpPz = mySliderPz.getValue();
     });
     
-	mySliderL1Px.attachEvent("onChange", function(pos, slider){
-       // window.inpPx = mySliderL1Px.getValue();
+    mySliderL1Px.attachEvent("onChange", function(pos, slider){
+        window.light1X = mySliderL1Px.getValue();
+		updateL1();
     });
     mySliderL1Py.attachEvent("onChange", function(pos, slider){
-       // window.inpPy = mySliderL1Py.getValue();
+        window.light1Y = mySliderL1Py.getValue();
+		updateL1();
     });
     mySliderL1Pz.attachEvent("onChange", function(pos, slider){
-       // window.inpPz = mySliderL1Pz.getValue();
+        window.light1Z = mySliderL1Pz.getValue();
+		updateL1();
     });
     
+    mySliderL2Px.attachEvent("onChange", function(pos, slider){
+        window.light2X = mySliderL2Px.getValue();
+		updateL2();
+    });
+    mySliderL2Py.attachEvent("onChange", function(pos, slider){
+        window.light2Y = mySliderL2Py.getValue();
+		updateL2();
+    });
+    mySliderL2Pz.attachEvent("onChange", function(pos, slider){
+        window.light2Z = mySliderL2Pz.getValue();
+		updateL2();
+    });
 };
 
 
@@ -251,4 +266,22 @@ function handleL1Click(cb){
 function handleL2Click(cb){
     window.useLight2 = cb.checked;
 }
+
+
+function updateLightPos(){
+    $("#L1Pos").html("X: "+lightPosition[0].toFixed(2)+" Y: "+lightPosition[1].toFixed(2)+" Z: "+lightPosition[2].toFixed(2));
+    $("#L2Pos").html("X: "+lightPosition2[0].toFixed(2)+" Y: "+lightPosition2[1].toFixed(2)+" Z: "+lightPosition2[2].toFixed(2));
+}
+
+updateLightPos();
+setInterval(updateLightPos, 1000); // 1000 miliseconds
+
+function updateL1(){
+	lightPosition = vec4(light1X, light1Y, light1Z, 0.0 );
+}
+
+function updateL2(){
+	lightPosition2 = vec4(light2X, light2Y, light2Z, 0.0 );
+}
+
 

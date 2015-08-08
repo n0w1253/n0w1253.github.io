@@ -34,6 +34,17 @@
                 width: 30px;
                 height: 15px;
             }
+			
+			.fieldLight {
+                position: relative;
+                margin-left: 0px;
+                margin-top: 5px;
+                border: 1px;
+                border-style: solid;
+                border-color: #3C8FC7;
+                width: 30px;
+                height: 15px;
+            }
             
             .option {
                 position: relative;
@@ -161,9 +172,18 @@
                                 </label>
                             </td>
                         </tr>
+						<tr>
+                            <td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
+                                Current Position
+                            </td>
+							<td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
+                                <p id="L1Pos">X: 10 Y: 10 Z: 10 </p>
+                            </td>
+                        </tr>
+					   
                         <tr>
-                            <td valign="top" style="padding-top:5px;padding-left:10px;">
-                                Position
+                            <td valign="top" nowrap="nowrap" style="padding-top:5px;padding-left:10px;">
+                                Change Initial Position
                             </td>
                         </tr>
                         <tr>
@@ -175,7 +195,7 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL1Px">
+                                <input type="text" class="fieldLight" id="inpL1Px">
                             </td>
                         </tr>
                         <tr>
@@ -187,7 +207,7 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL1Py">
+                                <input type="text" class="fieldLight" id="inpL1Py">
                             </td>
                         </tr>
                         <tr>
@@ -199,13 +219,13 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL1Pz">
+                                <input type="text" class="fieldLight" id="inpL1Pz">
                             </td>
                         </tr>
                        
                         <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;">
-                                Distance
+                                Change Distance
                             </td>
                         </tr>
                         <tr>
@@ -217,10 +237,10 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL1Dist">
+                                <input type="text" class="fieldLight" id="inpL1Dist">
                             </td>
                         </tr>
-                       
+                        
                         <tr>
                             <td>
                                 <br/>
@@ -239,9 +259,17 @@
                                 </label>
                             </td>
                         </tr>
+						<tr>
+							<td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
+                                Current Position
+                            </td>
+							<td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
+                                <p id="L2Pos">X: 0 Y: 0 Z: 10 </p>
+                            </td>
+						</tr>
                         <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;">
-                                Position
+                                Change Initial Position
                             </td>
                         </tr>
                         <tr>
@@ -253,7 +281,7 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL2Px">
+                                <input type="text" class="fieldLight" id="inpL2Px">
                             </td>
                         </tr>
                         <tr>
@@ -265,7 +293,7 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL2Py">
+                                <input type="text" class="fieldLight" id="inpL2Py">
                             </td>
                         </tr>
                         <tr>
@@ -277,13 +305,13 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL2Pz">
+                                <input type="text" class="fieldLight" id="inpL2Pz">
                             </td>
                         </tr>
                        
                         <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;">
-                                Distance
+                                Change Distance
                             </td>
                         </tr>
                         <tr>
@@ -295,9 +323,10 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="field" id="inpL2Dist">
+                                <input type="text" class="fieldLight" id="inpL2Dist">
                             </td>
                         </tr>
+						
                         <tr>
                             <td>
                                 <br/>

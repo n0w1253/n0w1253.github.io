@@ -71,11 +71,18 @@ var normalMatrix;
 var dr = 5.0 * Math.PI/180.0;
 var useLight1 = true;
 var useLight2 = true;
-var lightPosition = vec4(10, 10, 10, 0.0 );
+var light1X=10;
+var light1Y=10;
+var light1Z=10;
+var lightPosition = vec4(light1X, light1Y, light1Z, 0.0 );
 var lightDistance = length(lightPosition);
 var theta    = Math.atan2(lightPosition[1], lightPosition[0]);
 var lightDistanceXY = length([lightPosition[0],lightPosition[1]]);
-var lightPosition2 = vec4(0, 0, 10, 0.0 );
+
+var light2X=0;
+var light2Y=0;
+var light2Z=10;
+var lightPosition2 = vec4(light2X, light2Y, light2Z, 0.0 );
 var light2Distance = length(lightPosition2);
 var theta2    = Math.atan2(lightPosition2[1], lightPosition2[2]);
 var light2DistanceYZ = length([lightPosition2[1],lightPosition2[2]]);
@@ -98,6 +105,15 @@ function init(){
   //  document.getElementById("cpInput").color.fromString("ff0000");
     document.getElementById("Controls").value = 0;
 	document.getElementById("tab1").click();
+	document.getElementById("light1CB").checked = true;
+	document.getElementById("light2CB").checked = true;
+	document.getElementById("sliderObjL1Px").value = light1X;
+	document.getElementById("sliderObjL1Py").value = light1Y;
+	document.getElementById("sliderObjL1Pz").value = light1Z;
+	
+	document.getElementById("sliderObjL2Px").value = light2X;
+	document.getElementById("sliderObjL2Py").value = light2Y;
+	document.getElementById("sliderObjL2Pz").value = light2Z;
 	
     
     gl = WebGLUtils.setupWebGL(canvas);
@@ -547,9 +563,9 @@ function render(){
 	lightPosition =  vec4(lightDistanceXY*Math.cos(theta),
         lightDistanceXY*Math.sin(theta),lightPosition[2],1);
 	
-	document.getElementById("sliderObjL1Px").value = lightDistanceXY*Math.cos(theta);
-	document.getElementById("sliderObjL1Py").value = lightDistanceXY*Math.sin(theta);
-	document.getElementById("sliderObjL1Pz").value = lightPosition[2];
+	//document.getElementById("L1Pos").value = "X: "+lightDistanceXY*Math.cos(theta);
+	//document.getElementById("sliderObjL1Py").value = lightDistanceXY*Math.sin(theta);
+	//document.getElementById("sliderObjL1Pz").value = lightPosition[2];
 	
     theta2 += dr;
 	lightPosition2 =  vec4(lightPosition2[0],
