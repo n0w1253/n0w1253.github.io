@@ -34,8 +34,8 @@
                 width: 30px;
                 height: 15px;
             }
-			
-			.fieldLight {
+            
+            .fieldLight {
                 position: relative;
                 margin-left: 0px;
                 margin-top: 5px;
@@ -63,75 +63,67 @@
             attribute vec4 vNormal;
             varying vec3 N, L, E;
             varying vec3 N2, L2, E2;
-			varying float attenuation;
+            varying float attenuation;
+			varying float attenuation2;
             uniform mat4 modelViewMatrix;
             uniform mat4 projectionMatrix;
             uniform vec4 lightPosition;
             uniform vec4 lightPosition2;
-            //uniform mat3 normalMatrix;
             uniform vec4 eyePosition;
             void main()
             {
-          
             vec3 light = lightPosition.xyz;
             vec3 pos = (projectionMatrix * modelViewMatrix * vPosition).xyz;
             vec3 light2 = lightPosition2.xyz;
-       
             L = normalize(light - pos);
             L2 = normalize(light2 - pos);
-         
             E = normalize(eyePosition.xyz - pos);
             E2 = E;
-         
             N = normalize( modelViewMatrix * vNormal).xyz;
             N2=N;
-			
-			//attenuation
+            //attenuation
             float distanceToLight = length(light - pos);
-            attenuation = 1.0 / (0.5 + 0.01 * distanceToLight + 0.01 * distanceToLight * distanceToLight );
-
-			
+            attenuation = 1.0 / (0.5 + 0.01 * distanceToLight + 0.001 * distanceToLight * distanceToLight );
+			float distanceToLight2 = length(light2 - pos);
+            attenuation2 = 1.0 / (0.5 + 0.01 * distanceToLight2 + 0.001 * distanceToLight2 * distanceToLight2 );
             gl_Position = projectionMatrix * modelViewMatrix * vPosition;
-			
             }
         </script>
         <script id="fragment-shader" type="x-shader/x-fragment">
             precision mediump float;
             uniform vec4 ambientProduct;
-            uniform vec4 diffuseProduct;
+            uniform vec4 diffuseProduct; 
             uniform vec4 specularProduct; 
             uniform float shininess; 
-            uniform bool uUseLight1;
+            uniform bool uUseLight1; 
             uniform bool uUseLight2; 
-            varying vec3 N, L, E; 
-            varying vec3 N2, L2, E2; 			
-			varying float attenuation; 
-			
-            void main() 
+            varying vec3 N, L, E;  
+            varying vec3 N2, L2, E2; 
+            varying float attenuation; 
+			varying float attenuation2;
+            void main()  
             { 
             vec4 fColor;
-			vec4 ambient = ambientProduct;
-			fColor = ambient;
-			
+            vec4 ambient = ambientProduct;
+            fColor = ambient;
             if (uUseLight1) {
             vec3 H = normalize( L + E );
             float Kd = max( dot(L, N), 0.0 );
-            vec4  diffuse = Kd*diffuseProduct;
+            vec4  diffuse = Kd*diffuseProduct; 
             float Ks = pow( max(dot(N, H), 0.0), shininess ); 
-            vec4  specular = Ks * specularProduct; 
+            vec4  specular = Ks * specularProduct;  
             if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0); 
-			fColor = fColor + attenuation * (diffuse +specular);
+            fColor = fColor + attenuation * (diffuse +specular);
             }
-			
-			if (uUseLight2) {
-            vec3 H2 = normalize( L2 + E2 );           
+            if (uUseLight2) { 
+            vec3 H2 = normalize( L2 + E2 ); 
             float Kd2 = max( dot(L2, N2), 0.0 );
-            vec4  diffuse2 = Kd2*diffuseProduct;
-            float Ks2 = pow( max(dot(N2, H2), 0.0), shininess );  
+            vec4  diffuse2 = Kd2*diffuseProduct; 
+            float Ks2 = pow( max(dot(N2, H2), 0.0), shininess ); 
             vec4  specular2 = Ks2 * specularProduct;  
             if( dot(L2, N2) < 0.0 ) specular2 = vec4(0.0, 0.0, 0.0, 1.0);
-            fColor = fColor + attenuation * (diffuse2 +specular2);
-			}
+            fColor = fColor + attenuation2 * (diffuse2 +specular2);
+            }
             fColor.a = 1.0;
             gl_FragColor = fColor;
             }
@@ -148,7 +140,6 @@
         </script>
         <script type="text/javascript" src=../lib/FileSaver.js>
         </script>
-       
     </head>
     <body onload="doOnLoad();init();">
         <div>
@@ -168,7 +159,11 @@
             <div class="tab-content">
                 <div id="tab1" class="tab active">
                     <table cellspacing="0" cellpadding="0" border="0">
-                    	<tr><td><br/></td></tr>
+                        <tr>
+                            <td>
+                                <br/>
+                            </td>
+                        </tr>
                         <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;font-weight: 600;">
                                 Moving Light 1
@@ -180,15 +175,16 @@
                                 </label>
                             </td>
                         </tr>
-						<tr>
+                        <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
                                 Current Position / Distance
                             </td>
-							<td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
-                                <p id="L1Pos">X: 10 Y: 10 Z: 10 / Dist: 17.32</p>
+                            <td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
+                                <p id="L1Pos">
+                                    X: 10 Y: 10 Z: 10 / Dist: 17.32
+                                </p>
                             </td>
                         </tr>
-					   
                         <tr>
                             <td valign="top" nowrap="nowrap" style="padding-top:5px;padding-left:10px;">
                                 Change Initial Position
@@ -230,7 +226,6 @@
                                 <input type="text" class="fieldLight" id="inpL1Pz">
                             </td>
                         </tr>
-                       
                         <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;">
                                 Change Distance
@@ -248,11 +243,10 @@
                                 <input type="text" class="fieldLight" id="inpL1Dist">
                             </td>
                         </tr>
-                        
                         <tr>
                             <td>
                                 <br/>
-								<br/>
+                                <br/>
                                 <br/>
                             </td>
                         </tr>
@@ -267,14 +261,16 @@
                                 </label>
                             </td>
                         </tr>
-						<tr>
-							<td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
+                        <tr>
+                            <td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
                                 Current Position / Distance
                             </td>
-							<td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
-                                <p id="L2Pos">X: 10 Y: 0 Z: 10 / Dist: 14.1 </p>
+                            <td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
+                                <p id="L2Pos">
+                                    X: 10 Y: 0 Z: 10 / Dist: 14.1 
+                                </p>
                             </td>
-						</tr>
+                        </tr>
                         <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;">
                                 Change Initial Position
@@ -316,7 +312,6 @@
                                 <input type="text" class="fieldLight" id="inpL2Pz">
                             </td>
                         </tr>
-                       
                         <tr>
                             <td valign="top" style="padding-top:5px;padding-left:10px;">
                                 Change Distance
@@ -334,11 +329,10 @@
                                 <input type="text" class="fieldLight" id="inpL2Dist">
                             </td>
                         </tr>
-						
                         <tr>
                             <td>
                                 <br/>
-								<br/>
+                                <br/>
                                 <br/>
                             </td>
                         </tr>

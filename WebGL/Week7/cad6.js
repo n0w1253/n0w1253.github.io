@@ -45,7 +45,6 @@ var inpPx = 0;
 var inpPy = 0;
 var inpPz = 0;
 var usrObj;// wf_usrObj;
-
 var program;
 var vPosition;
 var vColor;
@@ -58,8 +57,8 @@ var left = -1.0;
 var right = 1.0;
 var ytop = 1.0;
 var bottom = -1.0;
-var  fovy = 12.0;  // Field-of-view in Y direction angle (in degrees)
-var  aspect = 1.0;       // Viewport aspect ratio
+var fovy = 12.0; // Field-of-view in Y direction angle (in degrees)
+var aspect = 1.0; // Viewport aspect ratio
 var at = vec3(0.0, 0.0, 0.0);
 var up = vec3(0.0, 1.0, 0.0);
 var near = 3;
@@ -68,53 +67,53 @@ var MVInit;
 var PInit;
 var normalMatrix;
 
-var dr = 5.0 * Math.PI/180.0;
+var dr = 5.0 * Math.PI / 180.0;
 var useLight1 = true;
 var useLight2 = true;
-var light1X=10;
-var light1Y=10;
-var light1Z=10;
-var lightPosition = vec4(light1X, light1Y, light1Z, 0.0 );
+var light1X = 10;
+var light1Y = 10;
+var light1Z = 10;
+var lightPosition = vec4(light1X, light1Y, light1Z, 0.0);
 var lightDistance = length(lightPosition);
-var theta    = Math.atan2(lightPosition[1], lightPosition[0]);
-var lightDistanceXY = length([lightPosition[0],lightPosition[1]]);
+var theta = Math.atan2(lightPosition[1], lightPosition[0]);
+var lightDistanceXY = length([lightPosition[0], lightPosition[1]]);
 
-var light2X=10;
-var light2Y=0;
-var light2Z=10;
-var lightPosition2 = vec4(light2X, light2Y, light2Z, 0.0 );
+var light2X = 10;
+var light2Y = 0;
+var light2Z = 10;
+var lightPosition2 = vec4(light2X, light2Y, light2Z, 0.0);
 var light2Distance = length(lightPosition2);
-var theta2    = Math.atan2(lightPosition2[1], lightPosition2[2]);
-var light2DistanceYZ = length([lightPosition2[1],lightPosition2[2]]);
+var theta2 = Math.atan2(lightPosition2[1], lightPosition2[2]);
+var light2DistanceYZ = length([lightPosition2[1], lightPosition2[2]]);
 
-var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
-var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
-var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
+var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
+var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 
-var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
-var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
-var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
+var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
+var materialSpecular = vec4(1.0, 0.8, 0.0, 1.0);
 var materialShininess = 100.0;
 
-var ambientProduct,diffuseProduct,specularProduct;
+var ambientProduct, diffuseProduct, specularProduct;
 
 function init(){
 
     canvas = document.getElementById("gl-canvas");
     
-  //  document.getElementById("cpInput").color.fromString("ff0000");
+    //  document.getElementById("cpInput").color.fromString("ff0000");
     document.getElementById("Controls").value = 0;
-	document.getElementById("tab1").click();
-	document.getElementById("light1CB").checked = true;
-	document.getElementById("light2CB").checked = true;
-	document.getElementById("sliderObjL1Px").value = light1X;
-	document.getElementById("sliderObjL1Py").value = light1Y;
-	document.getElementById("sliderObjL1Pz").value = light1Z;
-	
-	document.getElementById("sliderObjL2Px").value = light2X;
-	document.getElementById("sliderObjL2Py").value = light2Y;
-	document.getElementById("sliderObjL2Pz").value = light2Z;
-	
+    document.getElementById("tab1").click();
+    document.getElementById("light1CB").checked = true;
+    document.getElementById("light2CB").checked = true;
+    document.getElementById("sliderObjL1Px").value = light1X;
+    document.getElementById("sliderObjL1Py").value = light1Y;
+    document.getElementById("sliderObjL1Pz").value = light1Z;
+    
+    document.getElementById("sliderObjL2Px").value = light2X;
+    document.getElementById("sliderObjL2Py").value = light2Y;
+    document.getElementById("sliderObjL2Pz").value = light2Z;
+    
     
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) {
@@ -125,8 +124,8 @@ function init(){
     //  Configure WebGL
     //
     gl.viewport(0, 0, canvas.width, canvas.height);
-	
-	aspect =  canvas.width/canvas.height;
+    
+    aspect = canvas.width / canvas.height;
     
     // clear the background
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -135,8 +134,8 @@ function init(){
     // so lines will be in front of filled triangles   
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
-  //  gl.enable(gl.POLYGON_OFFSET_FILL);
-   // gl.polygonOffset(1.0, 2.0);
+    //  gl.enable(gl.POLYGON_OFFSET_FILL);
+    // gl.polygonOffset(1.0, 2.0);
     
     //  Load shaders and initialize attribute buffers    
     program = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -154,20 +153,19 @@ function init(){
     vNormal = gl.getAttribLocation(program, "vNormal");
     uMV = gl.getUniformLocation(program, "modelViewMatrix");
     uP = gl.getUniformLocation(program, "projectionMatrix");
-    uNormal = gl.getUniformLocation( program, "normalMatrix" );
+    uNormal = gl.getUniformLocation(program, "normalMatrix");
     
     var eye = vec3(0.25, 0.5, 10);
     
     MVInit = lookAt(eye, at, up);
- //   PInit = ortho(left, right, bottom, ytop, near, far);
-	PInit = perspective(fovy, aspect, near, far);
-        
- /*   normalMatrix = [
-        vec3(MVInit[0][0], MVInit[0][1], MVInit[0][2]),
-        vec3(MVInit[1][0], MVInit[1][1], MVInit[1][2]),
-        vec3(MVInit[2][0], MVInit[2][1], MVInit[2][2])
-    ];  */  
+    //   PInit = ortho(left, right, bottom, ytop, near, far);
+    PInit = perspective(fovy, aspect, near, far);
     
+    /*   normalMatrix = [
+     vec3(MVInit[0][0], MVInit[0][1], MVInit[0][2]),
+     vec3(MVInit[1][0], MVInit[1][1], MVInit[1][2]),
+     vec3(MVInit[2][0], MVInit[2][1], MVInit[2][2])
+     ];  */
     var modelView = MVInit;
     modelView = mult(modelView, translate(-0.5, 0.5, -0.25));
     modelView = mult(modelView, rotate(-80, [1, 0, 0]));
@@ -178,9 +176,9 @@ function init(){
     cone = createCone(rCone, hCone, light_red, modelView);
     cone.primtype = gl.TRIANGLES;
     
-  //  wf_cone = createCone(rCone, hCone, black, modelView);
+    //  wf_cone = createCone(rCone, hCone, black, modelView);
     objArray.push(cone);
-  //  objArray.push(wf_cone);
+    //  objArray.push(wf_cone);
     
     modelView = MVInit;
     modelView = mult(modelView, translate(0.5, 0.5, -0.25));
@@ -189,9 +187,9 @@ function init(){
     sphere = createSphere(light_blue, modelView);
     sphere.primtype = gl.TRIANGLES;
     
-  //  wf_sphere = createSphere(black, modelView);
+    //  wf_sphere = createSphere(black, modelView);
     objArray.push(sphere);
-  //  objArray.push(wf_sphere);
+    //  objArray.push(wf_sphere);
     
     
     modelView = MVInit;
@@ -204,33 +202,24 @@ function init(){
     cylinder = createCylinder(rCylinder, hCylinder, light_green, modelView);
     cylinder.primtype = gl.TRIANGLES;
     
-  //  wf_cylinder = createCylinder(rCylinder, hCylinder, black, modelView);
+    //  wf_cylinder = createCylinder(rCylinder, hCylinder, black, modelView);
     objArray.push(cylinder);
-  //  objArray.push(wf_cylinder);
+    //  objArray.push(wf_cylinder);
     
     modelView = MVInit;
     axes = createAxes(gray, MVInit);
     
-     gl.uniform4fv( gl.getUniformLocation(program,
-       "ambientProduct"),flatten(ambientProduct) );
-    gl.uniform4fv( gl.getUniformLocation(program,
-       "diffuseProduct"),flatten(diffuseProduct) );
-    gl.uniform4fv( gl.getUniformLocation(program,
-       "specularProduct"),flatten(specularProduct) );
-    gl.uniform4fv( gl.getUniformLocation(program,
-       "lightPosition"),flatten(lightPosition) );
-	gl.uniform4fv( gl.getUniformLocation(program,
-       "lightPosition2"),flatten(lightPosition2) );
-    gl.uniform1f( gl.getUniformLocation(program,
-       "shininess"),materialShininess );
-	gl.uniform4fv( gl.getUniformLocation(program,
-       "eyePosition"),flatten(vec4(eye,1)) );
-	gl.uniform1i(gl.getUniformLocation(program,
-       "uUseLight1"), useLight1);
-	gl.uniform1i(gl.getUniformLocation(program,
-       "uUseLight2"), useLight2);
+    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition2"), flatten(lightPosition2));
+    gl.uniform1f(gl.getUniformLocation(program, "shininess"), materialShininess);
+    gl.uniform4fv(gl.getUniformLocation(program, "eyePosition"), flatten(vec4(eye, 1)));
+    gl.uniform1i(gl.getUniformLocation(program, "uUseLight1"), useLight1);
+    gl.uniform1i(gl.getUniformLocation(program, "uUseLight2"), useLight2);
     render();
-	
+    
 };
 
 function createCone(r, h, color, modelView){
@@ -255,7 +244,7 @@ function createGeneralCone(r1, r2, h, color, modelView){
     var normals = [];
     var indexData = [];
     
-   // var pt = [], nt = [];
+    // var pt = [], nt = [];
     var Phi = 0, dPhi = 2 * Math.PI / (nPhi - 1), Nx = r1 - r2, Ny = h, N = Math.sqrt(Nx * Nx + Ny * Ny);
     Nx /= N;
     Ny /= N;
@@ -264,17 +253,17 @@ function createGeneralCone(r1, r2, h, color, modelView){
         var sinPhi = Math.sin(Phi);
         var cosPhi2 = Math.cos(Phi + dPhi / 2);
         var sinPhi2 = Math.sin(Phi + dPhi / 2);
-      //  pt.push(-h / 2, cosPhi * r1, sinPhi * r1); // points
+        //  pt.push(-h / 2, cosPhi * r1, sinPhi * r1); // points
         vertices.push(vec4(-h / 2, cosPhi * r1, sinPhi * r1, 1));
         colors.push(color);
         
         //   nt.push ( Nx, Ny*cosPhi, Ny*sinPhi );         // normals
-        normals.push(normalize(vec4(Nx, Ny*cosPhi, Ny*sinPhi,0)));
-      //  pt.push(h / 2, cosPhi2 * r2, sinPhi2 * r2); // points
+        normals.push(normalize(vec4(Nx, Ny * cosPhi, Ny * sinPhi, 0)));
+        //  pt.push(h / 2, cosPhi2 * r2, sinPhi2 * r2); // points
         vertices.push(vec4(h / 2, cosPhi * r2, sinPhi * r2, 1));
         colors.push(color);
         //   nt.push ( Nx, Ny*cosPhi2, Ny*sinPhi2 );       // normals
-        normals.push(normalize(vec4(Nx, Ny*cosPhi2, Ny*sinPhi2,0)));
+        normals.push(normalize(vec4(Nx, Ny * cosPhi2, Ny * sinPhi2, 0)));
         Phi += dPhi;
     }
     
@@ -401,7 +390,7 @@ function createSphere(color, modelView){
              vertexPositionData.push(radius * z);
              */
             vertices.push(vec4(radius * x, radius * y, radius * z, 1));
-            normals.push(normalize(vec4(x,y,z,0)));
+            normals.push(normalize(vec4(x, y, z, 0)));
             colors.push(color);
         }
     }
@@ -460,11 +449,8 @@ function createSphere(color, modelView){
 function createAxes(color, modelView){
     var colors = [];
     
-    var vertices = [vec4(-1, 0, 0, 1), vec4(1, 0, 0, 1), vec4(0, -1, 0, 1), vec4(0, 1, 0, 1), vec4(0, 0, -2, 1), vec4(0, 0, 2, 1),
-	vec4(0.97, -0.02, 0, 1),vec4(0.97, 0.02, 0, 1),
-	vec4( -0.02,0.97, 0, 1),vec4(0.02, 0.97, 0, 1),
-	vec4( -0.02,0,1.8,1),vec4(0.02, 0, 1.8, 1)];
-    var indexData = [0, 1, 2, 3, 4, 5,6,1,7,1,8,3,9,3,10,5,11,5];
+    var vertices = [vec4(-1, 0, 0, 1), vec4(1, 0, 0, 1), vec4(0, -1, 0, 1), vec4(0, 1, 0, 1), vec4(0, 0, -2, 1), vec4(0, 0, 2, 1), vec4(0.97, -0.02, 0, 1), vec4(0.97, 0.02, 0, 1), vec4(-0.02, 0.97, 0, 1), vec4(0.02, 0.97, 0, 1), vec4(-0.02, 0, 1.8, 1), vec4(0.02, 0, 1.8, 1)];
+    var indexData = [0, 1, 2, 3, 4, 5, 6, 1, 7, 1, 8, 3, 9, 3, 10, 5, 11, 5];
     
     
     for (var i = 0; i <= vertices.length; i++) {
@@ -502,51 +488,42 @@ function createAxes(color, modelView){
 
 function draw(obj){
 
-   
+
     // connect up the shader parameters: vertex position and projection/model matrices
     gl.enableVertexAttribArray(vPosition);
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.buffer);
     gl.vertexAttribPointer(vPosition, obj.vertSize, gl.FLOAT, false, 0, 0);
-	
+    
     gl.enableVertexAttribArray(vNormal);
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.normalBuffer);
     gl.vertexAttribPointer(vNormal, obj.normalSize, gl.FLOAT, false, 0, 0);
-
+    
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.indices);
     
     gl.uniformMatrix4fv(uMV, false, flatten(obj.modelView));
     gl.uniformMatrix4fv(uP, false, flatten(PInit));
     
     var modelViewMatrix = obj.modelView;
-   normalMatrix = [
-        vec3(modelViewMatrix[0][0], modelViewMatrix[0][1], modelViewMatrix[0][2]),
-        vec3(modelViewMatrix[1][0], modelViewMatrix[1][1], modelViewMatrix[1][2]),
-        vec3(modelViewMatrix[2][0], modelViewMatrix[2][1], modelViewMatrix[2][2])
-    ];
-	/*
-	normalMatrix = [
-        vec3(MVInit[0][0], MVInit[0][1], MVInit[0][2]),
-        vec3(MVInit[1][0], MVInit[1][1], MVInit[1][2]),
-        vec3(MVInit[2][0], MVInit[2][1], MVInit[2][2])
-    ];*/
-  //  gl.uniformMatrix3fv(uNormal, false, flatten(normalMatrix) );
-        
-		
-   gl.uniform4fv( gl.getUniformLocation(program,
-       "ambientProduct"),flatten(ambientProduct) );
-    gl.uniform4fv( gl.getUniformLocation(program,
-       "diffuseProduct"),flatten(diffuseProduct) );
-    gl.uniform4fv( gl.getUniformLocation(program,
-       "specularProduct"),flatten(specularProduct) );
-
-    gl.uniform4fv( gl.getUniformLocation(program,
-       "lightPosition"),flatten(lightPosition) );
-	gl.uniform4fv( gl.getUniformLocation(program,
-       "lightPosition2"),flatten(lightPosition2) );
-    gl.uniform1f( gl.getUniformLocation(program,
-       "shininess"),materialShininess );
-	   
-	   
+    normalMatrix = [vec3(modelViewMatrix[0][0], modelViewMatrix[0][1], modelViewMatrix[0][2]), vec3(modelViewMatrix[1][0], modelViewMatrix[1][1], modelViewMatrix[1][2]), vec3(modelViewMatrix[2][0], modelViewMatrix[2][1], modelViewMatrix[2][2])];
+    /*
+     normalMatrix = [
+     vec3(MVInit[0][0], MVInit[0][1], MVInit[0][2]),
+     vec3(MVInit[1][0], MVInit[1][1], MVInit[1][2]),
+     vec3(MVInit[2][0], MVInit[2][1], MVInit[2][2])
+     ];*/
+    //  gl.uniformMatrix3fv(uNormal, false, flatten(normalMatrix) );
+    
+    
+    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
+    
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition2"), flatten(lightPosition2));
+    gl.uniform1f(gl.getUniformLocation(program, "shininess"), materialShininess);
+    gl.uniform1i(gl.getUniformLocation(program, "uUseLight1"), useLight1);
+    gl.uniform1i(gl.getUniformLocation(program, "uUseLight2"), useLight2);
+    
     // draw the object
     if (obj.primtype == gl.LINES) {
         gl.drawElements(obj.primtype, obj.nIndices, gl.UNSIGNED_SHORT, 0);
@@ -560,25 +537,16 @@ function draw(obj){
 function render(){
 
     theta += dr;
-	
-	lightPosition =  vec4(lightDistanceXY*Math.cos(theta),
-        lightDistanceXY*Math.sin(theta),lightPosition[2],1);
-	
-	//document.getElementById("L1Pos").value = "X: "+lightDistanceXY*Math.cos(theta);
-	//document.getElementById("sliderObjL1Py").value = lightDistanceXY*Math.sin(theta);
-	//document.getElementById("sliderObjL1Pz").value = lightPosition[2];
-	
+    
+    lightPosition = vec4(lightDistanceXY * Math.cos(theta), lightDistanceXY * Math.sin(theta), lightPosition[2], 0);
+        
     theta2 += dr;
-	lightPosition2 =  vec4(lightPosition2[0],
-        light2DistanceYZ*Math.sin(theta2),light2DistanceYZ*Math.cos(theta2),1);
-		
-    gl.uniform1i(gl.getUniformLocation(program,
-       "uUseLight1"), useLight1);
-	gl.uniform1i(gl.getUniformLocation(program,
-       "uUseLight2"), useLight2);
+    lightPosition2 = vec4(lightPosition2[0], light2DistanceYZ * Math.sin(theta2), light2DistanceYZ * Math.cos(theta2), 0);
+    
+    
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
-   // draw(axes);
+    // draw(axes);
     
     for (var i = 0; i < objArray.length; i++) {
         draw(objArray[i]);
@@ -602,7 +570,7 @@ function addObj(){
             usrObj = createSphere(inpColor, modelView);
             usrObj.primtype = gl.TRIANGLES;
             
-        //    wf_usrObj = createSphere(black, modelView);
+            //    wf_usrObj = createSphere(black, modelView);
             
             break;
             
@@ -610,7 +578,7 @@ function addObj(){
             usrObj = createCone(rCone, hCone, inpColor, modelView);
             usrObj.primtype = gl.TRIANGLES;
             
-       //     wf_usrObj = createCone(rCone, hCone, black, modelView);
+            //     wf_usrObj = createCone(rCone, hCone, black, modelView);
             
             break;
             
@@ -618,18 +586,18 @@ function addObj(){
             usrObj = createCylinder(rCylinder, hCylinder, inpColor, modelView);
             usrObj.primtype = gl.TRIANGLES;
             
-      //      wf_usrObj = createCylinder(rCylinder, hCylinder, black, modelView);
+            //      wf_usrObj = createCylinder(rCylinder, hCylinder, black, modelView);
             
             break;
     }
     
     objArray.push(usrObj);
-  //  objArray.push(wf_usrObj);
+    //  objArray.push(wf_usrObj);
 }
 
 function removeLastObj(){
     objArray.pop();
-//    objArray.pop();
+    //    objArray.pop();
 }
 
 function removeAllObj(){
