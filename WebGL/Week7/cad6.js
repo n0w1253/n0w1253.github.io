@@ -79,7 +79,7 @@ var lightDistance = length(lightPosition);
 var theta    = Math.atan2(lightPosition[1], lightPosition[0]);
 var lightDistanceXY = length([lightPosition[0],lightPosition[1]]);
 
-var light2X=0;
+var light2X=10;
 var light2Y=0;
 var light2Z=10;
 var lightPosition2 = vec4(light2X, light2Y, light2Z, 0.0 );

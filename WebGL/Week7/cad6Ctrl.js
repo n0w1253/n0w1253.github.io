@@ -108,7 +108,7 @@ function doOnLoad(){
         step: 1,
         min: 1,
         max: 50,
-        value: 17.3,
+        value: 17,
         linkTo: "inpL1Dist",
     });
     mySliderL2Px = new dhtmlXSlider({
@@ -116,7 +116,7 @@ function doOnLoad(){
         step: 1,
         min: -20,
         max: 20,
-        value: 0,
+        value: 10,
         linkTo: "inpL2Px",
     });
     mySliderL2Py = new dhtmlXSlider({
@@ -140,7 +140,7 @@ function doOnLoad(){
         step: 1,
         min: 1,
         max: 50,
-        value: 10,
+        value: 14,
         linkTo: "inpL2Dist",
     });
     

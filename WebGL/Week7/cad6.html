@@ -63,6 +63,7 @@
             attribute vec4 vNormal;
             varying vec3 N, L, E;
             varying vec3 N2, L2, E2;
+			varying float attenuation;
             uniform mat4 modelViewMatrix;
             uniform mat4 projectionMatrix;
             uniform vec4 lightPosition;
@@ -71,22 +72,27 @@
             uniform vec4 eyePosition;
             void main()
             {
-            // vec3 light;
-            //vec3 pos = (modelViewMatrix * vPosition).xyz;
+          
             vec3 light = lightPosition.xyz;
             vec3 pos = (projectionMatrix * modelViewMatrix * vPosition).xyz;
             vec3 light2 = lightPosition2.xyz;
-            // if(lightPosition.z == 0.0)  L = normalize(lightPosition.xyz);
-            //  else  L = normalize(lightPosition).xyz - pos;
+       
             L = normalize(light - pos);
             L2 = normalize(light2 - pos);
-            //   E =  -normalize(pos);
+         
             E = normalize(eyePosition.xyz - pos);
             E2 = E;
-            //   N = normalize( normalMatrix*vNormal.xyz);
+         
             N = normalize( modelViewMatrix * vNormal).xyz;
             N2=N;
+			
+			//attenuation
+            float distanceToLight = length(light - pos);
+            attenuation = 1.0 / (0.5 + 0.01 * distanceToLight + 0.01 * distanceToLight * distanceToLight );
+
+			
             gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+			
             }
         </script>
         <script id="fragment-shader" type="x-shader/x-fragment">
@@ -98,7 +104,9 @@
             uniform bool uUseLight1;
             uniform bool uUseLight2; 
             varying vec3 N, L, E; 
-            varying vec3 N2, L2, E2;  
+            varying vec3 N2, L2, E2; 			
+			varying float attenuation; 
+			
             void main() 
             { 
             vec4 fColor;
@@ -112,7 +120,7 @@
             float Ks = pow( max(dot(N, H), 0.0), shininess ); 
             vec4  specular = Ks * specularProduct; 
             if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0); 
-			fColor = fColor + diffuse +specular;
+			fColor = fColor + attenuation * (diffuse +specular);
             }
 			
 			if (uUseLight2) {
@@ -122,7 +130,7 @@
             float Ks2 = pow( max(dot(N2, H2), 0.0), shininess );  
             vec4  specular2 = Ks2 * specularProduct;  
             if( dot(L2, N2) < 0.0 ) specular2 = vec4(0.0, 0.0, 0.0, 1.0);
-            fColor = fColor +diffuse2 +specular2;
+            fColor = fColor + attenuation * (diffuse2 +specular2);
 			}
             fColor.a = 1.0;
             gl_FragColor = fColor;
@@ -264,7 +272,7 @@
                                 Current Position / Distance
                             </td>
 							<td valign="top" style="padding-top:5px;padding-left:10px;font-size: 10px;">
-                                <p id="L2Pos">X: 0 Y: 0 Z: 10 / Dist: 10 </p>
+                                <p id="L2Pos">X: 10 Y: 0 Z: 10 / Dist: 14.1 </p>
                             </td>
 						</tr>
                         <tr>
