@@ -560,6 +560,7 @@ function draw(obj){
 function render(){
 
     theta += dr;
+	
 	lightPosition =  vec4(lightDistanceXY*Math.cos(theta),
         lightDistanceXY*Math.sin(theta),lightPosition[2],1);
 	
