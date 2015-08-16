@@ -1,0 +1,124 @@
+html, body {
+    height: 100%;
+    background-color: #3C8FC7;
+}
+*, *:before, *:after {
+    margin: 0px;
+    padding: 0px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 0px;
+    font-size: 100%;
+    font: inherit;
+}
+
+body, input {
+    font-family: "Gudea";
+    font-size: 16px;
+    color: #525252;
+    line-height: 100%;
+}
+
+.button, #submit {
+    padding: 5px 5px;
+    display: inline-block;
+    outline: 0;
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.3), inset 0px 2px 0px rgba(255, 255, 255, 0.15), 0px 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    border: none;
+    background: #3C8FC7;
+    -moz-transition: all linear 0.15s;
+    -webkit-transition: all linear 0.15s;
+    -o-transition: all linear 0.15s;
+    -ms-transition: all linear 0.15s;
+    font-family: "Gudea";
+    font-size: 0.938em;
+    font-weight: 600;
+    text-shadow: -1px 1px 1px rgba(0, 0, 0, 0.2);
+    line-height: 100%;
+    color: #fff;
+}
+
+/* line 19, ../scss/2-framework/_buttons.scss */
+.button:hover, .button:active, #submit:hover, #submit:active {
+    cursor: pointer;
+    background: #63a5d2;
+    text-decoration: none;
+}
+
+/* line 26, ../scss/2-framework/_buttons.scss */
+.button:active, #submit:active {
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.3), inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* line 31, ../scss/2-framework/_buttons.scss */
+.button[class
+^= "fa-"], #submit[class ^= "fa-"] {line-height:
+    0px;
+}
+
+/* line 38, ../scss/2-framework/_buttons.scss */
+button.btn {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+
+
+/*----- Tabs -----*/
+.tabs {
+    position: relative;
+    width: 30%;
+    display: inline-block;
+}
+
+/*----- Tab Links -----*/
+/* Clearfix */
+.tab-links:after {
+    display: block;
+    clear: both;
+    content: '';
+}
+
+.tab-links li {
+    margin: 0px 5px;
+    float: left;
+    list-style: none;
+}
+
+.tab-links a {
+    padding: 9px 15px;
+    display: inline-block;
+    border-radius: 3px 3px 0px 0px;
+    background: #7FB5DA;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4c4c4c;
+    transition: all linear 0.15s;
+}
+
+.tab-links a:hover {
+    background: #a7cce5;
+    text-decoration: none;
+}
+
+li.active a, li.active a:hover {
+    background: #fff;
+    color: #4c4c4c;
+}
+
+/*----- Content of Tabs -----*/
+.tab-content {
+    padding: 15px;
+    border-radius: 3px;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
+    background: #fff;
+}
+
+/*.tab {
+ display:none;
+ }
+ */
+.tab.active {
+    display: block;
+}
