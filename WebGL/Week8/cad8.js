@@ -53,9 +53,9 @@ var far = -10;
 var MVInit;
 var PInit;
 
-var light1X = 10;
-var light1Y = 10;
-var light1Z = 10;
+var light1X = 1;
+var light1Y = 1;
+var light1Z = 20;
 var lightPosition = vec4(light1X, light1Y, light1Z, 0.0);
 var lightDistance = length(lightPosition);
 var theta = Math.atan2(lightPosition[1], lightPosition[0]);
@@ -73,6 +73,7 @@ var materialShininess = 10.0;
 var ambientProduct, diffuseProduct, specularProduct;
 
 var texSize = 256;
+
 var image1 = new Array()
 for (var i = 0; i < texSize; i++) 
     image1[i] = new Array();
@@ -172,13 +173,15 @@ function init(){
     var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, texSize, texSize, 0, gl.RGBA, gl.UNSIGNED_BYTE, image2);
-//	gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA,
-//         gl.RGBA, gl.UNSIGNED_BYTE, image );
+//    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, texSize, texSize, 0, gl.RGBA, gl.UNSIGNED_BYTE, image2);
+	gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA,
+         gl.RGBA, gl.UNSIGNED_BYTE, image );
     
-  //  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
-  //  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+ // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 //	 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+ //  gl.texParameteri( gl.TEXTURE_2D,gl.TEXTURE_WRAP_T, gl.REPEAT )
    gl.generateMipmap(gl.TEXTURE_2D);
     gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
    
@@ -370,8 +373,8 @@ function render(){
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
      gl.enable(gl.DEPTH_TEST);
 
-   // gl.useProgram(programAxes);
-  // drawAxes(axes);
+    gl.useProgram(programAxes);
+   drawAxes(axes);
     
     var modelView = MVInit;
     
