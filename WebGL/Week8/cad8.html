@@ -117,7 +117,7 @@
 								  
 			 vec2 longitudeLatitude = vec2((atan(texCoords.x, texCoords.z) / 3.1415926 + 1.0) * 0.5,
                                   (asin(texCoords.y) / 3.1415926 + 0.5));
-			 gl_FragColor = texture2D(texture, longitudeLatitude);
+			 gl_FragColor = fColor * texture2D(texture, longitudeLatitude);
             }
         </script>
         <script id="vertex-shader-axes" type="x-shader/x-vertex">

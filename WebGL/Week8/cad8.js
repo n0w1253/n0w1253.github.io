@@ -13,7 +13,7 @@ var white = vec4(1.0, 1.0, 1.0, alpha); // white
 var gray = vec4(0.3, 0.3, 0.3, 0.5); // gray
 var latitudeBands = 50;
 var longitudeBands = 50;
-var radius = 0.75;
+var radius = 1;
 var sphere;
 
 var objArray = [];
@@ -53,15 +53,15 @@ var far = -10;
 var MVInit;
 var PInit;
 
-var light1X = 1;
-var light1Y = 1;
-var light1Z = 20;
+var light1X = 10;
+var light1Y = 10;
+var light1Z = 10;
 var lightPosition = vec4(light1X, light1Y, light1Z, 0.0);
 var lightDistance = length(lightPosition);
 var theta = Math.atan2(lightPosition[1], lightPosition[0]);
 var lightDistanceXY = length([lightPosition[0], lightPosition[1]]);
 
-var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
+var lightAmbient = vec4(0.5, 0.5, 0.5, 1.0);
 var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
 var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 
