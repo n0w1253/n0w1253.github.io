@@ -4,7 +4,7 @@ var mySliderRx, mySliderRy, mySliderRz;
 
 function doOnLoad(){
 
-    
+
     mySliderRx = new dhtmlXSlider({
         parent: "sliderObjRx",
         step: 1,
@@ -30,7 +30,7 @@ function doOnLoad(){
         linkTo: "inpRz",
     });
     
-  
+    
     
     mySliderRx.attachEvent("onChange", function(pos, slider){
         window.inpRx = mySliderRx.getValue();
@@ -41,7 +41,7 @@ function doOnLoad(){
     mySliderRz.attachEvent("onChange", function(pos, slider){
         window.inpRz = mySliderRz.getValue();
     });
-     
+    
 };
 
 
@@ -51,7 +51,7 @@ $(".field").on('input', function(){
 });
 
 $(".option").change(function(){
-    window.inpShape = $(this).children("option:selected").index();
+    window.inpTexture = $(this).children("option:selected").index();
     
 });
 
@@ -75,12 +75,58 @@ function resetRotation(){
     setCadValues();
 }
 
-
 function setCadValues(){
-   
+
     window.inpRx = $("#inpRx").val();
     window.inpRy = $("#inpRy").val();
     window.inpRz = $("#inpRz").val();
+    
+}
 
+function degToRad(degrees){
+    return degrees * Math.PI / 180;
+}
+
+//mouse events
+
+document.getElementById("gl-canvas").onmousedown = handleMouseDown;
+document.onmouseup = handleMouseUp;
+document.onmousemove = handleMouseMove;
+
+var mouseDown = false;
+var lastMouseX = null;
+var lastMouseY = null;
+
+
+function handleMouseDown(event){
+    mouseDown = true;
+    lastMouseX = event.clientX;
+    lastMouseY = event.clientY;
+}
+
+
+function handleMouseUp(event){
+    mouseDown = false;
+	
+}
+
+
+function handleMouseMove(event){
+    if (!mouseDown) {
+        return;
+    }
+    var newX = event.clientX;
+    var newY = event.clientY;
+    
+    var deltaY = newX - lastMouseX;
+	var deltaX = newY - lastMouseY;
+	
+    mySliderRx.setValue((parseInt(inpRx) + Math.floor(deltaX ))%180);
+     
+	mySliderRy.setValue((parseInt(inpRy) + Math.floor(deltaY ))%180);
+	setCadValues();
+
+    lastMouseX = newX
+    lastMouseY = newY;
 }
 
