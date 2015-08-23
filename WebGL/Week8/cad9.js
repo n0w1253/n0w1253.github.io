@@ -165,6 +165,8 @@ function createTextures(){
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA,  texSize, texSize,0,gl.RGBA, gl.UNSIGNED_BYTE, image2);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+	//gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     
     texture1 = createTexture(image);		
 	texture2 = createTexture(imageMoon);
@@ -203,8 +205,8 @@ function createSphere(color, modelView){
             var x = cosPhi * sinTheta;
             var y = cosTheta;
             var z = sinPhi * sinTheta;
-            var u = 1 - (longNumber / longitudeBands);
-            var v = 1 - (latNumber / latitudeBands);
+            var u = 1.0 - (longNumber / longitudeBands);
+            var v = 1.0 - (latNumber / latitudeBands);
             
             vertices.push(vec4(radius * x, radius * y, radius * z, 1));
             normals.push(normalize(vec4(x, y, z, 0)));
@@ -285,9 +287,9 @@ function draw(obj){
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.normalBuffer);
     gl.vertexAttribPointer(vNormal, obj.normalSize, gl.FLOAT, false, 0, 0);
     
-    //gl.enableVertexAttribArray(vTexture);
-    //gl.bindBuffer(gl.ARRAY_BUFFER, obj.textureBuffer);
-    //gl.vertexAttribPointer(vTexture, obj.textureSize, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(vTexture);
+    gl.bindBuffer(gl.ARRAY_BUFFER, obj.textureBuffer);
+    gl.vertexAttribPointer(vTexture, obj.textureSize, gl.FLOAT, false, 0, 0);
     
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.indices);
     
@@ -325,6 +327,8 @@ function render(){
 	
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     
     var modelView = MVInit;
     

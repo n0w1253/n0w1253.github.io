@@ -382,7 +382,7 @@ function createSphere(color, modelView){
     var indexData = [];
     var c_idx = 0;
     for (var latNumber = 0; latNumber <= latitudeBands; latNumber++) {
-        var theta = latNumber * 2 * Math.PI / latitudeBands;
+        var theta = latNumber *  Math.PI / latitudeBands;
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
         
