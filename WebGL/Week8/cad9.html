@@ -50,32 +50,21 @@
             attribute vec4 vPosition;
             attribute vec4 vNormal;
             varying vec3 N, L, E;
-            //    varying float attenuation;
             uniform mat4 modelViewMatrix;
             uniform mat4 projectionMatrix;
             uniform vec4 lightPosition;
             uniform vec4 eyePosition;
-            varying float s, t;
             attribute  vec2 vTexCoord;
-               varying vec2 fTexCoord;
-            varying vec4 texCoords;
+            varying vec2 fTexCoord;
             void main()
             {
-            	fTexCoord = vTexCoord;
-            texCoords = vec4(vPosition.xyz, 1.0);
+            fTexCoord = vTexCoord;
             float pi = acos(0.0) * 2.0;
-            // s= 0.5*acos(vPosition.x)/pi;
-            s= (atan(vPosition.x, vPosition.z) /  3.1415926 + 1.0)*0.5;
-            //t = 0.5*asin(vPosition.y/sqrt(1.0-vPosition.x*vPosition.x))/pi;
-            t = (asin(vPosition.y) /  3.1415926 + 0.5);
             vec3 light = lightPosition.xyz;
             vec3 pos = (projectionMatrix * modelViewMatrix * vPosition).xyz;
             L = normalize(light - pos);
             E = normalize(eyePosition.xyz - pos);
             N = normalize( modelViewMatrix * vNormal).xyz;
-            //attenuation
-            //   float distanceToLight = length(light - pos);
-            //   attenuation = 1.0 / (0.5 + 0.01 * distanceToLight + 0.001 * distanceToLight * distanceToLight );
             gl_Position = projectionMatrix * modelViewMatrix * vPosition;
             }
         </script>
@@ -86,11 +75,8 @@
             uniform vec4 specularProduct;  
             uniform float shininess; 
             varying vec3 N, L, E;  
-            //     varying float attenuation; 
-            varying float s, t;  
             uniform sampler2D texture; 
-            varying  vec2 fTexCoord; 
-            varying vec4 texCoords; 
+            varying  vec2 fTexCoord;  
             void main() 
             {  
             vec4 fColor; 
@@ -102,19 +88,11 @@
             float Ks = pow( max(dot(N, H), 0.0), shininess ); 
             vec4  specular = Ks * specularProduct;  
             if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0); 
-            // fColor = fColor + attenuation * (diffuse +specular);
             fColor = fColor + diffuse +specular;
             fColor.a = 1.0;
-            //  gl_FragColor = fColor * texture2D( texture, vec2(s, t));
-            // gl_FragColor =  texture2D( texture, vec2(s, t));
-             vec4 textureColor = texture2D(texture, vec2(fTexCoord.s, fTexCoord.t));
-             gl_FragColor = fColor * textureColor;
-			 gl_FragColor.w=1.0;
-            //	 vec2 longitudeLatitude = vec2((atan(texCoords.y, texCoords.x) / 3.1415926 + 1.0) * 0.5,
-            //                            (asin(texCoords.z) / 3.1415926 + 0.5));
-           // vec2 longitudeLatitude = vec2((atan(texCoords.x, texCoords.z) / 3.1415926 + 1.0 ) * 0.5 ,
-           // (asin(texCoords.y) / 3.1415926 + 0.5) );
-           // gl_FragColor = fColor * texture2D(texture, longitudeLatitude);
+            vec4 textureColor = texture2D(texture, vec2(fTexCoord.s, fTexCoord.t));
+            gl_FragColor = fColor * textureColor;
+            gl_FragColor.w=1.0;
             }
         </script>
         <script id="vertex-shader-axes" type="x-shader/x-vertex">

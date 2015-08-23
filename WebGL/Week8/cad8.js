@@ -21,7 +21,7 @@ var inpRz = 0;
 var program;
 var vPosition;
 var vNormal;
-var vTexture;
+
 var uMV;
 var uP;
 
@@ -122,11 +122,9 @@ function init(){
     // Associate out shader variables with our data buffer
     vPosition = gl.getAttribLocation(program, "vPosition");
     vNormal = gl.getAttribLocation(program, "vNormal");
-    vTexture = gl.getAttribLocation(program, "vTexCoord");
     uMV = gl.getUniformLocation(program, "modelViewMatrix");
     uP = gl.getUniformLocation(program, "projectionMatrix");
-    
-    
+       
     var eye = vec3(0.25, 0.5, 10);
     
     MVInit = lookAt(eye, at, up);
@@ -187,7 +185,6 @@ function createSphere(color, modelView){
     
     var vertices = [];
     var normals = [];
-    var textures = [];
     var indexData = [];
     var c_idx = 0;
     for (var latNumber = 0; latNumber <= latitudeBands; latNumber++) {
@@ -203,12 +200,9 @@ function createSphere(color, modelView){
             var x = cosPhi * sinTheta;
             var y = cosTheta;
             var z = sinPhi * sinTheta;
-            var u = 1 - (longNumber / longitudeBands);
-            var v = 1 - (latNumber / latitudeBands);
             
             vertices.push(vec4(radius * x, radius * y, radius * z, 1));
             normals.push(normalize(vec4(x, y, z, 0)));
-            textures.push(vec2(u, v));
             colors.push(color);
         }
     }
@@ -236,12 +230,7 @@ function createSphere(color, modelView){
     var normalBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW);
-    
-    var textureBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(textures), gl.STATIC_DRAW);
-    
-    
+       
     var indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData), gl.STATIC_DRAW);
@@ -255,15 +244,12 @@ function createSphere(color, modelView){
         modelView: modelView,
         buffer: vertexBuffer,
         normalBuffer: normalBuffer,
-        textureBuffer: textureBuffer,
         colorBuffer: colorBuffer,
         indices: indexBuffer,
         vertSize: 4,
         nVerts: vertices.length,
         normalSize: 4,
         nNormals: normals.length,
-        textureSize: 2,
-        nTextures: textures.length,
         colorSize: 4,
         nColors: colors.length,
         nIndices: indexData.length,
@@ -284,10 +270,6 @@ function draw(obj){
     gl.enableVertexAttribArray(vNormal);
     gl.bindBuffer(gl.ARRAY_BUFFER, obj.normalBuffer);
     gl.vertexAttribPointer(vNormal, obj.normalSize, gl.FLOAT, false, 0, 0);
-    
-    //gl.enableVertexAttribArray(vTexture);
-    //gl.bindBuffer(gl.ARRAY_BUFFER, obj.textureBuffer);
-    //gl.vertexAttribPointer(vTexture, obj.textureSize, gl.FLOAT, false, 0, 0);
     
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.indices);
     
