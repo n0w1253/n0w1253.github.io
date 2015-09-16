@@ -6,12 +6,11 @@
          <style>	
             fieldset {background:lightyellow; border:10px solid yellow; margin-bottom:10px; width: 720px}
             label {width: 180px; display:inline-block; text-align: right; vertical-align: top} 
-            .auto_width {width: auto}
+            .auto_width {width: auto} 
             .range {text-align: center; color: white; width: 10%}
             .low {background: maroon;width: 10%}
             .high{background: purple}
             textArea{width: 360px; height: 50px}
-            
         </style>
     </head>
     <body>
@@ -31,9 +30,9 @@
                 <label for="name">Name:</label>
                 <input type="text" name="name" required> 
                 <br><br>
-                <label for="gender" class="auto_width">Gender:</label>
-                <input type="radio" name="gender" value="male" required>Male
-                <input type="radio" name="gender" value="female" required>Female
+                <label for="gender">Gender:</label>
+                <input type="radio" name="gender" value="male" required> <span class="auto_width">Male</span>
+                <input type="radio" name="gender" value="female" required><span class="auto_width">Female</span>
                 <br><br>
                 <label for="age">Age:</label>
                 <input type="number" min="0" max="99" step="1" value="18" name="age" required>
@@ -76,10 +75,10 @@
                 <textarea rows="3" cols="60" name="address" >                    
                 </textarea> 
                 <br><br> 
-                <label for="contact_method" class="auto_width">Method to contact you:</label>
-                <input type="checkbox" name="contact_method" value="email">Email 
-                <input type="checkbox" name="contact_method" value="whatsapp">Whatsapp 
-                <input type="checkbox" name="contact_method" value="in-app_chat">In-app chat 
+                <label for="contact_method">Method to contact you:</label>
+                <input type="checkbox" name="contact_method" value="email"><span class="auto_width">Email</span> 
+                    <input type="checkbox" name="contact_method" value="whatsapp"><span class="auto_width">Whatsapp</span> 
+                    <input type="checkbox" name="contact_method" value="in-app_chat"><span class="auto_width">In-app chat</span>
                 <br><br>
             </fieldset> <br>
             <input type="submit" value="Submit">
