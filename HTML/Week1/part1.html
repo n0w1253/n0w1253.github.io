@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Part 1</title>
+        <meta name="author" content="David Rossiter">
+    </head>
+    <body>
+        <h1>Please Enter Your Details For Our Dating Website!</h1>
+        <form>
+            <fieldset>
+                <legend>Your Face</legend>
+                <label for="image">Your image:</label>  
+                <input type="file" name="image" required> 
+                <br>
+                <label for="preview">Image preview:</label>  
+                <img id="preview" name="preview" width="10%"> 
+                <br>
+            </fieldset> <br>
+            <fieldset>
+                <legend>Your general details</legend>
+                Favourite cartoon? <input type="text" name="favCartoon"> <br>
+                Favourite pizza? <input type="text" name="lastName"> <br>
+            </fieldset> <br>
+            <input type="submit" value="Send">
+        </form>
+
+        <script>
+            window.onload = function () {
+                var files = document.querySelectorAll("input[type=file]");
+                files[0].addEventListener("change", function (e) {
+                    if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById("preview").setAttribute("src", e.target.result);
+                        }
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            }
+        </script>
+
+    </body>
+</html>
