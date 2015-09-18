@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+    <head>
+        <title>JavaScript Color Guessing Game -- Part 2</title>
+    </head>
+    <body onload="do_game()">
+        <script>
+
+            var colors = ["aqua", "blue", "cyan", "gold", "lime", "pink", "red", "tan", "white", "yellow"];
+            var target;
+            var guess_input_text;
+            var guess_input;
+            var finished = false;
+            var guesses = 0;
+
+            function do_game() {
+                var random_number = Math.random() * colors.length;
+                var random_number_integer = Math.floor(random_number);
+                target = colors[random_number_integer];
+                alert("Shh!  The answer is " + target);
+
+                while (!finished) {
+                    guess_input_text = prompt("I am thinking one of these colors:\n\n" + colors +
+                            "\n\n" +
+                            "What color am I thinking of?");
+                    guess_input = guess_input_text.trim().toLowerCase();
+                    guesses += 1;
+                    finished =  check_guess();
+                }
+
+                myBody = document.getElementsByTagName("body")[0];
+
+                myBody.style.background = target;
+            }
+
+            function check_guess() {
+                if (colors.indexOf(guess_input) < 0) {
+                    alert("I don’t recognize that color!.");
+                    return false;
+                }
+
+                if (guess_input > target) {
+                    alert("Your input is alphabetically higher than mine!");
+                    return false;
+                }
+                if (guess_input < target) {
+                    alert("‘Your input is alphabetically lower than mine!");
+                    return false;
+                }
+                alert("You are right! The color was " + target +
+                        ".\n\nIt took you " + guesses +
+                        " guesses to get the color!\n\nYou can see the color in the background.");
+                return true;
+            }
+        </script>
+    </body>
+</html>

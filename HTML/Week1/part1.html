@@ -2,39 +2,60 @@
 <html>
     <head>
         <title>Part 1</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <meta name="author" content="Nancy Wang">
     </head>
     <body>
         <h1>Please Enter Your Details For Our Dating Website!</h1>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" action="http://n0w1253.5gbfree.com/echo">
             <fieldset>
-                <legend>Your Face</legend>
-                <label for="image">Your image:</label>  
-                <input type="file" name="image" required> 
-                <br><br>
-                <label for="preview">Image preview:</label>  
-                <img id="preview" name="preview" width="10%"> 
-                <br><br>
-            </fieldset> <br>
+                <legend>
+                    Your Face
+                </legend>
+                <label for="image">
+                    Your image:
+                </label>
+                <input type="file" name="image" required>
+                <br>
+                <label for="preview">
+                    Image preview:
+                </label>
+                <img id="preview" name="preview" width="10%">
+                <br>
+            </fieldset>
+            <br>
             <fieldset>
-                <legend>Your General Details</legend>
-                <label for="name">Name:</label>
-                <input type="text" name="name" required> 
-                <br><br>
-                <label for="gender">Gender:</label>
-                <input type="radio" name="gender" value="male" required>Male
-                <input type="radio" name="gender" value="female" required>Female
-                <br><br>
-                <label for="age">Age:</label>
+                <legend>
+                    Your General Details
+                </legend>
+                <label for="name">
+                    Name:
+                </label>
+                <input type="text" name="name" required>
+                <br>
+                <label for="gender">
+                    Gender:
+                </label>
+                <input type="radio" name="gender" value="male" required>Male<input type="radio" name="gender" value="female" required>Female
+                <br>
+                <label for="age">
+                    Age:
+                </label>
                 <input type="number" min="0" max="99" step="1" value="18" name="age" required>
-                <br><br>
-                <label for="birthday">Date of birth:</label>
+                <br>
+                <label for="birthday">
+                    Date of birth:
+                </label>
                 <input type="date" name="birthday">
-                <br><br>
-                <label for="color">Favorite color:</label>
-                <input type="color" name="color"> 
-                <br><br>
-                <label for="country">Which country:</label>
+                <br>
+                <label for="color">
+                    Favorite color:
+                </label>
+                <input type="color" name="color">
+                <br>
+                <label for="country">
+                    Which country:
+                </label>
                 <select name="country">
                     <option value="none">no selection</option>
                     <option value="us">US</option>
@@ -42,46 +63,62 @@
                     <option value="uk">UK</option>
                     <option value="japan">Japan</option>
                     <option value="mexico">Mexico</option>
-                </select> 
-                <br><br>
-            </fieldset> <br>
+                </select>
+                <br>
+            </fieldset>
+            <br>
             <fieldset>
-                <legend>Your Indicators</legend>
-                <label for="height">Height:</label>  
+                <legend>
+                    Your Indicators
+                </legend>
+                <label for="height">
+                    Height:
+                </label>
                 Short <input type="range" min="0" max="100" step="5" value="50" name="height"> Tall
-                <br><br>
-                <label for="salary">Salary:</label>  
+                <br>
+                <label for="salary">
+                    Salary:
+                </label>
                 Poor <input type="range" min="0" max="100" step="5" value="50" name="salary"> Rich
-                <br><br>
-            </fieldset> <br>
+                <br>
+            </fieldset>
+            <br>
             <fieldset>
-                <legend>Your Contact Information</legend>
-                <label for="email">Email:</label>
-                <input type="email" name="email" required> 
-                <br><br> 
-                <label for="mobile">Mobile:</label>
-                <input type="tel" name="mobile" > 
-                <br><br> 
-                <label for="address">Address:</label>
-                <textarea rows="3" cols="60" name="address" >                    
-                </textarea> 
-                <br><br> 
-                <label for="contact_method">Method to contact you:</label>
-                <input type="checkbox" name="contact_method" value="email">Email 
-                <input type="checkbox" name="contact_method" value="whatsapp">Whatsapp 
-                <input type="checkbox" name="contact_method" value="in-app_chat">In-app chat 
-                <br><br>
-            </fieldset> <br>
+                <legend>
+                    Your Contact Information
+                </legend>
+                <label for="email">
+                    Email:
+                </label>
+                <input type="email" name="email" required>
+                <br>
+                <label for="mobile">
+                    Mobile:
+                </label>
+                <input type="tel" name="mobile">
+                <br>
+                <label for="address">
+                    Address:
+                </label>
+                <textarea rows="3" cols="60" name="address">
+                </textarea>
+                <br>
+                <label for="contact_method">
+                    Method to contact you:
+                </label>
+                <input type="checkbox" name="contact_method" value="email">Email <input type="checkbox" name="contact_method" value="whatsapp">Whatsapp <input type="checkbox" name="contact_method" value="in-app_chat">In-app chat 
+                <br>
+            </fieldset>
+            <br>
             <input type="submit" value="Submit">
         </form>
-
         <script>
-            window.onload = function () {
+            window.onload = function(){
                 var files = document.querySelectorAll("input[type=file]");
-                files[0].addEventListener("change", function (e) {
+                files[0].addEventListener("change", function(e){
                     if (this.files && this.files[0]) {
                         var reader = new FileReader();
-                        reader.onload = function (e) {
+                        reader.onload = function(e){
                             document.getElementById("preview").setAttribute("src", e.target.result);
                         }
                         reader.readAsDataURL(this.files[0]);
@@ -89,6 +126,5 @@
                 });
             }
         </script>
-
     </body>
 </html>

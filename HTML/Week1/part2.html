@@ -2,38 +2,71 @@
 <html>
     <head>
         <title>Part 2</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
         <meta name="author" content="Nancy Wang">
          <style>	
-            fieldset {background:lightyellow; border:10px solid yellow; margin-bottom:10px; width: 720px}
-            label {width: 180px; display:inline-block; text-align: right; vertical-align: top} 
-            .auto_width {width: auto} 
-            .range {text-align: center; color: white; width: 10%}
-            .low {background: maroon;width: 10%}
-            .high{background: purple}
-            textArea{width: 360px; height: 50px}
+         fieldset {
+             background: lightyellow;
+             border: 10px solid yellow;
+             margin-bottom: 10px;
+             width: 720px
+         }
+         
+         label {
+             width: 180px;
+             display: inline-block;
+             text-align: right;
+             vertical-align: top
+         }
+         
+         .auto_width {
+             width: auto;
+             vertical-align: top
+         }
+         
+         .range {
+             text-align: center;
+             color: white;
+             display: inline-block;
+             width: 8%;
+             vertical-align: top
+         }
+         
+         .low {
+             background: maroon
+         }
+         
+         .high {
+             background: purple
+         }
+         
+         textArea {
+             width: 360px;
+             height: 50px
+         }
         </style>
     </head>
     <body>
         <h1>Please Enter Your Details For Our Dating Website!</h1>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" action="http://n0w1253.5gbfree.com/echo">
             <fieldset>
                 <legend>Your Face</legend>
                 <label for="image">Your image:</label>  
                 <input type="file" name="image" required> 
-                <br><br>
+                <br>
                 <label for="preview">Image preview:</label>  
                 <img id="preview" name="preview" width="10%"> 
-                <br><br>
+                <br>
             </fieldset> <br>
             <fieldset>
                 <legend>Your General Details</legend>
                 <label for="name">Name:</label>
                 <input type="text" name="name" required> 
-                <br><br>
+                <br>
                 <label for="gender">Gender:</label>
                 <input type="radio" name="gender" value="male" required> <span class="auto_width">Male</span>
                 <input type="radio" name="gender" value="female" required><span class="auto_width">Female</span>
-                <br><br>
+                <br>
                 <label for="age">Age:</label>
                 <input type="number" min="0" max="99" step="1" value="18" name="age" required>
                 <br><br>
@@ -58,28 +91,28 @@
                 <legend>Your Indicators</legend>
                 <label for="height">Height:</label>  
                 <span class="range low">Short </span><input type="range" min="0" max="100" step="5" value="50" name="height">  <span class="range high">Tall</span>
-                <br><br>
+                <br>
                 <label for="salary">Salary:</label>  
                 <span class="range low">Poor </span><input type="range" min="0" max="100" step="5" value="50" name="salary">  <span class="range high">Rich</span>
-                <br><br>
+                <br>
             </fieldset> <br>
             <fieldset>
                 <legend>Your Contact Information</legend>
                 <label for="email">Email:</label>
                 <input type="email" name="email" required> 
-                <br><br> 
+                <br> 
                 <label for="mobile">Mobile:</label>
                 <input type="tel" name="mobile" > 
-                <br><br> 
+                <br> 
                 <label for="address">Address:</label>
                 <textarea rows="3" cols="60" name="address" >                    
                 </textarea> 
-                <br><br> 
+                <br> 
                 <label for="contact_method">Method to contact you:</label>
                 <input type="checkbox" name="contact_method" value="email"><span class="auto_width">Email</span> 
                     <input type="checkbox" name="contact_method" value="whatsapp"><span class="auto_width">Whatsapp</span> 
                     <input type="checkbox" name="contact_method" value="in-app_chat"><span class="auto_width">In-app chat</span>
-                <br><br>
+                <br>
             </fieldset> <br>
             <input type="submit" value="Submit">
         </form>
