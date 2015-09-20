@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Matching Game Part 4</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta name="author" content="Nancy Wang">
+        <style>
+            img { position:absolute }
+            div { position:absolute; 
+                  width: 500px; 
+                  height: 500px }
+            #rightSide { left: 500px; 
+                         border-left: 1px solid black }
+            </style>
+        </head>
+        <body onload="generateFaces()">
+            <h1>Matching Game</h1>
+            <p>Click on the extra smiling face on the left.</p>
+            <div id="leftSide"></div> 
+        <div id="rightSide"></div> 
+
+        <script>
+            var numberOfFaces = 5;
+            var theLeftSide = document.getElementById("leftSide");
+            var theRightSide = document.getElementById("rightSide");
+            var theBody = document.getElementsByTagName("body")[0];
+
+            function generateFaces() {
+                delete_all_children(theLeftSide);
+                delete_all_children(theRightSide);
+                for (var i = 0; i < numberOfFaces; i++) {
+                    var img = document.createElement("img");
+                    img.src = "http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";
+                    img.style.top = Math.floor(Math.random() * 400) + "px";
+                    img.style.left = Math.floor(Math.random() * 400) + "px";
+                    theLeftSide.appendChild(img);
+                    if (i === (numberOfFaces - 1)) {
+                        //if last child
+                        img.onclick = function nextLevel(event) {
+                            event.stopPropagation();
+                            numberOfFaces += 5;
+                            generateFaces();
+                        };
+                    }
+                }
+
+                var leftSideImages = theLeftSide.cloneNode(true);
+                leftSideImages.removeChild(leftSideImages.lastChild);
+                theRightSide.appendChild(leftSideImages);
+            }
+
+            function delete_all_children(theNode) {
+                while (theNode.firstChild)
+                    theNode.removeChild(theNode.firstChild);
+            }
+
+
+            theBody.onclick = function gameOver() {
+                alert("Game Over!");
+                theBody.onclick = null;
+                theLeftSide.lastChild.onclick = null;
+            };
+
+
+        </script>
+
+    </body>
+</html>
