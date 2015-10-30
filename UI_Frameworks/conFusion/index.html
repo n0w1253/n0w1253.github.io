@@ -65,7 +65,7 @@
                         <li><a href="contactus.html"><i class="fa fa-envelope-o"></i>Contact</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a data-toggle="modal" data-target="#loginModal">
+                        <li><a  id="login">
                                 <span class="glyphicon glyphicon-log-in"></span> Login</a>
                         </li>
                     </ul>
@@ -77,7 +77,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="close" id="login-dismiss">&times;</button>
                         <h4 class="modal-title">Login </h4>
                     </div>
                     <div class="modal-body">
@@ -97,7 +97,7 @@
 
                             <button type="submit" class="btn btn-info btn-sm">Sign In</button>
                             <button type="button" class="btn btn-default btn-sm"
-                                    data-dismiss="modal">Cancel</button>
+                                    id="login-cancel">Cancel</button>
 
                         </form>
 
@@ -112,7 +112,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="close" id="reserve-table-dismiss">&times;</button>
                         <h4 class="modal-title">Reserve a Table</h4>
                     </div>
                     <div class="modal-body">
@@ -164,8 +164,7 @@
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="submit" class="btn btn-primary">Reserve</button>
-                                    <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-default" id="reserve-table-cancel">Cancel</button>
                                 </div>
                             </div>
                         </form>
@@ -202,8 +201,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-2">
                         <p style="padding:40px;"></p>
-                        <a type="button" class="btn btn-warning btn-block"
-                           data-toggle="modal" data-target="#reserveTableModal">Reserve Table</a>
+                        <a type="button" class="btn btn-warning btn-block" id="reserve-table">Reserve Table</a>
                     </div>	
                 </div>
             </div>
@@ -426,6 +424,24 @@
                 });
                 $("#carousel-play").click(function () {
                     $("#mycarousel").carousel('cycle');
+                });
+                $("#reserve-table").click(function () {
+                    $("#reserveTableModal").modal('toggle');
+                });
+                $("#reserve-table-dismiss").click(function () {
+                    $("#reserveTableModal").modal('hide');
+                });
+                $("#reserve-table-cancel").click(function () {
+                    $("#reserveTableModal").modal('hide');
+                });
+                $("#login").click(function () {
+                    $("#loginModal").modal('toggle');
+                });
+                $("#login-dismiss").click(function () {
+                    $("#loginModal").modal('hide');
+                });
+                $("#login-cancel").click(function () {
+                    $("#loginModal").modal('hide');
                 });
             });
         </script>
