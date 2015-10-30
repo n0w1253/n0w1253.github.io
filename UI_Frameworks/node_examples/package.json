@@ -1,0 +1,14 @@
+{
+  "name": "course",
+  "version": "1.0.0",
+  "description": "course",
+  "main": "solve.js",
+  "scripts": {
+    "test": "node solve"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prompt": "^0.2.14"
+  }
+}
