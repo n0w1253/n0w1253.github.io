@@ -1,5 +1,8 @@
 **/.DS_Store
 **/.idea
 **/.bowerrc
+**/node_modules
+**/dist
+**/.tmp
 AngularJS/conFusion/bower_components
 AngularJS/conFusion/nbproject
