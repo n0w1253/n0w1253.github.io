@@ -161,7 +161,8 @@ angular.module('confusionApp', [])
 
                     //Step 2: This is how you record the date
                     $scope.newComment.date = new Date().toISOString();
-
+                    $scope.newComment.rating = Number($scope.newComment.rating);
+console.log(JSON.stringify($scope.newComment));
                     // Step 3: Push your comment into the dish's comment array
                     $scope.dish.comments.push($scope.newComment);
 
@@ -174,7 +175,10 @@ angular.module('confusionApp', [])
                         comment: "",
                         author: ""
                     };
-                }
+                    
+                    
+                    
+                };
             }])
 
         ;
