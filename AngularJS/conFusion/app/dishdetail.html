@@ -100,7 +100,7 @@
                                 <textarea class="form-control" id="comment" name="comment" rows="12"
                                           ng-model="newComment.comment" required>
                                 </textarea>
-                                <span ng-show="commentForm.comment.$error.required && !commentForm.comment.$pristine" class="help-block">Your comment is required.</span>
+                                <span ng-show="commentForm.comment.$error.required && !commentForm.comment.$pristine" class="help-block">Your comments are required.</span>
                             </div>
                         </div> 
                         <div class="form-group">
@@ -108,8 +108,7 @@
                                 <button type="submit" class="btn btn-primary" ng-disabled="commentForm.$invalid">Submit Comment</button>
                             </div>
                         </div>
-                        <p>Task 1: Design the form to submit the comments</p>
-                        <p>Task 2: You need to validate that the user name and comments are entered</p>
+                        
                     </form>
                 </div>
             </div>
