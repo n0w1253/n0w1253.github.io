@@ -89,7 +89,7 @@
                         <div class="form-group">
                             <label for="optradio" class="col-sm-2 control-label">Number of Stars</label>                        
                             <div class="col-sm-10">
-                                <label class="radio-inline" ng-repeat="r in [1,2,3,4,5]"><input type="radio"  name="optradio" value="{{r}}" ng-model="newComment.rating">{{r}}</label>
+                                <label class="radio-inline" ng-repeat="r in [1, 2, 3, 4, 5]"><input type="radio"  name="optradio" value="{{r}}" ng-model="newComment.rating">{{r}}</label>
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                                 <button type="submit" class="btn btn-primary" ng-disabled="commentForm.$invalid">Submit Comment</button>
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -117,6 +117,8 @@
         <!-- build:js scripts/main.js -->
         <script src="../bower_components/angular/angular.min.js"></script>
         <script src="scripts/app.js"></script>
+        <script src="scripts/controllers.js"></script>
+        <script src="scripts/services.js"></script>
         <!-- endbuild -->
 
     </body>
