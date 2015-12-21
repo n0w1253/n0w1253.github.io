@@ -6,16 +6,19 @@
             <h3 align=center>Our Lipsmacking Culinary Creations</h3>
         </div>
         <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-            <div class="media" ng-model="featuredDish">
+            <div ng-if="!showDish">
+                <h3>{{message}}</h3>
+            </div>
+            <div class="media" ng-model="dish" ng-if="showDish">
                 <div class="media-left media-middle">                   
                     <img class="media-object img-thumbnail"
-                         ng-src={{featuredDish.image}} alt="Uthapizza">                    
+                         ng-src={{dish.image}} alt="Uthapizza">                    
                 </div>
                 <div class="media-body">
-                    <h2 class="media-heading">{{featuredDish.name}}
-                        <span class="label label-danger">{{featuredDish.label}}</span>
-                        <span class="badge">{{featuredDish.price| currency}}</span></h2>
-                    <p>{{featuredDish.description}}</p>                           
+                    <h2 class="media-heading">{{dish.name}}
+                        <span class="label label-danger">{{dish.label}}</span>
+                        <span class="badge">{{dish.price| currency}}</span></h2>
+                    <p>{{dish.description}}</p>                           
                 </div>
             </div>
         </div>
@@ -29,14 +32,14 @@
         </div>
         <div class="col-xs-12 col-sm-9">
             <div class="media" ng-model="promotion">
-                
+
                 <div class="media-body">
                     <h2 class="media-heading">{{promotion.name}}
                         <span class="label label-danger">{{promotion.label}}</span>
                         <span class="badge">{{promotion.price| currency}}</span></h2>
                     <p>{{promotion.description}}</p>                           
                 </div>
-                
+
                 <div class="media-right media-middle">                   
                     <img class="media-object img-thumbnail"
                          ng-src={{promotion.image}} alt="Weekend Grand Buffet">                    
