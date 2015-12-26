@@ -28,15 +28,15 @@
                 <h4>
                     Customer Comments
                     <small>
-                        &emsp;Sort by: <input type="text" ng-model="type"/>
+                        &emsp;Sort by: <input type="text" ng-model="orderText"/>
                     </small>
                 </h4>
                 <ul class="list-unstyled">
-                    <li ng-repeat="commentEntry in dish.comments| orderBy:type">
+                    <li ng-repeat="comment in dish.comments| orderBy:orderText">
                         <blockquote>
-                            <p>{{commentEntry.rating}} Stars</p>
-                            <p>{{commentEntry.comment}}</p>
-                            <footer>{{commentEntry.author}}, {{commentEntry.date| date}}</footer>
+                            <p>{{comment.rating}} Stars</p>
+                            <p>{{comment.comment}}</p>
+                            <footer>{{comment.author}}, {{comment.date| date}}</footer>
                         </blockquote>
                     </li>
                 </ul>
