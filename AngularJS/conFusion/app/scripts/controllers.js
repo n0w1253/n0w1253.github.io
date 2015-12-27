@@ -54,21 +54,21 @@ angular.module('confusionApp')
 
             }])
 
-        .controller('FeedbackController', ['$scope', function ($scope) {
+        .controller('FeedbackController', ['$scope', 'feedbackFactory', function ($scope, feedbackFactory) {
 
                 $scope.sendFeedback = function () {
-
-                    console.log($scope.feedback);
 
                     if ($scope.feedback.agree && ($scope.feedback.mychannel == "")) {
                         $scope.invalidChannelSelection = true;
                         console.log('incorrect');
                     } else {
+                        // save the feedback information to the server
+                        feedbackFactory.getFeedback().save($scope.feedback);
+                        //   console.log("saving "+$scope.feedback);
                         $scope.invalidChannelSelection = false;
                         $scope.feedback = {mychannel: "", firstName: "", lastName: "", agree: false, email: ""};
                         $scope.feedback.mychannel = "";
                         $scope.feedbackForm.$setPristine();
-                        console.log($scope.feedback);
                     }
                 };
             }])
@@ -150,7 +150,7 @@ angular.module('confusionApp')
                                     $scope.message = "Error: " + response.status + " " + response.statusText;
                                 }
                         );
-               
+
                 //render the executive chef data obtained from the server and handle error confitions
                 $scope.showExecutiveChef = false;
                 $scope.executiveChefMessage = "Loading Executive Chef Information ...";
