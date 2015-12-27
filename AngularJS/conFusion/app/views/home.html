@@ -59,7 +59,12 @@
             <h3 align=center>Meet our Culinary Specialists</h3>
         </div>
         <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-            <div class="media">
+            <!-- render the executive chef data when it is correctly received, and error message
+            otherwise -->
+            <div ng-if="!showExecutiveChef">
+                <h3>{{executiveChefMessage}}</h3>
+            </div>
+            <div class="media" ng-if="showExecutiveChef">
                 <div class="media-left media-middle">
                     <img class="media-object img-thumbnail"
                          ng-src={{executiveChef.image}} alt="Alberto Somayya">                       

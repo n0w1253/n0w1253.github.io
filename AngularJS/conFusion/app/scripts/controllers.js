@@ -109,7 +109,17 @@ angular.module('confusionApp')
 
         // implement the IndexController and About Controller here
         .controller('AboutController', ['$scope', 'corporateFactory', function ($scope, corporateFactory) {
-                $scope.leaders = corporateFactory.getLeaders();
+                // render the leadership data obtained from the server and handle error contidions        
+                $scope.showLeaders = false;
+                $scope.message = "Loading Leaders ...";
+                corporateFactory.getLeaders().query(
+                        function (response) {
+                            $scope.leaders = response;
+                            $scope.showLeaders = true;
+                        },
+                        function (response) {
+                            $scope.message = "Error: " + response.status + " " + response.statusText;
+                        });
 
             }])
 
@@ -140,8 +150,20 @@ angular.module('confusionApp')
                                     $scope.message = "Error: " + response.status + " " + response.statusText;
                                 }
                         );
-
-                $scope.executiveChef = corporateFactory.getLeader(3);
+               
+                //render the executive chef data obtained from the server and handle error confitions
+                $scope.showExecutiveChef = false;
+                $scope.executiveChefMessage = "Loading Executive Chef Information ...";
+                $scope.executiveChef = corporateFactory.getLeaders().get({id: 3})
+                        .$promise.then(
+                                function (response) {
+                                    $scope.executiveChef = response;
+                                    $scope.showExecutiveChef = true;
+                                },
+                                function (response) {
+                                    $scope.executiveChefMessage = "Error: " + response.status + " " + response.statusText;
+                                }
+                        );
 
             }])
 
