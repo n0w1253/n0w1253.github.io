@@ -127,7 +127,7 @@ angular.module('confusionApp')
                 // render the promotion data and handle the error condition appropirately
                 $scope.showPromotion = false;
                 $scope.promotionMessage = "Loading Promotion ...";
-                $scope.promotion = menuFactory.getPromotion().get({id: 0})
+                $scope.promotion = menuFactory.getPromotions().get({id: 0})
                         .$promise.then(
                                 function (response) {
                                     $scope.promotion = response;
