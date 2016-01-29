@@ -44,6 +44,12 @@
           "comment": "fantastic",
           "author": "nancy",
           "date": "2016-01-29T20:00:11.631Z"
+        },
+        {
+          "rating": 1,
+          "comment": "www",
+          "author": "www",
+          "date": "2016-01-29T21:32:45.828Z"
         }
       ]
     },
@@ -97,6 +103,12 @@
           "comment": "test",
           "author": "test",
           "date": "2016-01-29T20:02:58.056Z"
+        },
+        {
+          "rating": 2,
+          "comment": "best",
+          "author": "best",
+          "date": "2016-01-29T21:34:54.328Z"
         }
       ]
     },
