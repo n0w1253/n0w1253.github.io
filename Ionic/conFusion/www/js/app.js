@@ -43,7 +43,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
                         views: {
                             'mainContent': {
                                 templateUrl: 'templates/aboutus.html',
-                                controller:'AboutController'
+                                controller: 'AboutController'
                             }
                         }
                     })
@@ -73,6 +73,16 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
                             'mainContent': {
                                 templateUrl: 'templates/dishdetail.html',
                                 controller: 'DishDetailController'
+                            }
+                        }
+                    })
+
+                    .state('app.favorites', {
+                        url: '/favorites',
+                        views: {
+                            'mainContent': {
+                                templateUrl: 'templates/favorites.html',
+                                controller: 'FavoritesController'
                             }
                         }
                     });
