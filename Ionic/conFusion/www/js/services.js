@@ -2,7 +2,7 @@ angular.module('conFusion.services', ['ngResource'])
         .constant("baseURL","http://localhost:3000/")
         .service('menuFactory', ['$resource', 'baseURL', function($resource,baseURL) {
     
-            var promotions = [
+          /*  var promotions = [
                 {
                           _id:0,
                           name:'Weekend Grand Buffet', 
@@ -13,7 +13,7 @@ angular.module('conFusion.services', ['ngResource'])
                 }
                 
             ];
-    
+    */
                 this.getDishes = function(){
                     
                     return $resource(baseURL+"dishes/:id",null,  {'update':{method:'PUT' }});
