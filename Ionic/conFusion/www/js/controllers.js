@@ -150,7 +150,8 @@ angular.module('conFusion.controllers', [])
                 };
             }])
 
-        .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', function ($scope, $stateParams, menuFactory, baseURL) {
+        .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', '$ionicModal',
+            function ($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory, $ionicModal) {
                 $scope.baseURL = baseURL;
 
                 $scope.dish = {};
@@ -169,6 +170,62 @@ angular.module('conFusion.controllers', [])
                         );
 
 
+                // .fromTemplateUrl() method
+                $ionicPopover.fromTemplateUrl('templates/dish-detail-popover.html', {
+                    scope: $scope
+                }).then(function (popover) {
+                    $scope.popover = popover;
+                });
+
+
+                $scope.openPopover = function ($event) {
+                    $scope.popover.show($event);
+                };
+                 $scope.closePopover = function () {
+                 $scope.popover.hide();
+                 };
+                 /*
+                 //Cleanup the popover when we're done with it!
+                 $scope.$on('$destroy', function () {
+                 $scope.popover.remove();
+                 });
+                 // Execute action on hide popover
+                 $scope.$on('popover.hidden', function () {
+                 // Execute action
+                 });
+                 // Execute action on remove popover
+                 $scope.$on('popover.removed', function () {
+                 // Execute action
+                 });
+                 */
+
+                $scope.addToFavorites = function () {
+                    var id = parseInt($stateParams.id, 10);
+                    console.log("detailed dish index is " + id);
+                    favoriteFactory.addToFavorites(id);
+                    $scope.closePopover();
+
+                };
+
+
+
+                // Create the reserve modal that we will use later
+                $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
+                    scope: $scope
+                }).then(function (modal) {
+                    $scope.commentForm = modal;
+                });
+
+                
+                $scope.closeComment = function () {
+                    $scope.commentForm.hide();
+                };
+
+                $scope.addComment = function () {
+                    $scope.commentForm.show();
+                    $scope.closePopover();
+                };
+
             }])
 
         .controller('DishCommentController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
@@ -178,15 +235,18 @@ angular.module('conFusion.controllers', [])
                 $scope.submitComment = function () {
 
                     $scope.mycomment.date = new Date().toISOString();
-                    console.log($scope.mycomment);
+                    
+                    $scope.mycomment.rating = Number($scope.mycomment.rating);
+                    console.log(JSON.stringify($scope.mycomment));
 
                     $scope.dish.comments.push($scope.mycomment);
                     menuFactory.getDishes().update({id: $scope.dish.id}, $scope.dish);
 
-                    $scope.commentForm.$setPristine();
+                    //$scope.commentForm.$setPristine();
 
                     $scope.mycomment = {rating: 5, comment: "", author: "", date: ""};
-                }
+                    $scope.closeComment();
+                };
             }])
 
         // implement the IndexController and About Controller here
