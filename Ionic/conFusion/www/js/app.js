@@ -1,8 +1,8 @@
 // Ionic Starter App
 
-angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.services'])
+angular.module('conFusion', ['ionic', 'ngCordova', 'conFusion.controllers', 'conFusion.services'])
 
-        .run(function ($ionicPlatform, $rootScope, $ionicLoading) {
+        .run(function ($ionicPlatform, $rootScope, $ionicLoading, $cordovaSplashscreen, $timeout) {
             $ionicPlatform.ready(function () {
                 // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                 // for form inputs)
@@ -14,6 +14,10 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
                     // org.apache.cordova.statusbar required
                     StatusBar.styleDefault();
                 }
+
+                $timeout(function () {
+                    $cordovaSplashscreen.hide();
+                }, 5000);
             });
             $rootScope.$on('loading:show', function () {
                 $ionicLoading.show({
@@ -115,7 +119,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
                                         }],
                                     favorites: ['favoriteFactory', function (favoriteFactory) {
                                             return favoriteFactory.getFavorites();
-                                        }]                                        
+                                        }]
                                 }
                             }
                         }
