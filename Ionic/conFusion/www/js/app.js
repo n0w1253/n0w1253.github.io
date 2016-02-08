@@ -17,7 +17,7 @@ angular.module('conFusion', ['ionic', 'ngCordova', 'conFusion.controllers', 'con
 
                 $timeout(function () {
                     $cordovaSplashscreen.hide();
-                }, 5000);
+                }, 1500);
             });
             $rootScope.$on('loading:show', function () {
                 $ionicLoading.show({

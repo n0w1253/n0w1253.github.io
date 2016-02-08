@@ -232,7 +232,8 @@ angular.module('conFusion.controllers', [])
                 };
             }])
 
-        .controller('DishDetailController', ['$scope', '$stateParams', 'dish', 'favoriteFactory', 'baseURL', '$ionicPopover', '$ionicModal', function ($scope, $stateParams, dish, favoriteFactory, baseURL, $ionicPopover, $ionicModal) {
+        .controller('DishDetailController', ['$scope', '$stateParams', 'dish', 'favoriteFactory', 'baseURL', '$ionicPopover', '$ionicModal', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast',
+            function ($scope, $stateParams, dish, favoriteFactory, baseURL, $ionicPopover, $ionicModal, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
 
                 $scope.baseURL = baseURL;
                 $scope.dish = dish;
@@ -270,6 +271,25 @@ angular.module('conFusion.controllers', [])
                     console.log("detailed dish index is " + id);
                     favoriteFactory.addToFavorites(id);
                     $scope.closePopover();
+                    $ionicPlatform.ready(function () {
+                        $cordovaLocalNotification.schedule({
+                            id: 1,
+                            title: "Added Favorite",
+                            text: $scope.dish.name
+                        }).then(function () {
+                            console.log('Added Favorite ' + $scope.dish.name);
+                        },
+                                function () {
+                                    console.log('Failed to add Notification ');
+                                });
+                        $cordovaToast
+                                .show('Added Favorite ' + $scope.dish.name, 'long', 'bottom')
+                                .then(function (success) {
+                                    // success
+                                }, function (error) {
+                                    // error
+                                });
+                    });
                 };
                 // Create the reserve modal that we will use later
                 $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
