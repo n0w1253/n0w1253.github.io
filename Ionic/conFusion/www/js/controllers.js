@@ -1,6 +1,6 @@
 angular.module('conFusion.controllers', [])
 
-        .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera) {
+        .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera, $cordovaImagePicker) {
 
             // With the new view caching in Ionic, Controllers are only called
             // when they are recreated or on app start, instead of every page change.
@@ -119,7 +119,34 @@ angular.module('conFusion.controllers', [])
                         console.log("Camera unavailable");
                     };
                 }
+
+                var img_picker_options = {
+                    maximumImagesCount: 1,
+                    width: 100,
+                    height: 100,
+                    quality: 50
+                };
+
+                $scope.pickPicture = function () {
+
+
+
+                    $cordovaImagePicker.getPictures(img_picker_options)
+                            .then(function (results) {
+                                if (results.length) {
+                                    console.log("Load picture: " + results[0]);
+                                    $scope.registration.imgSrc = results[0];
+                                }
+                            }, function (error) {
+                                // error getting photos
+                                console.log(err);
+                            });
+                    $scope.registerform.show();
+                };
             });
+
+
+
         })
 
         .controller('MenuController', ['$scope', 'dishes', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast',
