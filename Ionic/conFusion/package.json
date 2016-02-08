@@ -33,7 +33,8 @@
     {
       "locator": "https://github.com/Telerik-Verified-Plugins/ImagePicker.git",
       "id": "com.synconset.imagepicker"
-    }
+    },
+    "cordova-plugin-vibration"
   ],
   "cordovaPlatforms": [
     "android",
