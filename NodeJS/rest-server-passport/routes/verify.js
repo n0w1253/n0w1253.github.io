@@ -34,3 +34,19 @@ exports.verifyOrdinaryUser = function (req, res, next) {
         return next(err);
     }
 };
+
+exports.verifyAdmin = function (req, res, next) {
+    // check if the user has admin privileges
+    var isAdmin = req.decoded._doc.admin;
+
+    // if s/he is admin
+    if (isAdmin) {
+        next();
+    } else {
+        // if not and admin
+        // return an error
+        var err = new Error('You do not have Admin previleges!');
+        err.status = 403;
+        return next(err);
+    }
+};
