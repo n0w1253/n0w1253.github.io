@@ -43,7 +43,7 @@ angular.module('confusionApp')
                 };
             }])
 
-        .controller('ContactController', ['$scope', function ($scope) {
+        .controller('ContactController', ['$scope','$http', function ($scope,$http) {
 
                 $scope.feedback = {mychannel: "", firstName: "", lastName: "", agree: false, email: ""};
 
@@ -52,7 +52,45 @@ angular.module('confusionApp')
                 $scope.channels = channels;
                 $scope.invalidChannelSelection = false;
 
-            }])
+                $scope.authurl = "https://localhost:3443/users/facebook/";
+
+                $scope.login = function () {
+                 /*   $http({
+                        method: 'GET',
+                        url: $scope.authurl
+                         
+                    }).then(function successCallback(response) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                    }, function errorCallback(response) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });*/
+                    
+                  /*  $http.jsonp('https://localhost:3443/users/facebook?callback=JSON_CALLBACK').then(function (data) {
+    console.log("BLOG pass"+data);
+    
+},function (data) {
+    console.log("BLOG failed"+JSON.stringify(data));
+});
+       */ 
+        params = {
+  
+  'callback': 'JSON_CALLBACK'
+};
+                    $http({
+  url: "https://localhost:3443/users/facebook/",
+  method: 'JSONP',
+  params: params
+}).then(function (data,status, headers, config) {
+    console.log("jsonp pass"+JSON.stringify(data.data.token));
+    
+},function (data,status, headers, config) {
+    console.log("jsonp failed"+JSON.stringify(data));
+});
+                
+
+                }}])
 
         .controller('FeedbackController', ['$scope', 'feedbackFactory', function ($scope, feedbackFactory) {
 
@@ -168,3 +206,7 @@ angular.module('confusionApp')
             }])
 
         ;
+function json_callback(data) {
+    // returning from async callbacks is (generally) meaningless
+    console.log(data.found);
+}

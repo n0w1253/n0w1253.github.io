@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('confusionApp', ['ui.router','ngResource'])
+angular.module('confusionApp', ['ui.router', 'ngResource'])
         .config(function ($stateProvider, $urlRouterProvider) {
             $stateProvider
 
@@ -67,4 +67,54 @@ angular.module('confusionApp', ['ui.router','ngResource'])
                     });
 
             $urlRouterProvider.otherwise('/');
-        });
+        }).factory('errorInterceptor', ['$q', '$rootScope', '$location',
+    function ($q, $rootScope, $location) {
+        return {
+            request: function (config) {
+                console.log("config "+config)
+                return config || $q.when(config);
+            },
+            requestError: function(request){
+                return $q.reject(request);
+            },
+            response: function (response) {
+                return response || $q.when(response);
+            },
+            responseError: function (response) {
+                if (response && response.status === 302) {
+                    console.log("response.data "+response.data)
+                }
+                if (response && response.status === 404) {
+                    console.log("404 response.data "+response.data)
+                }
+                if (response && response.status >= 500) {
+                    console.log("500 response.data "+response.data)
+                }
+                return $q.reject(response);
+            }
+        };
+}])
+        
+                .factory('myHttpResponseInterceptor', ['$q', '$location', function ($q, $location) {
+        return {
+            response: function (response) {
+                return $q(
+                        function success(response) {
+                            return response;
+                        },
+                        function error(response) {
+                            console.log("response.data "+response.data)
+                            if (typeof response.data === 'string') {
+                                
+                                return $q.reject(response);
+                            } else {
+                                return $q.reject(response);
+                            }
+                        });
+            }
+        }
+    }])
+
+        .config(['$httpProvider', function ($httpProvider) {
+                $httpProvider.interceptors.push('errorInterceptor');
+            }]);

@@ -7,7 +7,7 @@
 6 silly lifecycle rest-server-passport@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle rest-server-passport@0.0.0~start: rest-server-passport@0.0.0
 8 verbose lifecycle rest-server-passport@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle rest-server-passport@0.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/nancy/GitHub/n0w1253.github.io/NodeJS/rest-server-passport/node_modules/.bin:/Users/nancy/mongodb/bin:/Users/nancy/Library/Android/sdk/platform-tools:/Users/nancy/Library/Android/sdk/tools:/Library/Frameworks/Python.framework/Versions/3.5/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+9 verbose lifecycle rest-server-passport@0.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/nancy/GitHub/n0w1253.github.io/NodeJS/rest-server-passport/node_modules/.bin:/Users/nancy/anaconda/bin:/Users/nancy/mongodb/bin:/Users/nancy/Library/Android/sdk/platform-tools:/Users/nancy/Library/Android/sdk/tools:/Library/Frameworks/Python.framework/Versions/3.5/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 10 verbose lifecycle rest-server-passport@0.0.0~start: CWD: /Users/nancy/GitHub/n0w1253.github.io/NodeJS/rest-server-passport
 11 silly lifecycle rest-server-passport@0.0.0~start: Args: [ '-c', 'node ./bin/www' ]
 12 silly lifecycle rest-server-passport@0.0.0~start: Returned: code: 1  signal: null

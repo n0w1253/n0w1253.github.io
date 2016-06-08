@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var cors = require('cors');
 var authenticate = require('./authenticate');
 
 var config = require('./config');
@@ -26,6 +27,7 @@ var leaderRouter = require('./routes/leaderRouter');
 var favoriteRouter = require('./routes/favoriteRouter');
 
 var app = express();
+app.use(cors());
 
 // Secure traffic only
 app.all('*', function(req, res, next){
@@ -42,6 +44,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.enable("jsonp callback");
 
 app.use(logger('dev'));
 app.use(bodyParser.json());

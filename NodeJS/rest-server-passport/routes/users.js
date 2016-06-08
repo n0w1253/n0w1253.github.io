@@ -68,33 +68,57 @@ router.get('/logout', function (req, res) {
     });
 });
 
-router.get('/facebook', passport.authenticate('facebook'),
-        function (req, res) {});
+router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook/callback',
+        passport.authenticate('facebook', {session: false, failureRedirect: "/"}),
+        function (req, res) {
+            
+            res.redirect("/users/profile?access_token=" + req.user.OauthToken);
+           
+        }
+);
 
-router.get('/facebook/callback', function (req, res, next) {
-    passport.authenticate('facebook', function (err, user, info) {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.status(401).json({
-                err: info
-            });
-        }
-        req.logIn(user, function (err) {
-            if (err) {
-                return res.status(500).json({
-                    err: 'Could not log in user'
-                });
-            }
-            var token = Verify.getToken(user);
-            res.status(200).json({
+router.get(
+        '/profile',
+        passport.authenticate('bearer', {session: false}),
+        function (req, res) {
+           // console.log(req.query.callback);
+            // res.send("LOGGED IN as " + req.user.OauthId + " - <a href=\"/logout\">Log out</a>");
+            var token = Verify.getToken(req.user);
+            res.header("Content-Type", "application/javascript");
+            var retObj = {
                 status: 'Login successful!',
                 success: true,
                 token: token
-            });
-        });
-    })(req, res, next);
-});
-
+            };
+            res.status(200).send('angular.callbacks._0('+JSON.stringify(retObj)+');');
+        }
+);
+/*
+ router.get('/facebook/callback', function (req, res, next) {
+ passport.authenticate('facebook', function (err, user, info) {
+ if (err) {
+ return next(err);
+ }
+ if (!user) {
+ return res.status(401).json({
+ err: info
+ });
+ }
+ req.logIn(user, function (err) {
+ if (err) {
+ return res.status(500).json({
+ err: 'Could not log in user'
+ });
+ }
+ var token = Verify.getToken(user);
+ res.status(200).json({
+ status: 'Login successful!',
+ success: true,
+ token: token
+ });
+ });
+ })(req, res, next);
+ });
+ */
 module.exports = router;
