@@ -54,6 +54,21 @@ angular.module('confusionApp')
 
                 $scope.authurl = "https://localhost:3443/users/facebook/";
 
+
+ $scope.logout = function () {
+     $scope.token={};
+     $http({
+                        method: 'GET',
+                        url: 'https://localhost:3443/users/logoutFacebook'
+                         
+                    }).then(function successCallback(response) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                    }, function errorCallback(response) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+ };
                 $scope.login = function () {
                  /*   $http({
                         method: 'GET',
@@ -84,6 +99,7 @@ angular.module('confusionApp')
   params: params
 }).then(function (data,status, headers, config) {
     console.log("jsonp pass"+JSON.stringify(data.data.token));
+    $scope.token = data.data.token;
     
 },function (data,status, headers, config) {
     console.log("jsonp failed"+JSON.stringify(data));
