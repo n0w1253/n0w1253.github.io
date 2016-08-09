@@ -1,5 +1,5 @@
 angular.module('conFusion.services', ['ngResource'])
-        .constant("baseURL", "http://192.168.1.100:3000/")
+        .constant("baseURL", "https://jsonservertest.herokuapp.com/")
         .factory('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
                 return $resource(baseURL + "dishes/:id", null, {
